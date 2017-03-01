@@ -20,6 +20,8 @@ class DriverViewController: UIViewController, MKMapViewDelegate, CLLocationManag
     
     private var timer = Timer()
     
+//    var pass = PassengerViewController()
+    
     private var acceptedCarpool = false
     private var driverCanceledCarpool = false
     
@@ -106,10 +108,10 @@ class DriverViewController: UIViewController, MKMapViewDelegate, CLLocationManag
         
     }
     
-    func acceptCarpool(lat: Double, long: Double) {
+    func acceptCarpool(lat: Double, long: Double,no:Int,whereto:String) {
         
         if !acceptedCarpool {
-            carpoolRequest(title: "Carpool Request", message: "You have a reauest for a carpool at this location Lat: \(lat), Long: \(long)", requestAlive: true)
+            carpoolRequest(title: "Carpool Request", message: "You have a reauest for a carpool at this location Lat: \(lat), Long: \(long) number \(no) where to \(whereto)", requestAlive: true)
         }
         
     }
@@ -134,7 +136,9 @@ class DriverViewController: UIViewController, MKMapViewDelegate, CLLocationManag
     }
     
     private func carpoolRequest(title: String,message: String,requestAlive: Bool){
-        
+        CarpoolDriverHandler.instace.check()
+//        print(CarpoolDriverHandler.instace.check())
+        if (CarpoolDriverHandler.instace.getStatus()){
         let alert = UIAlertController(title: title, message:message, preferredStyle: .alert)
         
         if requestAlive {
@@ -142,14 +146,21 @@ class DriverViewController: UIViewController, MKMapViewDelegate, CLLocationManag
             
                 self.acceptedCarpool = true
                 self.acceptCarpoolBtn.isHidden = false
+//                CarpoolHandler.instace.observeMessageForPassenger()
+//                CarpoolHandler.instace.delegate = self
+                CarpoolDriverHandler.instace.statusRequest(status: "busy")
                 
                 self.timer = Timer.scheduledTimer(timeInterval:TimeInterval(10), target: self, selector: #selector(DriverViewController.updateDriverLocation), userInfo: nil, repeats: true)
                 
                 CarpoolDriverHandler.instace.carpoolAccepted(lat: Double(self.userLocation!.latitude), long: self.userLocation!.longitude)
+                //test
+//                CarpoolHandler.instace.cancelCarpool()
                 
             })
             
             let cancel = UIAlertAction(title: "Cancel", style: .default, handler: nil)
+            
+//            pass.canCallCarpool(delegateCalled: false)
             
             alert.addAction(accept)
             alert.addAction(cancel)
@@ -162,8 +173,34 @@ class DriverViewController: UIViewController, MKMapViewDelegate, CLLocationManag
         }
         
         present(alert, animated:true, completion: nil)
+        }
         
     }
+    
+    
+    
+    //custom pin
+//    func map(mapView: MKMapView, viewForAnnotation annotation: MKAnnotation) -> MKAnnotationView?
+//    {
+//        if !(annotation is MKPointAnnotation) {
+//            return nil
+//        }
+//        
+//        let annotationIdentifier = "AnnotationIdentifier"
+//        var annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: annotationIdentifier)
+//        
+//        if annotationView == nil {
+//            annotationView = MKAnnotationView(annotation: annotation, reuseIdentifier: annotationIdentifier)
+//            annotationView!.canShowCallout = true
+//        }
+//        else {
+//            annotationView!.annotation = annotation
+//        }
+//        
+//        let pinImage = UIImage(named: "customPinImage")
+//        annotationView!.image = pinImage
+//        return annotationView
+//    }
 
     /*
     // MARK: - Navigation

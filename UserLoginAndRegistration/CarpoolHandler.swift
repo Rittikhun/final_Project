@@ -23,22 +23,25 @@ class CarpoolHandler{
     var user = ""
     var uid_req = ""
     var driver = ""
+    var uid_test = ""
+    
+    let username = FIRAuth.auth()?.currentUser
     
     static var instace: CarpoolHandler {
         return instance
     }
     
-    func requestCarpool(latitude: Double , longitude: Double){
+    func requestCarpool(latitude: Double , longitude: Double,no:Int ,whereto:String){
         
-        let username = FIRAuth.auth()?.currentUser
         
-        let ref = FIRDatabase.database().reference()
+        
+//        let ref = FIRDatabase.database().reference()
         
         print("uid: \(FIRAuth.auth()?.currentUser?.uid)")
         
         //                    self.performSegue(withIdentifier: "homeView", sender: self);
         
-        ref.child("users").child((username!.uid)).observeSingleEvent(of: .value, with: { (snapshot) in
+        DBProvider.Instance.userRef.child((username!.uid)).observeSingleEvent(of: .value, with: { (snapshot) in
             // Get user value
             let value = snapshot.value as! NSDictionary
             
@@ -46,11 +49,13 @@ class CarpoolHandler{
             
             CarpoolHandler.instace.user = usernamef
             
-            let data : Dictionary<String, Any> = [Constants.NAME: self.user, Constants.LATITUDE: latitude , Constants.LONGITUDE: longitude]
+            let data : Dictionary<String, Any> = [Constants.NAME: self.user, Constants.LATITUDE: latitude , Constants.LONGITUDE: longitude,Constants.NO: no,Constants.WHERETO:whereto,Constants.STATUS_CARPOOL:"wait"]
             
             DBProvider.Instance.requestRef.childByAutoId().setValue(data)
             
         })
+        
+//        statusRequest(status: "wait")
         
         
         
@@ -64,7 +69,8 @@ class CarpoolHandler{
                 if let name = data[Constants.NAME] as? String {
                     if name == self.user {
                         self.uid_req = snapshot.key
-//                        print("The value is \(self.uid_req)!")
+                        self.setuidReq(uid: "\(self.uid_req)")
+                        print("The value is \(self.uid_req)!")
                         self.delegate?.canCallCarpool(delegateCalled: true)
                         
                     }
@@ -122,7 +128,7 @@ class CarpoolHandler{
 
     func cancelCarpool(){
         
-        print("test value \(uid_req)")
+//        print("test value \(uid_req)")
         DBProvider.Instance.requestRef.child(uid_req).removeValue()
         
     }
@@ -130,6 +136,58 @@ class CarpoolHandler{
     func updatePassengerLocation(lat:Double , long:Double){
         DBProvider.Instance.requestRef.child(uid_req).updateChildValues([Constants.LATITUDE:lat , Constants.LONGITUDE:long])
     }
+    
+    func statusRequest(status:String){
+        DBProvider.Instance.requestRef.observe(FIRDataEventType.childAdded){ (snapshot: FIRDataSnapshot) in
+            
+            self.uid_req = snapshot.key
+            
+            print("uid_req test \(self.uid_req)")
+            print("uid_test \(self.uid_test)")
+            if(self.uid_test == self.uid_req){
+                
+            DBProvider.Instance.requestRef.child((self.uid_req)).observeSingleEvent(of: .value, with: { (snapshot) in
+            // Get user value
+                print("uid_req test2 \(self.uid_req)")
+                
+                let value = snapshot.value as! NSDictionary
+            
+                let usernamef = value[Constants.NAME] as! String
+                let lat = value[Constants.LATITUDE] as! Double
+                let long = value[Constants.LONGITUDE] as! Double
+                let no = value[Constants.NO] as! NSNumber
+                let whereto = value[Constants.WHERETO] as! String
+            
+                let data : Dictionary<String, Any> = [Constants.NAME: usernamef, Constants.LATITUDE: lat , Constants.LONGITUDE: long,Constants.NO: no,Constants.WHERETO:whereto,Constants.STATUS_CARPOOL:status]
+            
+                DBProvider.Instance.requestRef.child(self.uid_req).setValue(data)
+                
+            
+            })
+            }
+            
+            
+        }
+        
+    }
+    
+    func setuidReq(uid:String){
+        uid_test = uid
+    }
+    
+//    func statusRequert() -> String {
+//        
+//        let status : String?
+//        DBProvider.Instance.requestRef.child((username!.uid)).observeSingleEvent(of: .value, with: { (snapshot) in
+//            
+//            let value = snapshot.value as! NSDictionary
+//            status = value[Constants.STATUS] as! String
+//            
+////            return status
+//        })
+//        
+//        return status
+//    }
     
 }
 

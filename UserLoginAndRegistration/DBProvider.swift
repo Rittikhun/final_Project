@@ -17,12 +17,18 @@ class DBProvider {
     
     private static let instance = DBProvider()
     
+    let username = FIRAuth.auth()?.currentUser
+    
     static var Instance : DBProvider{
         return instance
     }
     
     var ref : FIRDatabaseReference {
         return FIRDatabase.database().reference()
+    }
+    
+    var userRef : FIRDatabaseReference{
+        return ref.child(Constants.USER)
     }
     
     var carpoolRef : FIRDatabaseReference {
@@ -78,5 +84,7 @@ class DBProvider {
         }
         
     }
+    
+    
     
 }

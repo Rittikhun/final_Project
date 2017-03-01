@@ -187,10 +187,15 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="Kur-62-Bij">
+                                <rect key="frame" x="-15" y="306" width="390" height="361"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </mapView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <connections>
+                        <outlet property="mapView" destination="Kur-62-Bij" id="ocb-kI-Sq6"/>
                         <outlet property="namelabel" destination="HsY-HP-gHD" id="1wH-IO-L0n"/>
                         <outlet property="placelabel" destination="DLk-bL-c1v" id="2Ik-IM-nzy"/>
                         <outlet property="timelabel" destination="hVl-Dx-Yvv" id="S2i-ps-hgV"/>
@@ -198,7 +203,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="qgP-h5-qgQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="6540" y="382"/>
+            <point key="canvasLocation" x="3936.8000000000002" y="1535.9820089955024"/>
         </scene>
         <!--Register Page View Controller-->
         <scene sceneID="dV0-qs-ap9">
@@ -969,7 +974,7 @@
         <!--Item 2-->
         <scene sceneID="pZE-ox-mPZ">
             <objects>
-                <viewController id="uFm-7C-TDP" customClass="CalendarViewController" customModule="UserLoginAndRegistration" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="homeView" id="uFm-7C-TDP" customClass="CalendarViewController" customModule="UserLoginAndRegistration" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="tMa-8y-A8e"/>
                         <viewControllerLayoutGuide type="bottom" id="qxM-wj-Xak"/>
@@ -1223,7 +1228,7 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </mapView>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1yG-Jq-rXi">
-                                <rect key="frame" x="96" y="435" width="182" height="63"/>
+                                <rect key="frame" x="96" y="547" width="182" height="63"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="25"/>
                                 <state key="normal" title="Call Carpool"/>
@@ -1231,12 +1236,58 @@
                                     <action selector="callDriver:" destination="I8n-oP-jlB" eventType="touchUpInside" id="cF2-3G-spU"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="จำนวนคน" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="spA-oI-uv6">
+                                <rect key="frame" x="36" y="413" width="69" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="T4u-Y7-c5I">
+                                <rect key="frame" x="204" y="408" width="30" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="-"/>
+                                <connections>
+                                    <action selector="re:" destination="I8n-oP-jlB" eventType="touchUpInside" id="M3X-5q-uk9"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Dn1-QH-haN">
+                                <rect key="frame" x="267" y="408" width="30" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="+"/>
+                                <connections>
+                                    <action selector="add:" destination="I8n-oP-jlB" eventType="touchUpInside" id="sFG-wL-mpK"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="1" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KDO-sA-4rn">
+                                <rect key="frame" x="236" y="414" width="23" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="สถานที่ที่จะไป" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6pQ-d7-71q">
+                                <rect key="frame" x="36" y="458" width="96" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="nPC-EK-Thu">
+                                <rect key="frame" x="162" y="453" width="187" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <nil key="textColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <connections>
                         <outlet property="callBtn" destination="1yG-Jq-rXi" id="xgi-G1-mmq"/>
+                        <outlet property="locationToGo" destination="nPC-EK-Thu" id="xcA-o0-dqk"/>
                         <outlet property="map" destination="F4G-OR-yom" id="eNO-fs-TN4"/>
+                        <outlet property="number" destination="KDO-sA-4rn" id="Ryb-ik-NJ9"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="qtL-Nk-lmX" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1363,7 +1414,6 @@
         <!--Navigation Controller-->
         <scene sceneID="iZB-y2-3dR">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="ng2-9J-fFV" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="qpv-rx-SGi" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="epn-4a-5DN">
@@ -1375,6 +1425,7 @@
                         <segue destination="dcj-rx-jCV" kind="relationship" relationship="rootViewController" id="xqb-P0-d1w"/>
                     </connections>
                 </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ng2-9J-fFV" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="7346" y="1363"/>
         </scene>

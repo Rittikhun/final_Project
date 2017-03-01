@@ -14,6 +14,13 @@ class PassengerViewController: UIViewController, MKMapViewDelegate, CLLocationMa
     @IBOutlet weak var map: MKMapView!
     @IBOutlet weak var callBtn: UIButton!
     
+    @IBOutlet weak var number: UILabel!
+    @IBOutlet weak var locationToGo: UITextField!
+    
+    var no = 1 ;
+    
+//    var d = DriverViewController()
+    
     private var locationManager = CLLocationManager()
     private var userLocation : CLLocationCoordinate2D?
     private var DriverLocation : CLLocationCoordinate2D?
@@ -89,6 +96,8 @@ class PassengerViewController: UIViewController, MKMapViewDelegate, CLLocationMa
             }
             else {
                 CarpoolHandler.instace.cancelCarpool()
+                //test
+                canCallCarpool(delegateCalled: false)
                 timer.invalidate()
                 alertTheUser(title: "Carpool Canceled", message: "\(drivername) Canceled Carpool Request")
             }
@@ -123,16 +132,44 @@ class PassengerViewController: UIViewController, MKMapViewDelegate, CLLocationMa
         self.dismiss(animated: true, completion: nil)
 
     }
+    
+    
+    @IBAction func re(_ sender: Any) {
+        
+        if(no > 1){
+            no = no - 1
+            number.text = "\(no)"
+        } else{
+            number.text = "1"
+        }
+        
+    }
+    
+    
+    @IBAction func add(_ sender: Any) {
+        
+//        print(no)
+        no = no + 1
+        number.text = "\(no)"
+//        print(number.text)
+        
+    }
 
     @IBAction func callDriver(_ sender: Any) {
         
         if userLocation != nil {
             if canCallCarpool {
-                CarpoolHandler.instace.requestCarpool(latitude: Double(userLocation!.latitude), longitude: Double(userLocation!.longitude))
+                
+                canCallCarpool(delegateCalled: canCallCarpool)
+                CarpoolHandler.instace.requestCarpool(latitude: Double(userLocation!.latitude), longitude: Double(userLocation!.longitude),no: no ,whereto:locationToGo.text!)
+                
+//                CarpoolHandler.instace.statusRequest(status: "eiei")
                 
                 timer = Timer.scheduledTimer(timeInterval: TimeInterval(10), target: self, selector: #selector(PassengerViewController.updatePassengerLocation), userInfo: nil, repeats: true)
             }
             else {
+                canCallCarpool(delegateCalled: canCallCarpool)
+//                d.carpoolCanceled()
                 passengerCancelRequest = true
                 CarpoolHandler.instace.cancelCarpool()
                 timer.invalidate()
@@ -142,6 +179,29 @@ class PassengerViewController: UIViewController, MKMapViewDelegate, CLLocationMa
         
         
     }
+    
+    //custom image
+//    func map(mapView: MKMapView, viewForAnnotation annotation: MKAnnotation) -> MKAnnotationView?
+//    {
+//        if !(annotation is MKPointAnnotation) {
+//            return nil
+//        }
+//        
+//        let annotationIdentifier = "AnnotationIdentifier"
+//        var annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: annotationIdentifier)
+//        
+//        if annotationView == nil {
+//            annotationView = MKAnnotationView(annotation: annotation, reuseIdentifier: annotationIdentifier)
+//            annotationView!.canShowCallout = true
+//        }
+//        else {
+//            annotationView!.annotation = annotation
+//        }
+//        
+//        let pinImage = UIImage(named: "customPinImage")
+//        annotationView!.image = pinImage
+//        return annotationView
+//    }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
