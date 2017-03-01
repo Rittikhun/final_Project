@@ -27,7 +27,7 @@ class CarpoolDriverHandler{
     var uid = ""
     var uid_req = ""
     var uid_test = ""
-    var status : Bool?
+    var status = true
     
     static var instace: CarpoolDriverHandler {
         return instance
@@ -199,7 +199,7 @@ class CarpoolDriverHandler{
     
     func getStatus() -> Bool {
         
-        return self.status!
+        return self.status
     }
     
     func check() {
