@@ -101,6 +101,7 @@ class DriverViewController: UIViewController, MKMapViewDelegate, CLLocationManag
             
             driverCanceledCarpool = true
             acceptCarpoolBtn.isHidden = true
+            CarpoolDriverHandler.instace.statusRequest(status: "wait")
             CarpoolDriverHandler.instace.cancelCarpoolForDriver()
             timer.invalidate()
             
@@ -136,44 +137,118 @@ class DriverViewController: UIViewController, MKMapViewDelegate, CLLocationManag
     }
     
     private func carpoolRequest(title: String,message: String,requestAlive: Bool){
-        CarpoolDriverHandler.instace.check()
+//        CarpoolDriverHandler.instace.check()
 //        print(CarpoolDriverHandler.instace.check())
-        if (CarpoolDriverHandler.instace.getStatus()){
-        let alert = UIAlertController(title: title, message:message, preferredStyle: .alert)
+//        print("kkkk \(CarpoolDriverHandler.instace.uid_req)")
+//        CarpoolDriverHandler.instace.checkTest()
+//        print("status naja \(CarpoolDriverHandler.instace.status)")
         
-        if requestAlive {
-            let accept = UIAlertAction(title: "Accept", style: .default, handler: { (alertAction: UIAlertAction) in
+        DBProvider.Instance.requestRef.observe(FIRDataEventType.childAdded){ (snapshot: FIRDataSnapshot) in
             
-                self.acceptedCarpool = true
-                self.acceptCarpoolBtn.isHidden = false
-//                CarpoolHandler.instace.observeMessageForPassenger()
-//                CarpoolHandler.instace.delegate = self
-                CarpoolDriverHandler.instace.statusRequest(status: "busy")
-                
-                self.timer = Timer.scheduledTimer(timeInterval:TimeInterval(10), target: self, selector: #selector(DriverViewController.updateDriverLocation), userInfo: nil, repeats: true)
-                
-                CarpoolDriverHandler.instace.carpoolAccepted(lat: Double(self.userLocation!.latitude), long: self.userLocation!.longitude)
-                //test
-//                CarpoolHandler.instace.cancelCarpool()
-                
-            })
+            CarpoolDriverHandler.instace.uid_req = snapshot.key
             
-            let cancel = UIAlertAction(title: "Cancel", style: .default, handler: nil)
+            CarpoolDriverHandler.instace.setuidReq(uid: snapshot.key)
+            if(CarpoolDriverHandler.instace.uid_test == CarpoolDriverHandler.instace.uid_req){
+        
+                DBProvider.Instance.requestRef.child((CarpoolDriverHandler.instace.uid_req)).observeSingleEvent(of: .value, with: { (snapshot) in
+                    
+                    
+                    let value = snapshot.value as! NSDictionary
+                    
+                    let status = value[Constants.STATUS_CARPOOL] as! String
+                    //                    let status = "busy"
+                    print(status)
+                    if(status == "wait"){
+                        CarpoolDriverHandler.instace.setStatus(s:true)
+//                        print(self.status)
+                    }else{
+                        CarpoolDriverHandler.instace.setStatus(s:false)
+//                        print(self.status)
+                    }
+                    
+                    if (CarpoolDriverHandler.instace.getStatus()){
+                        print("eieieieieieieieieieieiei")
+                        let alert = UIAlertController(title: title, message:message, preferredStyle: .alert)
+                        
+                        if requestAlive {
+                            let accept = UIAlertAction(title: "Accept", style: .default, handler: { (alertAction: UIAlertAction) in
+                                
+                                self.acceptedCarpool = true
+                                self.acceptCarpoolBtn.isHidden = false
+                                //                CarpoolHandler.instace.observeMessageForPassenger()
+                                //                CarpoolHandler.instace.delegate = self
+                                CarpoolDriverHandler.instace.statusRequest(status: "busy")
+                                
+                                self.timer = Timer.scheduledTimer(timeInterval:TimeInterval(10), target: self, selector: #selector(DriverViewController.updateDriverLocation), userInfo: nil, repeats: true)
+                                
+                                CarpoolDriverHandler.instace.carpoolAccepted(lat: Double(self.userLocation!.latitude), long: self.userLocation!.longitude)
+                                //test
+                                //                CarpoolHandler.instace.cancelCarpool()
+                                
+                            })
+                            
+                            let cancel = UIAlertAction(title: "Cancel", style: .default, handler: nil)
+                            
+                            //            pass.canCallCarpool(delegateCalled: false)
+                            
+                            alert.addAction(accept)
+                            alert.addAction(cancel)
+                            
+                        }
+                            
+                        else{
+                            
+                            let ok = UIAlertAction(title: "OK", style: .default, handler: nil)
+                            alert.addAction(ok)
+                        }
+                        
+                        self.present(alert, animated:true, completion: nil)
+                    }
+                    
+                    
+                })
+            }
+            //             self.checkTest()
             
-//            pass.canCallCarpool(delegateCalled: false)
-            
-            alert.addAction(accept)
-            alert.addAction(cancel)
         }
         
-        else{
-            
-            let ok = UIAlertAction(title: "OK", style: .default, handler: nil)
-            alert.addAction(ok)
-        }
-        
-        present(alert, animated:true, completion: nil)
-        }
+//        if (CarpoolDriverHandler.instace.getStatus()){
+//            print("eieieieieieieieieieieiei")
+//        let alert = UIAlertController(title: title, message:message, preferredStyle: .alert)
+//        
+//        if requestAlive {
+//            let accept = UIAlertAction(title: "Accept", style: .default, handler: { (alertAction: UIAlertAction) in
+//            
+//                self.acceptedCarpool = true
+//                self.acceptCarpoolBtn.isHidden = false
+////                CarpoolHandler.instace.observeMessageForPassenger()
+////                CarpoolHandler.instace.delegate = self
+//                CarpoolDriverHandler.instace.statusRequest(status: "busy")
+//                
+//                self.timer = Timer.scheduledTimer(timeInterval:TimeInterval(10), target: self, selector: #selector(DriverViewController.updateDriverLocation), userInfo: nil, repeats: true)
+//                
+//                CarpoolDriverHandler.instace.carpoolAccepted(lat: Double(self.userLocation!.latitude), long: self.userLocation!.longitude)
+//                //test
+////                CarpoolHandler.instace.cancelCarpool()
+//                
+//            })
+//            
+//            let cancel = UIAlertAction(title: "Cancel", style: .default, handler: nil)
+//            
+////            pass.canCallCarpool(delegateCalled: false)
+//            
+//            alert.addAction(accept)
+//            alert.addAction(cancel)
+//        }
+//        
+//        else{
+//            
+//            let ok = UIAlertAction(title: "OK", style: .default, handler: nil)
+//            alert.addAction(ok)
+//        }
+//        
+//        present(alert, animated:true, completion: nil)
+//        }
         
     }
     
@@ -197,7 +272,7 @@ class DriverViewController: UIViewController, MKMapViewDelegate, CLLocationManag
 //            annotationView!.annotation = annotation
 //        }
 //        
-//        let pinImage = UIImage(named: "customPinImage")
+//        let pinImage = UIImage(named: "map-icon")
 //        annotationView!.image = pinImage
 //        return annotationView
 //    }

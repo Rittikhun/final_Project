@@ -44,6 +44,7 @@ class CarpoolDriverHandler{
                         if let no = data[Constants.NO] as? Int{
                             if let whereto = data[Constants.WHERETO] as? String{
                                 self.delegate?.acceptCarpool(lat: latitude, long: longitude, no:no,whereto: whereto)
+                                print("lognaja")
                                 self.setuidReq(uid: self.uid_req)
                             }
                         }
@@ -202,38 +203,72 @@ class CarpoolDriverHandler{
         return self.status
     }
     
-    func check() {
-        DBProvider.Instance.requestRef.observe(FIRDataEventType.childAdded){ (snapshot: FIRDataSnapshot) in
-            
-            self.uid_req = snapshot.key
-            if(self.uid_test == self.uid_req){
-                
-                DBProvider.Instance.requestRef.child((self.uid_req)).observeSingleEvent(of: .value, with: { (snapshot) in
-                    
-                    
-                    let value = snapshot.value as! NSDictionary
-                    
-                    let status = value[Constants.STATUS_CARPOOL] as! String
-//                    let status = "busy"
-                    print(status)
-                    if(status == "wait"){
-                        self.setStatus(s:true)
+//    func check() {
+//        DBProvider.Instance.requestRef.observe(FIRDataEventType.childAdded){ (snapshot: FIRDataSnapshot) in
+//            
+//            self.uid_req = snapshot.key
+//            
+//            self.setuidReq(uid: snapshot.key)
+//            if(self.uid_test == self.uid_req){
+//                
+//                DBProvider.Instance.requestRef.child((self.uid_req)).observeSingleEvent(of: .value, with: { (snapshot) in
+//                    
+//                    
+//                    let value = snapshot.value as! NSDictionary
+//                    
+//                    let status = value[Constants.STATUS_CARPOOL] as! String
+////                    let status = "busy"
+//                    print(status)
+//                    if(status == "wait"){
+//                        self.setStatus(s:true)
 //                        print(self.status)
-                    }else{
-                        self.setStatus(s:false)
+//                    }else{
+//                        self.setStatus(s:false)
 //                        print(self.status)
-                    }
-                    
-                    
-                })
-            }
-            
-            
-        }
-    }
+//                    }
+//                    
+//                    
+//                })
+//            }
+////             self.checkTest()
+//            
+//        }
+//    }
+//    
+//    func checkTest(){
+//        
+//        print("uid_test \(uid_test)  uid_req \(uid_req)")
+//        
+//        if(self.uid_test == self.uid_req){
+//            
+//            DBProvider.Instance.requestRef.child((self.uid_req)).observeSingleEvent(of: .value, with: { (snapshot) in
+//                
+//                
+//                let value = snapshot.value as! NSDictionary
+//                
+//                let status = value[Constants.STATUS_CARPOOL] as! String
+//                //                    let status = "busy"
+//                print(status)
+//                if(status == "wait"){
+//                    self.setStatus(s:true)
+//                    print(self.status)
+//                }else{
+//                    self.setStatus(s:false)
+//                    print(self.status)
+//                }
+//                
+//                
+//            })
+//        }
+//
+//    }
     
     func setuidReq(uid:String){
         uid_test = uid
+    }
+    
+    func setuis(uid:String){
+        uid_req = uid
     }
     
     func setStatus(s:Bool){
