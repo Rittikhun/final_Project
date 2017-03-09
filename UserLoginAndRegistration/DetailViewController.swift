@@ -115,6 +115,7 @@ class DetailViewController: UIViewController,MKMapViewDelegate,CLLocationManager
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         locationManager.requestWhenInUseAuthorization()
         locationManager.startUpdatingLocation()
+        
     }
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
@@ -126,10 +127,12 @@ class DetailViewController: UIViewController,MKMapViewDelegate,CLLocationManager
             mapView.setRegion(region,animated:true)
             
             mapView.removeAnnotations(mapView.annotations)
-            
+
             let annotation = MKPointAnnotation()
             annotation.coordinate = userLocation!
             annotation.title = "My Location"
+            
+//            pinAnnotationView = MKPinAnnotationView(annotation: pointAnnotation, reuseIdentifier: "pin")
             mapView.addAnnotation(annotation)
         }
     }
@@ -175,26 +178,45 @@ class DetailViewController: UIViewController,MKMapViewDelegate,CLLocationManager
         // Dispose of any resources that can be recreated.
     }
     
-    func map(mapView: MKMapView, viewForAnnotation annotation: MKAnnotation) -> MKAnnotationView?
-    {
-        if !(annotation is MKPointAnnotation) {
-            return nil
-        }
+    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
         
-        let annotationIdentifier = "AnnotationIdentifier"
-        var annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: annotationIdentifier)
+//    }
+//    
+//    func map(mapView: MKMapView, viewForAnnotation annotation: MKAnnotation) -> MKAnnotationView?
+//    {
+//        let reuseIdentifier = "pin"
+//        var annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: reuseIdentifier)
+//        
+//        if annotationView == nil {
+//            annotationView = MKAnnotationView(annotation: annotation, reuseIdentifier: reuseIdentifier)
+//            annotationView?.canShowCallout = true
+//        } else {
+//            annotationView?.annotation = annotation
+//        }
+//        
+////        let customPointAnnotation = annotation as! CustomPointAnnotation
+////        annotationView?.image = UIImage(named: customPointAnnotation.pinCustomImageName)
+//        
+//        annotationView?.backgroundColor = UIColor.clear
+//        annotationView?.canShowCallout = false
+//        
+//        return annotationView
         
-        if annotationView == nil {
-            annotationView = MKAnnotationView(annotation: annotation, reuseIdentifier: annotationIdentifier)
-            annotationView!.canShowCallout = true
+        var v : MKAnnotationView! = nil
+        let ident = "pin"
+        v = mapView.dequeueReusableAnnotationView(withIdentifier: ident)
+        if v == nil {
+            v = MKAnnotationView(annotation: annotation,reuseIdentifier:ident)
+            v.image = UIImage(named: "map-icon")
+            v.bounds.size.height /= 3.0
+            v.bounds.size.width /= 3.0
+            v.centerOffset = CGPoint(x:0,y:-20)
+            v.canShowCallout = true
         }
-        else {
-            annotationView!.annotation = annotation
-        }
+        v.annotation = annotation
         
-        let pinImage = UIImage(named: "map-icon")
-        annotationView!.image = pinImage
-        return annotationView
+        return v
+        
     }
 
 

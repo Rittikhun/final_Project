@@ -255,6 +255,27 @@ class DriverViewController: UIViewController, MKMapViewDelegate, CLLocationManag
     
     
     //custom pin
+    
+    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
+        var v : MKAnnotationView! = nil
+        let ident = "pin"
+        v = mapView.dequeueReusableAnnotationView(withIdentifier: ident)
+        if v == nil {
+            v = MKAnnotationView(annotation: annotation,reuseIdentifier:ident)
+            v.image = UIImage(named: "061-128")
+            v.bounds.size.height /= 3.0
+            v.bounds.size.width /= 3.0
+            v.centerOffset = CGPoint(x:0,y:-20)
+            v.canShowCallout = true
+        }
+        v.annotation = annotation
+        
+        return v
+        
+    }
+
+
+    
 //    func map(mapView: MKMapView, viewForAnnotation annotation: MKAnnotation) -> MKAnnotationView?
 //    {
 //        if !(annotation is MKPointAnnotation) {
