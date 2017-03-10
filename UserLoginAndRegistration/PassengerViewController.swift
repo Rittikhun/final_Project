@@ -9,13 +9,25 @@
 import UIKit
 import MapKit
 
-class PassengerViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDelegate, CarpoolPassengerController {
+//protocol HandleMapSearch {
+//    func dropPinZoomIn(_ placemark:MKPlacemark)
+//}
+class PassengerViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDelegate, CarpoolPassengerController/*,UISearchBarDelegate*/,HandleMapSearch{
 
     @IBOutlet weak var map: MKMapView!
     @IBOutlet weak var callBtn: UIButton!
     
     @IBOutlet weak var number: UILabel!
     @IBOutlet weak var locationToGo: UITextField!
+    
+//    var searchController:UISearchController!
+//    var localSearchRequest:MKLocalSearchRequest!
+//    var localSearch:MKLocalSearch!
+//    var localSearchResponse:MKLocalSearchResponse!
+    
+    var resultSearchController:UISearchController? = nil
+    var selectedPin:MKPlacemark? = nil
+
     
     var no = 1 ;
     
@@ -37,6 +49,32 @@ class PassengerViewController: UIViewController, MKMapViewDelegate, CLLocationMa
         CarpoolHandler.instace.observeMessageForPassenger()
         CarpoolHandler.instace.delegate = self
         
+//        let locationSearchTable = storyboard!.instantiateViewController(withIdentifier: "LocationSearchTable") as! LocationSearchTable
+//        searchController = UISearchController(searchResultsController: locationSearchTable)
+//        searchController?.searchResultsUpdater = locationSearchTable
+//        let searchBar = searchController!.searchBar
+//        searchBar.sizeToFit()
+//        searchBar.placeholder = "Search for places"
+//        navigationItem.titleView = searchController?.searchBar
+//        searchController?.hidesNavigationBarDuringPresentation = false
+//        searchController?.dimsBackgroundDuringPresentation = true
+//        definesPresentationContext = true
+        
+        let locationSearchTable = storyboard!.instantiateViewController(withIdentifier: "LocationSearchTable") as! LocationSearchTable
+        resultSearchController = UISearchController(searchResultsController: locationSearchTable)
+        resultSearchController?.searchResultsUpdater = locationSearchTable
+        let searchBar = resultSearchController!.searchBar
+        searchBar.sizeToFit()
+        searchBar.placeholder = "Search for places"
+        navigationItem.titleView = resultSearchController?.searchBar
+        resultSearchController?.hidesNavigationBarDuringPresentation = false
+        resultSearchController?.dimsBackgroundDuringPresentation = true
+        definesPresentationContext = true
+        locationSearchTable.mapView = map
+        locationSearchTable.handleMapSearchDelegate = self
+
+
+        
         // Do any additional setup after loading the view.
     }
     
@@ -51,6 +89,79 @@ class PassengerViewController: UIViewController, MKMapViewDelegate, CLLocationMa
         map.setUserTrackingMode(.follow, animated: true)
         
     }
+    
+    func dropPinZoomIn(_ placemark:MKPlacemark){
+        // cache the pin
+        selectedPin = placemark
+        // clear existing pins
+//        map.removeAnnotations(map.annotations)
+        let annotation = MKPointAnnotation()
+        annotation.coordinate = placemark.coordinate
+        annotation.title = placemark.name
+        locationToGo.text = "\(annotation.title!)"
+//        self.setLocation(location: "\(annotation.title!)")
+//        if let city = placemark.locality,
+//            let state = placemark.administrativeArea {
+//            annotation.subtitle = "\(city) \(state)"
+//        }
+//        map.addAnnotation(annotation)
+//        let span = MKCoordinateSpanMake(0.05, 0.05)
+//        let region = MKCoordinateRegionMake(placemark.coordinate, span)
+//        map.setRegion(region, animated: true)
+    }
+    
+    func getDirections(){
+        if let selectedPin = selectedPin {
+            let mapItem = MKMapItem(placemark: selectedPin)
+            let launchOptions = [MKLaunchOptionsDirectionsModeKey : MKLaunchOptionsDirectionsModeDriving]
+            mapItem.openInMaps(launchOptions: launchOptions)
+        }
+    }
+    
+//    @IBAction func showSearchBar(_ sender: UIButton) {
+//        
+//        searchController = UISearchController(searchResultsController: nil)
+//        searchController.hidesNavigationBarDuringPresentation = false
+//        self.searchController.searchBar.delegate = self
+//        present(searchController, animated: true, completion: nil)
+//        
+//        
+//    }
+    
+//    func searchBarSearchButtonClicked(_ searchBar: UISearchBar){
+//        //1
+//        searchBar.resignFirstResponder()
+//        dismiss(animated: true, completion: nil)
+////        if self.mapView.annotations.count != 0{
+////            annotation = self.mapView.annotations[0]
+////            self.mapView.removeAnnotation(annotation)
+////        }
+//        //
+//        localSearchRequest = MKLocalSearchRequest()
+//        localSearchRequest.naturalLanguageQuery = searchBar.text
+//        localSearch = MKLocalSearch(request: localSearchRequest)
+//        localSearch.start { (localSearchResponse, error) -> Void in
+//            
+//            if localSearchResponse == nil{
+//                let alertController = UIAlertController(title: nil, message: "Place Not Found", preferredStyle: UIAlertControllerStyle.alert)
+//                alertController.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.default, handler: nil))
+//                self.present(alertController, animated: true, completion: nil)
+//                return
+//            }
+//            //3
+////            self.pointAnnotation = MKPointAnnotation()
+////            self.pointAnnotation.title = searchBar.text
+////            self.setLocation(location:searchBar.text!)
+////            self.pointAnnotation.coordinate = CLLocationCoordinate2D(latitude: localSearchResponse!.boundingRegion.center.latitude, longitude:     localSearchResponse!.boundingRegion.center.longitude)
+////            
+////            
+////            self.pinAnnotationView = MKPinAnnotationView(annotation: self.pointAnnotation, reuseIdentifier: nil)
+////            self.mapView.centerCoordinate = self.pointAnnotation.coordinate
+////            self.mapView.addAnnotation(self.pinAnnotationView.annotation!)
+//            
+//            self.locationToGo.text = searchBar.text
+//        }
+//    }
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         
@@ -123,16 +234,23 @@ class PassengerViewController: UIViewController, MKMapViewDelegate, CLLocationMa
     }
     
     
+//    @IBAction func back(_ sender: Any) {
+//        
+//        if !canCallCarpool{
+//            CarpoolHandler.instace.cancelCarpool()
+//            timer.invalidate()
+//        }
+//        self.dismiss(animated: true, completion: nil)
+//
+//    }
+    
     @IBAction func back(_ sender: Any) {
-        
         if !canCallCarpool{
             CarpoolHandler.instace.cancelCarpool()
             timer.invalidate()
         }
         self.dismiss(animated: true, completion: nil)
-
     }
-    
     
     @IBAction func re(_ sender: Any) {
         
@@ -186,15 +304,18 @@ class PassengerViewController: UIViewController, MKMapViewDelegate, CLLocationMa
         var v : MKAnnotationView! = nil
         let ident = "pin"
         v = mapView.dequeueReusableAnnotationView(withIdentifier: ident)
-        if v == nil {
-            v = MKAnnotationView(annotation: annotation,reuseIdentifier:ident)
-            v.image = UIImage(named: "icon_car-128")
-            v.bounds.size.height /= 3.0
-            v.bounds.size.width /= 3.0
-            v.centerOffset = CGPoint(x:0,y:-20)
-            v.canShowCallout = true
+        if let t = annotation.title, t == "Driver Location" {
+            if v == nil {
+                v = MKAnnotationView(annotation: annotation,reuseIdentifier:ident)
+                v.image = UIImage(named: "icon_car-128")
+                v.bounds.size.height /= 3.0
+                v.bounds.size.width /= 3.0
+                v.centerOffset = CGPoint(x:0,y:-20)
+                v.canShowCallout = true
+            }
+            v.annotation = annotation
         }
-        v.annotation = annotation
+        
         
         return v
         

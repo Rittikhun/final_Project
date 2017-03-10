@@ -260,15 +260,18 @@ class DriverViewController: UIViewController, MKMapViewDelegate, CLLocationManag
         var v : MKAnnotationView! = nil
         let ident = "pin"
         v = mapView.dequeueReusableAnnotationView(withIdentifier: ident)
-        if v == nil {
-            v = MKAnnotationView(annotation: annotation,reuseIdentifier:ident)
-            v.image = UIImage(named: "061-128")
-            v.bounds.size.height /= 3.0
-            v.bounds.size.width /= 3.0
-            v.centerOffset = CGPoint(x:0,y:-20)
-            v.canShowCallout = true
+        if let t = annotation.title, t == "passenger" {
+            if v == nil {
+                v = MKAnnotationView(annotation: annotation,reuseIdentifier:ident)
+                v.image = UIImage(named: "061-128")
+                v.bounds.size.height /= 3.0
+                v.bounds.size.width /= 3.0
+                v.centerOffset = CGPoint(x:0,y:-20)
+                v.canShowCallout = true
+            }
+            v.annotation = annotation
         }
-        v.annotation = annotation
+        
         
         return v
         
