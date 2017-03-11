@@ -259,6 +259,7 @@ class PassengerViewController: UIViewController, MKMapViewDelegate, CLLocationMa
             number.text = "\(no)"
         } else{
             number.text = "1"
+            
         }
         
     }
@@ -267,14 +268,16 @@ class PassengerViewController: UIViewController, MKMapViewDelegate, CLLocationMa
     @IBAction func add(_ sender: Any) {
         
 //        print(no)
-        no = no + 1
-        number.text = "\(no)"
+        if no != 4 {
+            no = no + 1
+            number.text = "\(no)"
 //        print(number.text)
+        }
         
     }
 
     @IBAction func callDriver(_ sender: Any) {
-        
+        if locationToGo.text != ""{
         if userLocation != nil {
             if canCallCarpool {
                 
@@ -292,6 +295,10 @@ class PassengerViewController: UIViewController, MKMapViewDelegate, CLLocationMa
                 CarpoolHandler.instace.cancelCarpool()
                 timer.invalidate()
             }
+        }
+        }
+        else{
+            alertTheUser(title: "ลืมอะไรอ๊ะเปล่า", message: "โปรดระบุสถานที่ที่จะเดินทาง")
         }
         
         

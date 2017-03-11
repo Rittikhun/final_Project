@@ -51,7 +51,8 @@ class CarpoolHandler{
             
             let data : Dictionary<String, Any> = [Constants.NAME: self.user, Constants.LATITUDE: latitude , Constants.LONGITUDE: longitude,Constants.NO: no,Constants.WHERETO:whereto,Constants.STATUS_CARPOOL:"wait"]
             
-            DBProvider.Instance.requestRef.childByAutoId().setValue(data)
+//            DBProvider.Instance.requestRef.childByAutoId().setValue(data)
+            DBProvider.Instance.requestRef.child(self.user).setValue(data)
             
         })
         

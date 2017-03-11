@@ -183,7 +183,7 @@ class DriverViewController: UIViewController, MKMapViewDelegate, CLLocationManag
                                 
                                 CarpoolDriverHandler.instace.carpoolAccepted(lat: Double(self.userLocation!.latitude), long: self.userLocation!.longitude)
                                 //test
-                                //                CarpoolHandler.instace.cancelCarpool()
+//                                CarpoolDriverHandler.instace.updateSeat()
                                 
                             })
                             

@@ -25,6 +25,7 @@ class Constants {
     
     static let NO = "number"
     static let WHERETO = "whereto"
+    static let SEAT = "seat"
     
     static let USER = "users"
     

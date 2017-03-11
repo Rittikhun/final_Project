@@ -29,6 +29,8 @@ class CarpoolDriverHandler{
     var uid_test = ""
     var status = true
     
+    var no = 0
+    
     static var instace: CarpoolDriverHandler {
         return instance
     }
@@ -42,6 +44,7 @@ class CarpoolDriverHandler{
                 if let latitude = data[Constants.LATITUDE] as? Double {
                     if let longitude = data[Constants.LONGITUDE] as? Double {
                         if let no = data[Constants.NO] as? Int{
+                            self.setNumberOfSeatPassenger(seat: no)
                             if let whereto = data[Constants.WHERETO] as? String{
                                 self.delegate?.acceptCarpool(lat: latitude, long: longitude, no:no,whereto: whereto)
                                 print("lognaja")
@@ -58,7 +61,7 @@ class CarpoolDriverHandler{
             }
             
             DBProvider.Instance.requestRef.observe(FIRDataEventType.childRemoved, with: {(snapshot: FIRDataSnapshot) in
-            
+                
                 if let data = snapshot.value as? NSDictionary{
                     if let name = data[Constants.NAME] as? String{
                         if name == self.passenger{
@@ -85,7 +88,8 @@ class CarpoolDriverHandler{
         }
         
         DBProvider.Instance.requestAcceptedRef.observe(FIRDataEventType.childAdded){ (snapshot: FIRDataSnapshot) in
-        
+            print(snapshot.key)
+//            self.setuidAccept(uid: snapshot.key)
             if let data = snapshot.value as? NSDictionary {
                 
                 if let name = data[Constants.NAME] as? String {
@@ -126,6 +130,8 @@ class CarpoolDriverHandler{
     
     func carpoolAccepted(lat:Double, long:Double){
         
+//        print(uid)
+        
         let username = FIRAuth.auth()?.currentUser
         
         let ref = FIRDatabase.database().reference()
@@ -142,9 +148,27 @@ class CarpoolDriverHandler{
             
             CarpoolDriverHandler.instace.user = usernamef
             
-            let data : Dictionary<String, Any> = [Constants.NAME: self.user, Constants.LATITUDE: lat , Constants.LONGITUDE: long]
+            DBProvider.Instance.requestAcceptedRef.child(self.user).observeSingleEvent(of: .value, with: { (snapshot) in
+                if snapshot.childrenCount != 0 {
+                let value = snapshot.value as! NSDictionary
+                let no = value["seat"] as! Int
+                
+                var totalseat = self.no + no
+                
+                if totalseat <= 4 {
+                let data : Dictionary<String, Any> = [Constants.NAME: self.user, Constants.LATITUDE: lat , Constants.LONGITUDE: long,Constants.SEAT: totalseat]
+                DBProvider.Instance.requestAcceptedRef.child(self.user).setValue(data)
+                }
+                }else{
+                    let data : Dictionary<String, Any> = [Constants.NAME: self.user, Constants.LATITUDE: lat , Constants.LONGITUDE: long,Constants.SEAT: self.no]
+                    DBProvider.Instance.requestAcceptedRef.child(self.user).setValue(data)
+                }
+            })
             
-            DBProvider.Instance.requestAcceptedRef.childByAutoId().setValue(data)
+//            let data : Dictionary<String, Any> = [Constants.NAME: self.user, Constants.LATITUDE: lat , Constants.LONGITUDE: long,Constants.SEAT: self.no]
+//            
+////            DBProvider.Instance.requestAcceptedRef.childByAutoId().setValue(data)
+//            DBProvider.Instance.requestAcceptedRef.child(self.user).setValue(data)
             
         })
         
@@ -162,6 +186,11 @@ class CarpoolDriverHandler{
     
     func updateDriverLocation(lat:Double,long:Double){
         DBProvider.Instance.requestAcceptedRef.child(uid).updateChildValues([Constants.LATITUDE:lat , Constants.LONGITUDE:long])
+    }
+    
+    func updateSeat(){
+        print(uid)
+//        DBProvider.Instance.requestAcceptedRef.child(uid).updateChildValues([Constants.SEAT:""])
     }
     
     func statusRequest(status:String){
@@ -274,6 +303,14 @@ class CarpoolDriverHandler{
     func setStatus(s:Bool){
         self.status = s
     }
+    
+    func setNumberOfSeatPassenger(seat:Int){
+        self.no = seat
+    }
+    
+//    func setuidAccept(uid:String){
+//        self.uid = uid
+//    }
 
     
     
