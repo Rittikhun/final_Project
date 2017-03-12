@@ -73,7 +73,8 @@ class PassengerViewController: UIViewController, MKMapViewDelegate, CLLocationMa
         locationSearchTable.mapView = map
         locationSearchTable.handleMapSearchDelegate = self
 
-
+        //background location update
+        self.locationManager.allowsBackgroundLocationUpdates = true
         
         // Do any additional setup after loading the view.
     }
@@ -165,9 +166,17 @@ class PassengerViewController: UIViewController, MKMapViewDelegate, CLLocationMa
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         
+        guard let mostRecentLocation = locations.last else {
+            return
+        }
+        
         if let location = locationManager.location?.coordinate{
             
             userLocation = CLLocationCoordinate2D(latitude:location.latitude , longitude:location.longitude )
+            
+//            print(userLocation)
+            
+            
             
             let region = MKCoordinateRegion(center: userLocation!,span: MKCoordinateSpan(latitudeDelta:0.01,longitudeDelta:0.01))
             
@@ -182,6 +191,12 @@ class PassengerViewController: UIViewController, MKMapViewDelegate, CLLocationMa
                     driverAnnotation.title = "Driver Location"
                     map.addAnnotation(driverAnnotation)
                 }
+            }
+            
+            if UIApplication.shared.applicationState == .active {
+                //                mapView.showAnnotations(self.locations, animated: true)
+            } else {
+                print("App is backgrounded. New location is %@", mostRecentLocation)
             }
             
         }
@@ -220,6 +235,7 @@ class PassengerViewController: UIViewController, MKMapViewDelegate, CLLocationMa
     
     func updateDriverLocation(lat: Double, long: Double) {
         DriverLocation = CLLocationCoordinate2D(latitude: lat, longitude: long)
+//        print(DriverLocation)
     }
     
     func updatePassengerLocation() {

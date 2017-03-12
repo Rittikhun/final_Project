@@ -124,7 +124,7 @@ class CarpoolDriverHandler{
     
     func cancelCarpoolForDriver(){
         
-        DBProvider.Instance.requestAcceptedRef.child(uid).removeValue()
+        DBProvider.Instance.requestAcceptedRef.child(/*uid*/user).removeValue()
         
     }
     
@@ -185,7 +185,7 @@ class CarpoolDriverHandler{
 //    }
     
     func updateDriverLocation(lat:Double,long:Double){
-        DBProvider.Instance.requestAcceptedRef.child(uid).updateChildValues([Constants.LATITUDE:lat , Constants.LONGITUDE:long])
+        DBProvider.Instance.requestAcceptedRef.child(/*uid*/user).updateChildValues([Constants.LATITUDE:lat , Constants.LONGITUDE:long])
     }
     
     func updateSeat(){

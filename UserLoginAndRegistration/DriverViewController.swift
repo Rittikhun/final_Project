@@ -147,8 +147,12 @@ class DriverViewController: UIViewController, MKMapViewDelegate, CLLocationManag
             
             CarpoolDriverHandler.instace.uid_req = snapshot.key
             
+//            let value = snapshot.value as! NSDictionary
+//            let name = value[Constants.NAME] as! String
+            
             CarpoolDriverHandler.instace.setuidReq(uid: snapshot.key)
             if(CarpoolDriverHandler.instace.uid_test == CarpoolDriverHandler.instace.uid_req){
+//            if(name == CarpoolDriverHandler.instace.user){
         
                 DBProvider.Instance.requestRef.child((CarpoolDriverHandler.instace.uid_req)).observeSingleEvent(of: .value, with: { (snapshot) in
                     
