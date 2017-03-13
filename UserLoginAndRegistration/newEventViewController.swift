@@ -228,7 +228,6 @@ class newEventViewController: UIViewController {
         
     }
     
-    
 
     
     @IBAction func unwindToMenu(segue: UIStoryboardSegue) {
