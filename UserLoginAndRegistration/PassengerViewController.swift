@@ -196,6 +196,7 @@ class PassengerViewController: UIViewController, MKMapViewDelegate, CLLocationMa
             if UIApplication.shared.applicationState == .active {
                 //                mapView.showAnnotations(self.locations, animated: true)
             } else {
+                updatePassengerLocation()
                 print("App is backgrounded. New location is %@", mostRecentLocation)
             }
             

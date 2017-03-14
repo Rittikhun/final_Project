@@ -73,6 +73,13 @@ class DriverViewController: UIViewController, MKMapViewDelegate, CLLocationManag
             
         }
         
+        if UIApplication.shared.applicationState == .active {
+            //                mapView.showAnnotations(self.locations, animated: true)
+        } else {
+            updateDriverLocation()
+//            print("App is backgrounded. New location is %@", mostRecentLocation)
+        }
+        
     }
     
     func passengerCanceledCarpool(){
