@@ -29,8 +29,7 @@ class AddFriendViewController: UIViewController, UITableViewDataSource, UITableV
     
     @IBAction func backBtn(_ sender: UIBarButtonItem) {
         
-    self.dismiss(animated: true, completion: nil)
-        
+        self.dismiss(animated: true, completion: nil)
     }
     
     @IBOutlet weak var addOutlet: UIButton!
@@ -42,27 +41,27 @@ class AddFriendViewController: UIViewController, UITableViewDataSource, UITableV
         
         if let user = FIRAuth.auth()?.currentUser {
             if FIRAuth.auth()?.currentUser != nil {
-        
-        self.ref.child("friendpending").child(user.uid).observeSingleEvent(of: .value, with: { (snapshot) in
-            
-//            print(snapshot.value)
-            
-            let value = snapshot.value as! NSDictionary
-            
-            let uid = value["uid"] as! String
-            
-            self.uidArr = uid.characters.split(separator: " ").map(String.init)
-            
-            var timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: "update", userInfo: nil, repeats: true)
-            
-            
-            
-            
-        })
+                
+                self.ref.child("friendpending").child(user.uid).observeSingleEvent(of: .value, with: { (snapshot) in
+                    
+                    //            print(snapshot.value)
+                    
+                    let value = snapshot.value as! NSDictionary
+                    
+                    let uid = value["uid"] as! String
+                    
+                    self.uidArr = uid.characters.split(separator: " ").map(String.init)
+                    
+                    var timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: "update", userInfo: nil, repeats: true)
+                    
+                    
+                    
+                    
+                })
                 
                 self.ref.child("friendlist").child(user.uid).observeSingleEvent(of: .value, with: { (snapshot) in
                     
-//                    print(snapshot.value)
+                    //                    print(snapshot.value)
                     
                     let value = snapshot.value as! NSDictionary
                     
@@ -73,12 +72,12 @@ class AddFriendViewController: UIViewController, UITableViewDataSource, UITableV
                     self.pendingView.reloadData()
                     
                     print("uidArr: \(self.uidArr)")
-        
+                    
                     print("uidfArr: \(self.uidfArr)")
                     
                     
                 })
-
+                
             }
         }
         addOutlet.isHidden = true
@@ -99,68 +98,68 @@ class AddFriendViewController: UIViewController, UITableViewDataSource, UITableV
         
         if let user = FIRAuth.auth()?.currentUser {
             
-        ref.child("search").child(searchText.text!).observeSingleEvent(of: .value, with: { (snapshot) in
-            // Get user value
-            if snapshot.hasChildren() {
-            
-            let value = snapshot.value as! NSDictionary
-            
-            let uid = value["uid"] as! String
-            
-            self.uid = uid
-                
-            self.ref.child("friendpending").child(uid).observeSingleEvent(of: .value, with: { (snapshot) in
-                    
-                    //            print(snapshot.value)
+            ref.child("search").child(searchText.text!).observeSingleEvent(of: .value, with: { (snapshot) in
+                // Get user value
+                if snapshot.hasChildren() {
                     
                     let value = snapshot.value as! NSDictionary
                     
-                    let uidc = value["uid"] as! String
+                    let uid = value["uid"] as! String
                     
-                    let uiduArr = uidc.characters.split(separator: " ").map(String.init)
-                
-                self.ref.child("users").child(self.uid).observeSingleEvent(of: .value, with: { (snapshot) in
+                    self.uid = uid
                     
-                    let value = snapshot.value as! NSDictionary
-                    
-                    let name = value["name"] as! String
-                    
-                    self.nameText.text = "Found : \(name) "
-                    
-                    self.addOutlet.isEnabled = true
-                    
-                    self.nameText.isHidden = false
-                    
-                    self.addOutlet.isHidden = false
-                    
-                    print(uid)
-                    
-                    if self.uid == user.uid || uiduArr.contains(self.uid) || self.uidfArr.contains(self.uid) {
+                    self.ref.child("friendpending").child(uid).observeSingleEvent(of: .value, with: { (snapshot) in
                         
-                        self.addOutlet.isEnabled = false
+                        //            print(snapshot.value)
                         
-                        print("uiduArr: \(uiduArr)")
+                        let value = snapshot.value as! NSDictionary
                         
-                        print("uidfArr: \(self.uidfArr)")
+                        let uidc = value["uid"] as! String
                         
-                        print("uid: \(self.uid)")
+                        let uiduArr = uidc.characters.split(separator: " ").map(String.init)
                         
-                    }
+                        self.ref.child("users").child(self.uid).observeSingleEvent(of: .value, with: { (snapshot) in
+                            
+                            let value = snapshot.value as! NSDictionary
+                            
+                            let name = value["name"] as! String
+                            
+                            self.nameText.text = "Found : \(name) "
+                            
+                            self.addOutlet.isEnabled = true
+                            
+                            self.nameText.isHidden = false
+                            
+                            self.addOutlet.isHidden = false
+                            
+                            print(uid)
+                            
+                            if self.uid == user.uid || uiduArr.contains(self.uid) || self.uidfArr.contains(self.uid) {
+                                
+                                self.addOutlet.isEnabled = false
+                                
+                                print("uiduArr: \(uiduArr)")
+                                
+                                print("uidfArr: \(self.uidfArr)")
+                                
+                                print("uid: \(self.uid)")
+                                
+                            }
+                            
+                            
+                        })
+                        
+                        
+                        
+                    })
                     
                     
-                })
-
-                    
-                    
-                })
-                
-
-            //            self.username.text = usernamef
+                    //            self.username.text = usernamef
+                }
+                // ...
+            }) { (error) in
+                print(error.localizedDescription)
             }
-            // ...
-        }) { (error) in
-            print(error.localizedDescription)
-        }
         }
     }
     
@@ -168,53 +167,53 @@ class AddFriendViewController: UIViewController, UITableViewDataSource, UITableV
         print(FIRAuth.auth()?.currentUser)
         
         if let user = FIRAuth.auth()?.currentUser {
-        if FIRAuth.auth()?.currentUser != nil {
-            
-            
-            let uid = user.uid
-            print("ss")
-            
-            ref.child("friendpending").child(self.uid).observeSingleEvent(of: .value, with: { (snapshot) in
+            if FIRAuth.auth()?.currentUser != nil {
                 
-                let value = snapshot.value as! NSDictionary
                 
-                var fuid = value["uid"] as! String
+                let uid = user.uid
+                print("ss")
                 
-                if fuid != "" {
+                ref.child("friendpending").child(self.uid).observeSingleEvent(of: .value, with: { (snapshot) in
                     
-                    fuid = "\(fuid), \(user.uid)"
+                    let value = snapshot.value as! NSDictionary
                     
-                    self.uidfArr = fuid.characters.split(separator: " ").map(String.init)
+                    var fuid = value["uid"] as! String
                     
-                }
+                    if fuid != "" {
+                        
+                        fuid = "\(fuid), \(user.uid)"
+                        
+                        self.uidfArr = fuid.characters.split(separator: " ").map(String.init)
+                        
+                    }
+                        
+                    else {
+                        
+                        fuid = "\(user.uid)"
+                        
+                        self.uidfArr = fuid.characters.split(separator: " ").map(String.init)
+                        
+                    }
                     
-                else {
+                    let post = ["uid": fuid]
+                    let childUpdates = ["/friendpending/\(self.uid)/": post ]
+                    self.ref.updateChildValues(childUpdates)
                     
-                    fuid = "\(user.uid)"
+                    var myAlert = UIAlertController(title:"Add Friend success", message:"wait for your friend accept", preferredStyle: UIAlertControllerStyle.alert);
                     
-                    self.uidfArr = fuid.characters.split(separator: " ").map(String.init)
+                    let okAction = UIAlertAction(title:"Ok", style:UIAlertActionStyle.default){ action in
+                        self.dismiss(animated: true, completion:nil);
+                    }
                     
-                }
-                
-                let post = ["uid": fuid]
-                let childUpdates = ["/friendpending/\(self.uid)/": post ]
-                self.ref.updateChildValues(childUpdates)
-                
-                var myAlert = UIAlertController(title:"Add Friend success", message:"wait for your friend accept", preferredStyle: UIAlertControllerStyle.alert);
-                
-                let okAction = UIAlertAction(title:"Ok", style:UIAlertActionStyle.default){ action in
-                    self.dismiss(animated: true, completion:nil);
-                }
-                
-                myAlert.addAction(okAction);
-                self.present(myAlert, animated:true, completion:nil);
-
+                    myAlert.addAction(okAction);
+                    self.present(myAlert, animated:true, completion:nil);
+                    
+                    
+                    
+                })
                 
                 
-            })
-            
-            
-        }
+            }
         }
         
     }
@@ -247,10 +246,10 @@ class AddFriendViewController: UIViewController, UITableViewDataSource, UITableV
             let value = snapshot.value as! NSDictionary
             
             let name = value["name"] as! String
-
-        
+            
+            
             cell.name.text = name
-        
+            
             cell.acceptBtnOutlet.tag = indexPath.row
             
             cell.acceptBtnOutlet.addTarget(self, action: #selector(AddFriendViewController.acceptFriend(sender:)), for: .touchUpInside)
@@ -266,7 +265,7 @@ class AddFriendViewController: UIViewController, UITableViewDataSource, UITableV
             if FIRAuth.auth()?.currentUser != nil {
                 
                 let acceptuid = self.uidArr[sender.tag]
-
+                
                 
                 self.ref.child("friendlist").child(acceptuid).observeSingleEvent(of: .value, with: { (snapshot) in
                     
@@ -303,11 +302,11 @@ class AddFriendViewController: UIViewController, UITableViewDataSource, UITableV
                     self.ref.updateChildValues(childUpdatesff)
                     
                     self.pendingView.reloadData()
-
+                    
                     
                     
                 })
-
+                
             }
         }
         
@@ -319,22 +318,22 @@ class AddFriendViewController: UIViewController, UITableViewDataSource, UITableV
         
         if let user = FIRAuth.auth()?.currentUser {
             if FIRAuth.auth()?.currentUser != nil {
-        
-        self.ref.child("friendpending").child(user.uid).observeSingleEvent(of: .value, with: { (snapshot) in
-            
-            //                    print(snapshot.value)
-            
-            let value = snapshot.value as! NSDictionary
-            
-            let uid = value["uid"] as! String
-            
-            self.uidArr = uid.characters.split(separator: " ").map(String.init)
-            
-            self.pendingView.reloadData()
-            
-            
-            
-        })
+                
+                self.ref.child("friendpending").child(user.uid).observeSingleEvent(of: .value, with: { (snapshot) in
+                    
+                    //                    print(snapshot.value)
+                    
+                    let value = snapshot.value as! NSDictionary
+                    
+                    let uid = value["uid"] as! String
+                    
+                    self.uidArr = uid.characters.split(separator: " ").map(String.init)
+                    
+                    self.pendingView.reloadData()
+                    
+                    
+                    
+                })
             }
         }
         

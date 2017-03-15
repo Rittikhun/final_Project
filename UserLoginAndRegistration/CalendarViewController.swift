@@ -35,15 +35,46 @@ class CalendarViewController: UIViewController, UIPopoverPresentationControllerD
     
     var calendarEventSelect : CalendarEvent!
     
+    var menushow = false
     
-    //test git eiei
+    
+    @IBOutlet weak var leading: NSLayoutConstraint!
+    
+    @IBAction func logout(_ sender: Any) {
+        do {
+            
+            try FIRAuth.auth()?.signOut()
+            
+            var storyboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+            
+            var vc: UIViewController = storyboard.instantiateViewController(withIdentifier: "loginView") as! UIViewController
+            
+            self.present(vc, animated: true, completion: nil)
+            
+            
+            
+        } catch let signOutError as NSError {
+            
+            print ("Error signing out: %@", signOutError)
+        }
+    }
     
     
     @IBOutlet weak var tableview: UITableView!
     
     @IBAction func menuAction(_ sender: AnyObject) {
         
-        self.performSegue(withIdentifier: "menuSegue2", sender: self)
+        if(menushow){
+            leading.constant = -140
+            UIView.animate(withDuration: 0.3, animations: {self.view.layoutIfNeeded()})
+        }
+        else{
+            leading.constant = 0
+            
+            UIView.animate(withDuration: 0.3, animations: {self.view.layoutIfNeeded()})
+        }
+        
+        menushow = !menushow
         
     }
     
@@ -71,18 +102,16 @@ class CalendarViewController: UIViewController, UIPopoverPresentationControllerD
         }
         
     }
-
+    
     
     
     @IBOutlet weak var calendar_item: UITabBarItem!
-    
-    
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
         if segue.identifier == "newEventSegue2" {
             
-        
+            
             
             let event = segue.destination as! newEventViewController
             
@@ -187,7 +216,7 @@ class CalendarViewController: UIViewController, UIPopoverPresentationControllerD
         
         
         if let tomorrow = (self.calendarView.calendar as NSCalendar).date(byAdding: tomorrowComponents, to: today, options: NSCalendar.Options()) {
-        //    self.calendarView.selectDate(tomorrow)
+            //    self.calendarView.selectDate(tomorrow)
             //self.calendarView.deselectDate(date)
             
         }
@@ -279,7 +308,7 @@ class CalendarViewController: UIViewController, UIPopoverPresentationControllerD
             
             detailDate.append(event)
             
-    
+            
         }
         
         self.tableview.reloadData()
@@ -395,7 +424,7 @@ class CalendarViewController: UIViewController, UIPopoverPresentationControllerD
         vc.detailtitle = calendarEventSelect.title
         vc.detaildate = calendarEventSelect.startDate
         vc.detailLocation = calendarEventSelect.location
-
+        
         
         self.present(vc, animated: true, completion: nil)
         
@@ -403,14 +432,14 @@ class CalendarViewController: UIViewController, UIPopoverPresentationControllerD
     }
     
     
-     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == UITableViewCellEditingStyle.delete {
             let eventStore = EKEventStore()
             var date = detailDate[(indexPath.row)]
             var start = date.startDate
             var endDate = date.endDate
             var predicate2 = eventStore.predicateForEvents(withStart: start, end: endDate, calendars: nil)
-        
+            
             var eV = eventStore.events(matching: predicate2) as [EKEvent]!
             
             if eV != nil {
@@ -423,7 +452,7 @@ class CalendarViewController: UIViewController, UIPopoverPresentationControllerD
                     
                 }
             }
-        
+            
             
             
             

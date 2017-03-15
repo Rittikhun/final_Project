@@ -1011,22 +1011,31 @@
                                         </prototypes>
                                     </tableView>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QDf-dR-cfp">
-                                        <rect key="frame" x="0.0" y="54" width="140" height="566"/>
+                                        <rect key="frame" x="-140" y="54" width="140" height="566"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DoS-UA-4PC">
                                                 <rect key="frame" x="30" y="8" width="80" height="30"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <state key="normal" title="การแจ้งเตือน"/>
+                                                <connections>
+                                                    <segue destination="pCQ-yR-yks" kind="show" id="g68-s5-aHo"/>
+                                                </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yMm-V1-aCr">
                                                 <rect key="frame" x="30" y="56" width="81" height="30"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <state key="normal" title="เพิ่ม-รับเพื่อน"/>
+                                                <connections>
+                                                    <segue destination="30B-X3-qZf" kind="show" id="6Eu-1W-F6d"/>
+                                                </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="t2J-kT-p1K">
                                                 <rect key="frame" x="40" y="101" width="60" height="30"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <state key="normal" title="ตั้งค่าผู้ใช้"/>
+                                                <connections>
+                                                    <segue destination="cuO-qy-9TZ" kind="show" id="exk-Fp-D8p"/>
+                                                </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dpF-bT-ocL">
                                                 <rect key="frame" x="28" y="148" width="85" height="30"/>
@@ -1034,7 +1043,7 @@
                                                 <state key="normal" title="ออกจากระบบ"/>
                                             </button>
                                         </subviews>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="140" id="sDe-fA-V58"/>
                                         </constraints>
@@ -1047,7 +1056,7 @@
                                     <constraint firstItem="SUS-3U-b8f" firstAttribute="top" secondItem="hw6-aS-RKJ" secondAttribute="top" constant="28" id="6z1-yI-lIa"/>
                                     <constraint firstItem="9sY-qh-lYA" firstAttribute="bottom" secondItem="hw6-aS-RKJ" secondAttribute="bottomMargin" id="DhF-Sf-ogP"/>
                                     <constraint firstItem="SUS-3U-b8f" firstAttribute="trailing" secondItem="9sY-qh-lYA" secondAttribute="trailing" id="bhy-cT-fVD"/>
-                                    <constraint firstItem="QDf-dR-cfp" firstAttribute="leading" secondItem="hw6-aS-RKJ" secondAttribute="leading" id="f4M-WU-VsQ"/>
+                                    <constraint firstItem="QDf-dR-cfp" firstAttribute="leading" secondItem="hw6-aS-RKJ" secondAttribute="leading" constant="-140" id="f4M-WU-VsQ"/>
                                     <constraint firstItem="QDf-dR-cfp" firstAttribute="top" secondItem="hw6-aS-RKJ" secondAttribute="top" constant="54" id="jzT-Q1-Ehx"/>
                                     <constraint firstItem="SUS-3U-b8f" firstAttribute="leading" secondItem="hw6-aS-RKJ" secondAttribute="leading" id="m4l-MH-tBH"/>
                                     <constraint firstAttribute="bottom" secondItem="QDf-dR-cfp" secondAttribute="bottom" constant="47" id="rsm-Fa-5lT"/>
@@ -1066,6 +1075,7 @@
                     <tabBarItem key="tabBarItem" title="Item 2" selectedImage="calendar-icon" id="4f0-ur-rvQ"/>
                     <connections>
                         <outlet property="calendarView" destination="QXy-kh-dQH" id="5ON-rS-njT"/>
+                        <outlet property="leading" destination="f4M-WU-VsQ" id="EED-OB-9bg"/>
                         <outlet property="tableview" destination="9sY-qh-lYA" id="01T-Jc-K5J"/>
                     </connections>
                 </viewController>

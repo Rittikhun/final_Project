@@ -12,7 +12,7 @@ import EventKit
 class EventNotiViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
     var ref: FIRDatabaseReference!
-
+    
     @IBOutlet weak var notiView: UITableView!
     
     var fti: [String] = []
@@ -25,7 +25,7 @@ class EventNotiViewController: UIViewController, UITableViewDataSource, UITableV
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         // Do any additional setup after loading the view.
         
         ref = FIRDatabase.database().reference()
@@ -47,27 +47,27 @@ class EventNotiViewController: UIViewController, UITableViewDataSource, UITableV
                     let uid = value["uid"] as! String
                     
                     if title != ""{
-                    
-                    self.fti = title.components(separatedBy: ", ")
+                        
+                        self.fti = title.components(separatedBy: ", ")
                         
                     }
                     
                     if location != ""{
                         
-                    self.flo = location.components(separatedBy: ", ")
+                        self.flo = location.components(separatedBy: ", ")
                         
                     }
                     
                     if date != "" {
-                    
-                    self.fd = date.components(separatedBy: ", ")
-                    
+                        
+                        self.fd = date.components(separatedBy: ", ")
+                        
                     }
                     
                     if uid != "" {
                         
-                    self.fu = uid.components(separatedBy: ", ")
-                    
+                        self.fu = uid.components(separatedBy: ", ")
+                        
                     }
                     
                     
@@ -87,9 +87,9 @@ class EventNotiViewController: UIViewController, UITableViewDataSource, UITableV
         }
         
         var timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: "update", userInfo: nil, repeats: true)
-
+        
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -97,22 +97,18 @@ class EventNotiViewController: UIViewController, UITableViewDataSource, UITableV
     
     @IBAction func backBtn(_ sender: UIBarButtonItem) {
         
-        var storyboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-        
-        var vc: UIViewController = storyboard.instantiateViewController(withIdentifier: "homeView") as! UIViewController
-        
-        self.present(vc, animated: true, completion: nil)
+        self.dismiss(animated: true, completion: nil)
     }
-
+    
     /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
+     // MARK: - Navigation
+     
+     // In a storyboard-based application, you will often want to do a little preparation before navigation
+     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+     // Get the new view controller using segue.destinationViewController.
+     // Pass the selected object to the new view controller.
+     }
+     */
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
@@ -130,47 +126,47 @@ class EventNotiViewController: UIViewController, UITableViewDataSource, UITableV
         print(fti)
         
         if fti.isEmpty == false {
-        if let user = FIRAuth.auth()?.currentUser {
-            
-            if FIRAuth.auth()?.currentUser != nil {
+            if let user = FIRAuth.auth()?.currentUser {
                 
-                let d = self.fd[indexPath.row]
-                
-                let t = self.fti[indexPath.row]
-                
-                let l = self.flo[indexPath.row]
-                
-                
-                self.ref.child("users").child(self.fu[indexPath.row]).observeSingleEvent(of: .value, with: { (snapshot) in
+                if FIRAuth.auth()?.currentUser != nil {
                     
-                    let value = snapshot.value as! NSDictionary
+                    let d = self.fd[indexPath.row]
                     
-                    let name = value["name"] as! String
+                    let t = self.fti[indexPath.row]
                     
-                    let date = dateformat.date(from: d)
-                    
-                    dateformat.dateStyle = .short
-                    dateformat.timeStyle = .short
-                    
-                    let dateString = dateformat.string(from: date!)
+                    let l = self.flo[indexPath.row]
                     
                     
-                    cell.username.text = name
+                    self.ref.child("users").child(self.fu[indexPath.row]).observeSingleEvent(of: .value, with: { (snapshot) in
+                        
+                        let value = snapshot.value as! NSDictionary
+                        
+                        let name = value["name"] as! String
+                        
+                        let date = dateformat.date(from: d)
+                        
+                        dateformat.dateStyle = .short
+                        dateformat.timeStyle = .short
+                        
+                        let dateString = dateformat.string(from: date!)
+                        
+                        
+                        cell.username.text = name
+                        
+                        cell.title.text = t
+                        
+                        cell.location.text = l
+                        
+                        cell.date.text = "\(dateString)"
+                        
+                        cell.acceptBtn.tag = indexPath.row
+                        
+                        cell.acceptBtn.addTarget(self, action: #selector(EventNotiViewController.acceptEvent(sender:)), for: .touchUpInside)
+                        
+                    })
                     
-                    cell.title.text = t
                     
-                    cell.location.text = l
-                    
-                    cell.date.text = "\(dateString)"
-                    
-                    cell.acceptBtn.tag = indexPath.row
-                    
-                    cell.acceptBtn.addTarget(self, action: #selector(EventNotiViewController.acceptEvent(sender:)), for: .touchUpInside)
-                    
-                })
-                
-                
-            }
+                }
             }
         }
         
@@ -179,7 +175,7 @@ class EventNotiViewController: UIViewController, UITableViewDataSource, UITableV
         return cell
         
     }
-
+    
     @IBAction func acceptEvent(sender: UIButton) {
         
         if let user = FIRAuth.auth()?.currentUser {
@@ -259,11 +255,11 @@ class EventNotiViewController: UIViewController, UITableViewDataSource, UITableV
                 /////// use title with fti[sender.tag]//////
                 /////// use location with flo[sender.tag]///////
                 ///// use date with fd[sender.tag]/////**** date still string must be convert to Date
-
                 
-
-
-               
+                
+                
+                
+                
                 
                 
                 
@@ -287,43 +283,43 @@ class EventNotiViewController: UIViewController, UITableViewDataSource, UITableV
                     
                     //                    print(snapshot.value)
                     
-                        let value = snapshot.value as! NSDictionary
+                    let value = snapshot.value as! NSDictionary
+                    
+                    let title = value["title"] as! String
+                    
+                    let location = value["location"] as! String
+                    
+                    let date = value["date"] as! String
+                    
+                    let uid = value["uid"] as! String
+                    
+                    if title != ""{
                         
-                        let title = value["title"] as! String
+                        self.fti = title.components(separatedBy: ", ")
                         
-                        let location = value["location"] as! String
+                    }
+                    
+                    if location != ""{
                         
-                        let date = value["date"] as! String
+                        self.flo = location.components(separatedBy: ", ")
                         
-                        let uid = value["uid"] as! String
+                    }
+                    
+                    if date != "" {
                         
-                        if title != ""{
-                            
-                            self.fti = title.components(separatedBy: ", ")
-                            
-                        }
+                        self.fd = date.components(separatedBy: ", ")
                         
-                        if location != ""{
-                            
-                            self.flo = location.components(separatedBy: ", ")
-                            
-                        }
+                    }
+                    
+                    if uid != "" {
                         
-                        if date != "" {
-                            
-                            self.fd = date.components(separatedBy: ", ")
-                            
-                        }
+                        self.fu = uid.components(separatedBy: ", ")
                         
-                        if uid != "" {
-                            
-                            self.fu = uid.components(separatedBy: ", ")
-                            
-                        }
-                        
-                        
-                        self.notiView.reloadData()
-
+                    }
+                    
+                    
+                    self.notiView.reloadData()
+                    
                     
                     
                     
@@ -332,5 +328,5 @@ class EventNotiViewController: UIViewController, UITableViewDataSource, UITableV
         }
         
     }
-
+    
 }
