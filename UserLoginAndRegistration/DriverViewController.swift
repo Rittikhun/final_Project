@@ -119,6 +119,7 @@ class DriverViewController: UIViewController, MKMapViewDelegate, CLLocationManag
     func acceptCarpool(lat: Double, long: Double,no:Int,whereto:String) {
         
         if !acceptedCarpool {
+            print("tam mai mun in wa")
             carpoolRequest(title: "Carpool Request", message: "You have a reauest for a carpool at this location Lat: \(lat), Long: \(long) number \(no) where to \(whereto)", requestAlive: true)
         }
         
@@ -161,24 +162,24 @@ class DriverViewController: UIViewController, MKMapViewDelegate, CLLocationManag
             if(CarpoolDriverHandler.instace.uid_test == CarpoolDriverHandler.instace.uid_req){
 //            if(name == CarpoolDriverHandler.instace.user){
         
-                DBProvider.Instance.requestRef.child((CarpoolDriverHandler.instace.uid_req)).observeSingleEvent(of: .value, with: { (snapshot) in
-                    
-                    
-                    let value = snapshot.value as! NSDictionary
-                    
-                    let status = value[Constants.STATUS_CARPOOL] as! String
-                    //                    let status = "busy"
-                    print(status)
-                    if(status == "wait"){
-                        CarpoolDriverHandler.instace.setStatus(s:true)
-//                        print(self.status)
-                    }else{
-                        CarpoolDriverHandler.instace.setStatus(s:false)
-//                        print(self.status)
-                    }
-                    
-                    if (CarpoolDriverHandler.instace.getStatus()){
-                        print("eieieieieieieieieieieiei")
+//                DBProvider.Instance.requestRef.child((CarpoolDriverHandler.instace.uid_req)).observeSingleEvent(of: .value, with: { (snapshot) in
+//                    
+//                    
+//                    let value = snapshot.value as! NSDictionary
+//                    
+//                    let status = value[Constants.STATUS_CARPOOL] as! String
+//                    //                    let status = "busy"
+//                    print(status)
+//                    if(status == "wait"){
+//                        CarpoolDriverHandler.instace.setStatus(s:true)
+////                        print(self.status)
+//                    }else{
+//                        CarpoolDriverHandler.instace.setStatus(s:false)
+////                        print(self.status)
+//                    }
+//                    
+//                    if (CarpoolDriverHandler.instace.getStatus()){
+//                        print("eieieieieieieieieieieiei")
                         let alert = UIAlertController(title: title, message:message, preferredStyle: .alert)
                         
                         if requestAlive {
@@ -214,15 +215,15 @@ class DriverViewController: UIViewController, MKMapViewDelegate, CLLocationManag
                         }
                         
                         self.present(alert, animated:true, completion: nil)
-                    }
-                    
-                    
-                })
             }
+            
+                    
+//                })
+//            }
             //             self.checkTest()
             
         }
-        
+
 //        if (CarpoolDriverHandler.instace.getStatus()){
 //            print("eieieieieieieieieieieiei")
 //        let alert = UIAlertController(title: title, message:message, preferredStyle: .alert)

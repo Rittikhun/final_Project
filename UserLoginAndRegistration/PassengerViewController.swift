@@ -197,7 +197,7 @@ class PassengerViewController: UIViewController, MKMapViewDelegate, CLLocationMa
                 //                mapView.showAnnotations(self.locations, animated: true)
             } else {
                 updatePassengerLocation()
-                print("App is backgrounded. New location is %@", mostRecentLocation)
+//                print("App is backgrounded. New location is %@", mostRecentLocation)
             }
             
         }

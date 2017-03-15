@@ -41,14 +41,22 @@ class CarpoolDriverHandler{
             self.uid_req = snapshot.key
             print("driver uid_req \(self.uid_req)")
             if let data = snapshot.value as? NSDictionary {
+                print(data)
                 if let latitude = data[Constants.LATITUDE] as? Double {
                     if let longitude = data[Constants.LONGITUDE] as? Double {
                         if let no = data[Constants.NO] as? Int{
                             self.setNumberOfSeatPassenger(seat: no)
                             if let whereto = data[Constants.WHERETO] as? String{
-                                self.delegate?.acceptCarpool(lat: latitude, long: longitude, no:no,whereto: whereto)
-                                print("lognaja")
-                                self.setuidReq(uid: self.uid_req)
+                                if let status = data[Constants.STATUS_CARPOOL] as? String{
+                                    if status == "wait"{
+                                        self.delegate?.acceptCarpool(lat: latitude, long: longitude, no:no,whereto: whereto)
+                                        print("lognaja")
+                                        self.setuidReq(uid: self.uid_req)
+                                    }
+                                }
+//                                self.delegate?.acceptCarpool(lat: latitude, long: longitude, no:no,whereto: whereto)
+//                                print("lognaja")
+//                                self.setuidReq(uid: self.uid_req)
                             }
                         }
 //                        self.delegate?.acceptCarpool(lat: latitude, long: longitude)
