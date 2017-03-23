@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16D32" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="VZp-VC-Nj6">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16A323" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="VZp-VC-Nj6">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -515,7 +515,7 @@
                                         <rect key="frame" x="0.0" y="28" width="375" height="83"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Azw-vr-4p6" id="XPb-kb-arc">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="82"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="83"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Name : " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="q2a-uf-u45">
@@ -560,67 +560,6 @@
                 <exit id="Un7-y4-vCg" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="8440.7999999999993" y="-701.19940029985014"/>
-        </scene>
-        <!--Menu View Controller-->
-        <scene sceneID="wJ4-Z0-TX3">
-            <objects>
-                <viewController storyboardIdentifier="menuPopoverID" id="7FR-CE-LQr" customClass="menuViewController" customModule="UserLoginAndRegistration" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="0T3-AL-Nkl"/>
-                        <viewControllerLayoutGuide type="bottom" id="KBx-vC-ocj"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="dQy-l5-Qmb">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <stackView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="cgX-fS-RGn">
-                                <rect key="frame" x="65" y="28" width="85" height="120"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UJs-gK-Hhf">
-                                        <rect key="frame" x="0.0" y="0.0" width="85" height="30"/>
-                                        <state key="normal" title="การแจ้งเตือน">
-                                            <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
-                                        </state>
-                                        <connections>
-                                            <segue destination="pCQ-yR-yks" kind="show" id="Tdd-Eu-bf4"/>
-                                        </connections>
-                                    </button>
-                                    <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="h83-7L-4aw">
-                                        <rect key="frame" x="0.0" y="30" width="85" height="30"/>
-                                        <state key="normal" title="รับ-เพิ่มเพื่อน">
-                                            <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
-                                        </state>
-                                        <connections>
-                                            <segue destination="30B-X3-qZf" kind="show" id="Xzv-cN-Doz"/>
-                                        </connections>
-                                    </button>
-                                    <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GoF-GF-gPn">
-                                        <rect key="frame" x="0.0" y="60" width="85" height="30"/>
-                                        <state key="normal" title="ตั้งค่าผู้ใช้">
-                                            <color key="titleColor" red="0.047542908031088071" green="0.047542908031088071" blue="0.047542908031088071" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        </state>
-                                        <connections>
-                                            <segue destination="cuO-qy-9TZ" kind="show" id="cuz-fv-mpk"/>
-                                        </connections>
-                                    </button>
-                                    <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pLg-As-Wlg">
-                                        <rect key="frame" x="0.0" y="90" width="85" height="30"/>
-                                        <state key="normal" title="ออกจากระบบ">
-                                            <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
-                                        </state>
-                                        <connections>
-                                            <action selector="logout:" destination="7FR-CE-LQr" eventType="touchUpInside" id="gtU-Ns-do3"/>
-                                        </connections>
-                                    </button>
-                                </subviews>
-                            </stackView>
-                        </subviews>
-                    </view>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Ke9-v8-thx" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="5610.3999999999996" y="1055.6221889055473"/>
         </scene>
         <!--Title-->
         <scene sceneID="0lX-CN-5lA">
@@ -707,7 +646,7 @@
                                         <rect key="frame" x="0.0" y="28" width="343" height="59"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Jep-dJ-QU3" id="CrL-bj-gJb">
-                                            <rect key="frame" x="0.0" y="0.0" width="343" height="58"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="343" height="59"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Name :" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gCB-Yq-w0s">
@@ -755,7 +694,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ixj-Po-mJm" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="6540" y="1055.6221889055473"/>
+            <point key="canvasLocation" x="4668" y="856"/>
         </scene>
         <!--Setting View Controller-->
         <scene sceneID="UqT-jK-ogZ">
@@ -847,7 +786,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Hsq-Zl-1bC" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5608.8000000000002" y="1817.5412293853076"/>
+            <point key="canvasLocation" x="4668" y="1536"/>
         </scene>
         <!--Event Noti View Controller-->
         <scene sceneID="ngG-JY-LxH">
@@ -883,7 +822,7 @@
                                         <rect key="frame" x="0.0" y="28" width="375" height="131"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="gkR-Iy-C4N" id="tCj-PT-vZm">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="130"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="131"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Invite Event : " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="L8i-go-IC0">
@@ -972,7 +911,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="qiw-sj-1sq" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="6453.6000000000004" y="1817.5412293853076"/>
+            <point key="canvasLocation" x="4668" y="173"/>
         </scene>
         <!--Item 2-->
         <scene sceneID="pZE-ox-mPZ">
@@ -1007,9 +946,6 @@
                                                 <state key="normal" title="menu"/>
                                                 <connections>
                                                     <action selector="menuAction:" destination="uFm-7C-TDP" eventType="touchUpInside" id="FBI-e8-jtH"/>
-                                                    <segue destination="7FR-CE-LQr" kind="popoverPresentation" identifier="menuSegue2" popoverAnchorView="uCN-x5-GG6" id="d23-ev-FmR">
-                                                        <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
-                                                    </segue>
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="F98-CT-cXq">
@@ -1074,6 +1010,44 @@
                                             </tableViewCell>
                                         </prototypes>
                                     </tableView>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QDf-dR-cfp">
+                                        <rect key="frame" x="-140" y="54" width="140" height="566"/>
+                                        <subviews>
+                                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DoS-UA-4PC">
+                                                <rect key="frame" x="30" y="8" width="80" height="30"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                <state key="normal" title="การแจ้งเตือน"/>
+                                                <connections>
+                                                    <segue destination="pCQ-yR-yks" kind="show" id="g68-s5-aHo"/>
+                                                </connections>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yMm-V1-aCr">
+                                                <rect key="frame" x="30" y="56" width="81" height="30"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                <state key="normal" title="เพิ่ม-รับเพื่อน"/>
+                                                <connections>
+                                                    <segue destination="30B-X3-qZf" kind="show" id="6Eu-1W-F6d"/>
+                                                </connections>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="t2J-kT-p1K">
+                                                <rect key="frame" x="40" y="101" width="60" height="30"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                <state key="normal" title="ตั้งค่าผู้ใช้"/>
+                                                <connections>
+                                                    <segue destination="cuO-qy-9TZ" kind="show" id="exk-Fp-D8p"/>
+                                                </connections>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dpF-bT-ocL">
+                                                <rect key="frame" x="28" y="148" width="85" height="30"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                <state key="normal" title="ออกจากระบบ"/>
+                                            </button>
+                                        </subviews>
+                                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="140" id="sDe-fA-V58"/>
+                                        </constraints>
+                                    </view>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
@@ -1082,7 +1056,10 @@
                                     <constraint firstItem="SUS-3U-b8f" firstAttribute="top" secondItem="hw6-aS-RKJ" secondAttribute="top" constant="28" id="6z1-yI-lIa"/>
                                     <constraint firstItem="9sY-qh-lYA" firstAttribute="bottom" secondItem="hw6-aS-RKJ" secondAttribute="bottomMargin" id="DhF-Sf-ogP"/>
                                     <constraint firstItem="SUS-3U-b8f" firstAttribute="trailing" secondItem="9sY-qh-lYA" secondAttribute="trailing" id="bhy-cT-fVD"/>
+                                    <constraint firstItem="QDf-dR-cfp" firstAttribute="leading" secondItem="hw6-aS-RKJ" secondAttribute="leading" constant="-140" id="f4M-WU-VsQ"/>
+                                    <constraint firstItem="QDf-dR-cfp" firstAttribute="top" secondItem="hw6-aS-RKJ" secondAttribute="top" constant="54" id="jzT-Q1-Ehx"/>
                                     <constraint firstItem="SUS-3U-b8f" firstAttribute="leading" secondItem="hw6-aS-RKJ" secondAttribute="leading" id="m4l-MH-tBH"/>
+                                    <constraint firstAttribute="bottom" secondItem="QDf-dR-cfp" secondAttribute="bottom" constant="47" id="rsm-Fa-5lT"/>
                                     <constraint firstAttribute="trailing" secondItem="SUS-3U-b8f" secondAttribute="trailing" id="wdg-mr-rSF"/>
                                 </constraints>
                             </view>
@@ -1098,12 +1075,13 @@
                     <tabBarItem key="tabBarItem" title="Item 2" selectedImage="calendar-icon" id="4f0-ur-rvQ"/>
                     <connections>
                         <outlet property="calendarView" destination="QXy-kh-dQH" id="5ON-rS-njT"/>
+                        <outlet property="leading" destination="f4M-WU-VsQ" id="EED-OB-9bg"/>
                         <outlet property="tableview" destination="9sY-qh-lYA" id="01T-Jc-K5J"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8WY-11-JrC" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3938" y="756"/>
+            <point key="canvasLocation" x="3936.8000000000002" y="755.17241379310349"/>
         </scene>
         <!--Item 1-->
         <scene sceneID="iqO-sy-bp4">
@@ -1401,18 +1379,18 @@
                                 <rect key="frame" x="0.0" y="28" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="B6t-IS-785" id="e4w-ig-gzb">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Bsj-Wh-cmp">
-                                            <rect key="frame" x="15" y="5" width="32" height="20"/>
+                                            <rect key="frame" x="15" y="6" width="31.5" height="19.5"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Subtitle" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="uYW-Ve-Hlm">
-                                            <rect key="frame" x="15" y="25" width="41" height="14"/>
+                                            <rect key="frame" x="15" y="25.5" width="40.5" height="13.5"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="11"/>
                                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
