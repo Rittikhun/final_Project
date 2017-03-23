@@ -38,8 +38,8 @@ class CarpoolDriverHandler{
     
     func observeMessagesForDriver() {
         DBProvider.Instance.requestRef.observe(FIRDataEventType.childAdded){ (snapshot: FIRDataSnapshot) in
-            self.uid_req = snapshot.key
-            print("driver uid_req \(self.uid_req)")
+//            self.uid_req = snapshot.key
+//            print("driver uid_req \(self.uid_req)")
             if let data = snapshot.value as? NSDictionary {
                 print(data)
                 if let latitude = data[Constants.LATITUDE] as? Double {
@@ -51,7 +51,8 @@ class CarpoolDriverHandler{
                                     if status == "wait"{
                                         self.delegate?.acceptCarpool(lat: latitude, long: longitude, no:no,whereto: whereto)
                                         print("lognaja")
-                                        self.setuidReq(uid: self.uid_req)
+                                        print(whereto)
+                                        self.setuidReq(uid: snapshot.key)
                                     }
                                 }
 //                                self.delegate?.acceptCarpool(lat: latitude, long: longitude, no:no,whereto: whereto)
@@ -140,6 +141,8 @@ class CarpoolDriverHandler{
         
 //        print(uid)
         
+        statusRequest(status: "busy")
+        
         let username = FIRAuth.auth()?.currentUser
         
         let ref = FIRDatabase.database().reference()
@@ -206,13 +209,15 @@ class CarpoolDriverHandler{
             
             self.uid_req = snapshot.key
             
+//            print("st c \(self.uid_req)")
+            
             print("driver uid_req test \(self.uid_req)")
             print("driver uid_test \(self.uid_test)")
             if(self.uid_test == self.uid_req){
                 
-                DBProvider.Instance.requestRef.child((self.uid_req)).observeSingleEvent(of: .value, with: { (snapshot) in
+                DBProvider.Instance.requestRef.child((self.uid_test)).observeSingleEvent(of: .value, with: { (snapshot) in
                     // Get user value
-                    print("uid_req test2 \(self.uid_req)")
+                    print("uid_req test2 \(self.uid_test)")
                     
                     let value = snapshot.value as! NSDictionary
                     
@@ -224,7 +229,7 @@ class CarpoolDriverHandler{
                     
                     let data : Dictionary<String, Any> = [Constants.NAME: usernamef, Constants.LATITUDE: lat , Constants.LONGITUDE: long,Constants.NO: no,Constants.WHERETO:whereto,Constants.STATUS_CARPOOL:status]
                     
-                    DBProvider.Instance.requestRef.child(self.uid_req).setValue(data)
+                    DBProvider.Instance.requestRef.child(self.uid_test).setValue(data)
                     
                     
                 })
@@ -302,6 +307,7 @@ class CarpoolDriverHandler{
     
     func setuidReq(uid:String){
         uid_test = uid
+        print(uid_test)
     }
     
     func setuis(uid:String){

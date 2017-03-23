@@ -130,7 +130,7 @@ class RegisterPageViewController: UIViewController {
                                     
                                     self.mRootRef.child("friendlist").child(userID!).setValue(["uid": ""])
                                     
-                                    self.mRootRef.child("event pending").child(userID!).setValue(["title": "","location": "","date": "","uid": ""])
+                                    self.mRootRef.child("event pending").child(userID!).setValue(["title": "","location": "","date": "","uid": "","uidevent": ""])
                                     
                                     print("sdasds")
                                     

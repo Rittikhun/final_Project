@@ -23,6 +23,8 @@ class EventNotiViewController: UIViewController, UITableViewDataSource, UITableV
     
     var fu: [String] = []
     
+    var fe: [String] = []
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -45,6 +47,8 @@ class EventNotiViewController: UIViewController, UITableViewDataSource, UITableV
                     let date = value["date"] as! String
                     
                     let uid = value["uid"] as! String
+                    
+                    let uidevent = value["uidevent"] as! String
                     
                     if title != ""{
                     
@@ -70,6 +74,12 @@ class EventNotiViewController: UIViewController, UITableViewDataSource, UITableV
                     
                     }
                     
+                    if uidevent != "" {
+                        
+                        self.fe = uidevent.components(separatedBy: ", ")
+                        
+                    }
+                    
                     
                     print("fti: \(self.fti)")
                     
@@ -78,6 +88,8 @@ class EventNotiViewController: UIViewController, UITableViewDataSource, UITableV
                     print("fd: \(self.fd)")
                     
                     print("fu: \(self.fu)")
+                    
+                    print("fe: \(self.fe)")
                     
                     self.notiView.reloadData()
                     
@@ -140,7 +152,6 @@ class EventNotiViewController: UIViewController, UITableViewDataSource, UITableV
                 
                 let l = self.flo[indexPath.row]
                 
-                
                 self.ref.child("users").child(self.fu[indexPath.row]).observeSingleEvent(of: .value, with: { (snapshot) in
                     
                     let value = snapshot.value as! NSDictionary
@@ -199,6 +210,35 @@ class EventNotiViewController: UIViewController, UITableViewDataSource, UITableV
                 
                 let d = self.fd[sender.tag]
                 
+                let ue = self.fe[sender.tag]
+                
+                DBProvider.Instance.eventRef.child(ue).observeSingleEvent(of: .value, with: { (snapshot) in
+                    
+                    let uid = snapshot.key
+                    
+                    if (ue == uid){
+                        let value = snapshot.value as! NSDictionary
+                        
+                        var fu = value[Constants.UID] as! String
+                        
+                        if fu != "" {
+                            
+                            fu = "\(fu), \(user.uid)"
+                            
+                            
+                        }
+                            
+                        else {
+                            
+                            fu = "\(user.uid)"
+                            
+                            
+                        }
+                        
+                        DBProvider.Instance.eventRef.child(ue).updateChildValues(["uid":fu])
+                    }
+                })
+                
                 eventStore.requestAccess( to: EKEntityType.event, completion:{(granted, error) in
                     
                     if (granted) && (error == nil) {
@@ -242,13 +282,15 @@ class EventNotiViewController: UIViewController, UITableViewDataSource, UITableV
                 flo.remove(at: sender.tag)
                 fd.remove(at: sender.tag)
                 fu.remove(at: sender.tag)
+                fe.remove(at: sender.tag)
                 
                 let ftiu = fti.joined(separator: ", ")
                 let flou = flo.joined(separator: ", ")
                 let fdu = fd.joined(separator: ", ")
                 let fuu = fu.joined(separator: ", ")
+                let feu = fe.joined(separator: ", ")
                 
-                let post = ["title": ftiu, "location": flou, "date": fdu, "uid": fuu]
+                let post = ["title": ftiu, "location": flou, "date": fdu, "uid": fuu, "uidevent": feu]
                 let childUpdates = ["/event pending/\(user.uid)/": post ]
                 self.ref.updateChildValues(childUpdates)
                 

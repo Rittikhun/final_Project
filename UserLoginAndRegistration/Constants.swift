@@ -29,4 +29,7 @@ class Constants {
     
     static let USER = "users"
     
+    static let EVENT = "event"
+    static let UID = "uid"
+    
 }

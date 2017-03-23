@@ -118,11 +118,12 @@ class DriverViewController: UIViewController, MKMapViewDelegate, CLLocationManag
     
     func acceptCarpool(lat: Double, long: Double,no:Int,whereto:String) {
         
-        if !acceptedCarpool {
+//        if !acceptedCarpool {
             print("tam mai mun in wa")
+            print(whereto)
             carpoolRequest(title: "Carpool Request", message: "You have a reauest for a carpool at this location Lat: \(lat), Long: \(long) number \(no) where to \(whereto)", requestAlive: true)
-        }
-        
+//        }
+
     }
     
     func carpoolCanceled() {
@@ -158,8 +159,13 @@ class DriverViewController: UIViewController, MKMapViewDelegate, CLLocationManag
 //            let value = snapshot.value as! NSDictionary
 //            let name = value[Constants.NAME] as! String
             
-            CarpoolDriverHandler.instace.setuidReq(uid: snapshot.key)
+//            CarpoolDriverHandler.instace.setuidReq(uid: snapshot.key)
+            print("aaaaaaaaaa\(CarpoolDriverHandler.instace.uid_test)")
+            print("bbbbbbbbbb\(CarpoolDriverHandler.instace.uid_req)")
             if(CarpoolDriverHandler.instace.uid_test == CarpoolDriverHandler.instace.uid_req){
+                
+                print("I'm coming")
+                print(message)
 //            if(name == CarpoolDriverHandler.instace.user){
         
 //                DBProvider.Instance.requestRef.child((CarpoolDriverHandler.instace.uid_req)).observeSingleEvent(of: .value, with: { (snapshot) in
@@ -180,16 +186,18 @@ class DriverViewController: UIViewController, MKMapViewDelegate, CLLocationManag
 //                    
 //                    if (CarpoolDriverHandler.instace.getStatus()){
 //                        print("eieieieieieieieieieieiei")
+                
                         let alert = UIAlertController(title: title, message:message, preferredStyle: .alert)
-                        
+                        print(message)
                         if requestAlive {
+                            print("GGEZ")
                             let accept = UIAlertAction(title: "Accept", style: .default, handler: { (alertAction: UIAlertAction) in
                                 
                                 self.acceptedCarpool = true
                                 self.acceptCarpoolBtn.isHidden = false
                                 //                CarpoolHandler.instace.observeMessageForPassenger()
                                 //                CarpoolHandler.instace.delegate = self
-                                CarpoolDriverHandler.instace.statusRequest(status: "busy")
+//                                CarpoolDriverHandler.instace.statusRequest(status: "busy")
                                 
                                 self.timer = Timer.scheduledTimer(timeInterval:TimeInterval(10), target: self, selector: #selector(DriverViewController.updateDriverLocation), userInfo: nil, repeats: true)
                                 

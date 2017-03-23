@@ -78,6 +78,7 @@ class newEventViewController: UIViewController {
     
     
     @IBAction func cancel(_ sender: Any) {
+        
         self.dismiss(animated: true, completion:nil);
     }
     @IBAction func Save(_ sender: Any) {
@@ -144,67 +145,96 @@ class newEventViewController: UIViewController {
                         
                         var fu = value["uid"] as! String
                         
-                        if fti != "" {
-                            
-                            fti = "\(fti), \(self.eventText.text!)"
-                            
-                            
-                        }
-                            
-                        else {
-                            
-                            fti = "\(self.eventText.text!)"
-                            
-                            
-                        }
+                        var fue = value["uidevent"] as! String
                         
-                        if flo != "" {
+                        DBProvider.Instance.eventRef.childByAutoId().observeSingleEvent(of: .value, with: { (snapshot) in
                             
-                            flo = "\(flo), \(self.location)"
+                            let uid = snapshot.key
+                            
+                            if fti != "" {
+                                
+                                fti = "\(fti), \(self.eventText.text!)"
+                                
+                                
+                            }
+                                
+                            else {
+                                
+                                fti = "\(self.eventText.text!)"
+                                
+                                
+                            }
+                            
+                            if flo != "" {
+                                
+                                flo = "\(flo), \(self.location)"
+                                
+                                
+                            }
+                                
+                            else {
+                                
+                                flo = "\(self.location)"
+                                
+                                
+                            }
+                            
+                            if fd != "" {
+                                
+                                fd = "\(fd), \(self.eventPicker.date)"
+                                
+                                
+                            }
+                                
+                            else {
+                                
+                                fd = "\(self.eventPicker.date)"
+                                
+                                
+                            }
+                            
+                            if fu != "" {
+                                
+                                fu = "\(fu), \(user.uid)"
+                                
+                                
+                            }
+                                
+                            else {
+                                
+                                fu = "\(user.uid)"
+                                
+                                
+                            }
+                            
+                            if fue != "" {
+                                
+                                fue = "\(fue), \(user.uid)"
+                                
+                                
+                            }
+                                
+                            else {
+                                
+                                fue = "\(user.uid)"
+                                
+                                
+                            }
+                            
+                            let data : Dictionary<String,Any> = [Constants.UID:fue]
                             
                             
-                        }
+                            let post = ["title": fti, "location": flo, "date": fd, "uid": fu ,"uidevent": fue]
+                            let childUpdates = ["/event pending/\(e)/": post ]
+                            self.ref.updateChildValues(childUpdates)
+                            print("sdsds")
                             
-                        else {
+                            DBProvider.Instance.eventRef.child(uid).setValue(data)
+                            //            print(uid)
                             
-                            flo = "\(self.location)"
-                            
-                            
-                        }
-
-                        if fd != "" {
-                            
-                            fd = "\(fd), \(self.eventPicker.date)"
-                            
-                            
-                        }
-                            
-                        else {
-                            
-                            fd = "\(self.eventPicker.date)"
-                            
-                            
-                        }
+                        })
                         
-                        if fu != "" {
-                            
-                            fu = "\(fu), \(user.uid)"
-                            
-                            
-                        }
-                            
-                        else {
-                            
-                            fu = "\(user.uid)"
-                            
-                            
-                        }
-
-
-                        let post = ["title": fti, "location": flo, "date": fd, "uid": fu]
-                        let childUpdates = ["/event pending/\(e)/": post ]
-                        self.ref.updateChildValues(childUpdates)
-                        print("sdsds")
+                        
                         
                         
                         
@@ -217,7 +247,13 @@ class newEventViewController: UIViewController {
             
         }
         
+//        let data : Dictionary<String,Any> = ["asdasd":""]
         
+//        DBProvider.Instance.eventRef.childByAutoId().observe(.value, with: { (snapshot) in
+//            
+//            uid = snapshot.key
+//            
+//        })
         
         var storyboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
         
