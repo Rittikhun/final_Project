@@ -84,42 +84,42 @@ class newEventViewController: UIViewController {
     @IBAction func Save(_ sender: Any) {
         
         
-        let eventStore = EKEventStore()
-        
-        eventStore.requestAccess( to: EKEntityType.event, completion:{(granted, error) in
-            
-            if (granted) && (error == nil) {
-                print("granted \(granted)")
-                print("error \(error)")
-                
-                let event = EKEvent(eventStore: eventStore)
-                event.title = self.eventText.text!
-                event.startDate = self.eventPicker.date
-                event.endDate = self.eventPicker.date
-                event.location = self.locationText.text!
-                event.calendar = eventStore.defaultCalendarForNewEvents
-                
-                var event_id = ""
-                do{
-                    try eventStore.save(event, span: .thisEvent)
-                    event_id = event.eventIdentifier
-                }
-                catch let error as NSError {
-                    print("json error: \(error.localizedDescription)")
-                }
-                
-                if(event_id != ""){
-                    print("event added !")
-                }
-            }
-            
-        
-            //sent to friend
-            
-            
-            
-            
-        })
+//        let eventStore = EKEventStore()
+//        
+//        eventStore.requestAccess( to: EKEntityType.event, completion:{(granted, error) in
+//            
+//            if (granted) && (error == nil) {
+//                print("granted \(granted)")
+//                print("error \(error)")
+//                
+//                let event = EKEvent(eventStore: eventStore)
+//                event.title = self.eventText.text!
+//                event.startDate = self.eventPicker.date
+//                event.endDate = self.eventPicker.date
+//                event.location = self.locationText.text!
+//                event.calendar = eventStore.defaultCalendarForNewEvents
+//                
+//                var event_id = ""
+//                do{
+//                    try eventStore.save(event, span: .thisEvent)
+//                    event_id = event.eventIdentifier
+//                }
+//                catch let error as NSError {
+//                    print("json error: \(error.localizedDescription)")
+//                }
+//                
+//                if(event_id != ""){
+//                    print("event added !")
+//                }
+//            }
+//            
+//        
+//            //sent to friend
+//            
+//            
+//            
+//            
+//        })
       
         
         if self.uidft.isEmpty != true {
@@ -209,19 +209,19 @@ class newEventViewController: UIViewController {
                             
                             if fue != "" {
                                 
-                                fue = "\(fue), \(user.uid)"
+                                fue = "\(fue), \(uid)"
                                 
                                 
                             }
                                 
                             else {
                                 
-                                fue = "\(user.uid)"
+                                fue = "\(uid)"
                                 
                                 
                             }
                             
-                            let data : Dictionary<String,Any> = [Constants.UID:fue]
+                            let data : Dictionary<String,Any> = [Constants.UID:user.uid]
                             
                             
                             let post = ["title": fti, "location": flo, "date": fd, "uid": fu ,"uidevent": fue]
@@ -231,6 +231,43 @@ class newEventViewController: UIViewController {
                             
                             DBProvider.Instance.eventRef.child(uid).setValue(data)
                             //            print(uid)
+                            
+                            let eventStore = EKEventStore()
+                            
+                            eventStore.requestAccess( to: EKEntityType.event, completion:{(granted, error) in
+                                
+                                if (granted) && (error == nil) {
+                                    print("granted \(granted)")
+                                    print("error \(error)")
+                                    
+                                    let event = EKEvent(eventStore: eventStore)
+                                    event.title = self.eventText.text!
+                                    event.startDate = self.eventPicker.date
+                                    event.endDate = self.eventPicker.date
+                                    event.location = "\(self.locationText.text!)///\(uid)"
+                                    event.calendar = eventStore.defaultCalendarForNewEvents
+                                    
+                                    var event_id = ""
+                                    do{
+                                        try eventStore.save(event, span: .thisEvent)
+                                        event_id = event.eventIdentifier
+                                    }
+                                    catch let error as NSError {
+                                        print("json error: \(error.localizedDescription)")
+                                    }
+                                    
+                                    if(event_id != ""){
+                                        print("event added !")
+                                    }
+                                }
+                                
+                                
+                                //sent to friend
+                                
+                                
+                                
+                                
+                            })
                             
                         })
                         

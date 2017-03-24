@@ -18,6 +18,7 @@ class Constants {
     static let REQUEST = "Request Carpool"
     static let ACCEPTED = "Accepted Carpool"
     static let STATUS_CARPOOL = "status_carpool"
+    static let LOCATION = "location"
     
     static let NAME = "name"
     static let LATITUDE = "latitude"

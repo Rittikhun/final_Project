@@ -33,7 +33,6 @@ let DATE_SELECTED_INDEX = 2
         self.startDate = startDate;
         self.endDate = endDate;
         self.location = location;
- 
     }
 }
 

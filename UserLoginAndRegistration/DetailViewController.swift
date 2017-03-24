@@ -28,6 +28,8 @@ class DetailViewController: UIViewController,MKMapViewDelegate,CLLocationManager
     var detaildate : Date!
     var detailLocation : String = ""
     
+    var uidevent = ""
+    
 //    var locationManager:CLLocationManager!
 //    
 //    override func viewDidLoad() {
@@ -139,6 +141,39 @@ class DetailViewController: UIViewController,MKMapViewDelegate,CLLocationManager
     
     func location_friends(){
         
+        DBProvider.Instance.eventRef.child(uidevent).observeSingleEvent(of: .value, with: { (snapshot) in
+            
+            let value = snapshot.value as! NSDictionary
+            
+            let uidlist : [String] = []
+            
+            let uid = value["uid"] as! String
+            
+            uidlist = uid.components(separatedBy: ", ")
+            
+            for u in uidlist {
+                DBProvider.Instance.locationRef.child(u).observeSingleEvent(of: .value, with: { (snapshot) in
+                    
+                    let value = snapshot.value as! NSDictionary
+                    
+                    let lat = value[Constants.LATITUDE] as! Double
+                    let long = value[Constants.LONGITUDE] as! Double
+                    let name = value[Constants.NAME] as! String
+                    
+                    let friendLocation = CLLocationCoordinate2D(latitude: lat, longitude: long)
+                    
+                    let anno = MKPointAnnotation()
+                    anno.coordinate = friendLocation!
+                    anno.title = name
+                    
+                    mapView.addAnnotation(anno)
+                    
+                })
+
+            }
+            
+        })
+        
     }
 
     
@@ -161,8 +196,6 @@ class DetailViewController: UIViewController,MKMapViewDelegate,CLLocationManager
         dateformat.timeStyle = .short
         
         var startdateString = dateformat.string(from: detaildate)
-        
-        
         
         namelabel.text = detailtitle
         timelabel.text = startdateString
