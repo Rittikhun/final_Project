@@ -41,8 +41,11 @@ class CalendarViewController: UIViewController, UIPopoverPresentationControllerD
     @IBOutlet weak var leading: NSLayoutConstraint!
     
     @IBAction func logout(_ sender: Any) {
+<<<<<<< HEAD
 //    }
 //    @IBAction func logout(_ sender: Any) {
+=======
+>>>>>>> b2e9d2ae6da4cef3eec35adbcd44f020ce8984f2
         do {
             
             try FIRAuth.auth()?.signOut()
@@ -427,8 +430,12 @@ class CalendarViewController: UIViewController, UIPopoverPresentationControllerD
         
         vc.detailtitle = calendarEventSelect.title
         vc.detaildate = calendarEventSelect.startDate
+<<<<<<< HEAD
         vc.detailLocation = myStringArr[0]
         vc.uidevent = myStringArr[1]
+=======
+        vc.detailLocation = calendarEventSelect.location
+>>>>>>> b2e9d2ae6da4cef3eec35adbcd44f020ce8984f2
         
         
         self.present(vc, animated: true, completion: nil)

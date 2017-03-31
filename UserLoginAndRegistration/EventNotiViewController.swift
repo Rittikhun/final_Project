@@ -140,6 +140,7 @@ class EventNotiViewController: UIViewController, UITableViewDataSource, UITableV
         if fti.isEmpty == false {
             if let user = FIRAuth.auth()?.currentUser {
                 
+<<<<<<< HEAD
                 let d = self.fd[indexPath.row]
                 
                 let t = self.fti[indexPath.row]
@@ -151,9 +152,15 @@ class EventNotiViewController: UIViewController, UITableViewDataSource, UITableV
                     let value = snapshot.value as! NSDictionary
                     
                     let name = value["name"] as! String
+<<<<<<< HEAD
 
                 if FIRAuth.auth()?.currentUser != nil {
 
+=======
+=======
+                if FIRAuth.auth()?.currentUser != nil {
+>>>>>>> 2db643a9283cda023a1e7ebe951c8d35f27691e1
+>>>>>>> b2e9d2ae6da4cef3eec35adbcd44f020ce8984f2
                     
                     let d = self.fd[indexPath.row]
                     
@@ -187,14 +194,22 @@ class EventNotiViewController: UIViewController, UITableViewDataSource, UITableV
                         cell.acceptBtn.tag = indexPath.row
                         
                         cell.acceptBtn.addTarget(self, action: #selector(EventNotiViewController.acceptEvent(sender:)), for: .touchUpInside)
+<<<<<<< HEAD
                 
+=======
+                        
+>>>>>>> b2e9d2ae6da4cef3eec35adbcd44f020ce8984f2
                     })
                     
                     
                 }
+<<<<<<< HEAD
             })
         }
             
+=======
+            }
+>>>>>>> b2e9d2ae6da4cef3eec35adbcd44f020ce8984f2
         }
         
         
@@ -386,7 +401,7 @@ class EventNotiViewController: UIViewController, UITableViewDataSource, UITableV
         }
         
     }
-
+    
 }
     
 
