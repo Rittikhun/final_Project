@@ -141,7 +141,7 @@ class CarpoolDriverHandler{
         
 //        print(uid)
         
-        statusRequest(status: "busy")
+//        statusRequest(status: "busy")
         
         let username = FIRAuth.auth()?.currentUser
         
@@ -169,6 +169,9 @@ class CarpoolDriverHandler{
                 if totalseat <= 4 {
                 let data : Dictionary<String, Any> = [Constants.NAME: self.user, Constants.LATITUDE: lat , Constants.LONGITUDE: long,Constants.SEAT: totalseat]
                 DBProvider.Instance.requestAcceptedRef.child(self.user).setValue(data)
+                    
+//                    self.statusRequest(status: "busy")
+                    
                 }
                 }else{
                     let data : Dictionary<String, Any> = [Constants.NAME: self.user, Constants.LATITUDE: lat , Constants.LONGITUDE: long,Constants.SEAT: self.no]

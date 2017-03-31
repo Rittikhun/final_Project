@@ -117,7 +117,11 @@ class DetailViewController: UIViewController,MKMapViewDelegate,CLLocationManager
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         locationManager.requestWhenInUseAuthorization()
         locationManager.startUpdatingLocation()
-        
+//        
+//        mapView.showsUserLocation = true
+//        
+//        mapView.setUserTrackingMode(.follow, animated: true)
+
     }
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
@@ -130,10 +134,10 @@ class DetailViewController: UIViewController,MKMapViewDelegate,CLLocationManager
             
             mapView.removeAnnotations(mapView.annotations)
 
+            location_friends()
             let annotation = MKPointAnnotation()
             annotation.coordinate = userLocation!
             annotation.title = "My Location"
-            
 //            pinAnnotationView = MKPinAnnotationView(annotation: pointAnnotation, reuseIdentifier: "pin")
             mapView.addAnnotation(annotation)
         }
@@ -145,13 +149,15 @@ class DetailViewController: UIViewController,MKMapViewDelegate,CLLocationManager
             
             let value = snapshot.value as! NSDictionary
             
-            let uidlist : [String] = []
+            var uidlist : [String] = []
             
             let uid = value["uid"] as! String
             
             uidlist = uid.components(separatedBy: ", ")
             
             for u in uidlist {
+                
+                if u != FIRAuth.auth()?.currentUser?.uid {
                 DBProvider.Instance.locationRef.child(u).observeSingleEvent(of: .value, with: { (snapshot) in
                     
                     let value = snapshot.value as! NSDictionary
@@ -163,12 +169,13 @@ class DetailViewController: UIViewController,MKMapViewDelegate,CLLocationManager
                     let friendLocation = CLLocationCoordinate2D(latitude: lat, longitude: long)
                     
                     let anno = MKPointAnnotation()
-                    anno.coordinate = friendLocation!
+                    anno.coordinate = friendLocation
                     anno.title = name
                     
-                    mapView.addAnnotation(anno)
+                    self.mapView.addAnnotation(anno)
                     
                 })
+                }
 
             }
             
@@ -235,18 +242,36 @@ class DetailViewController: UIViewController,MKMapViewDelegate,CLLocationManager
 //        
 //        return annotationView
         
+//        var v : MKAnnotationView! = nil
+//        let ident = "pin"
+//        v = mapView.dequeueReusableAnnotationView(withIdentifier: ident)
+//        if v == nil {
+//            v = MKAnnotationView(annotation: annotation,reuseIdentifier:ident)
+//            v.image = UIImage(named: "map-icon")
+//            v.bounds.size.height /= 3.0
+//            v.bounds.size.width /= 3.0
+//            v.centerOffset = CGPoint(x:0,y:-20)
+//            v.canShowCallout = true
+//        }
+//        v.annotation = annotation
+//        
+//        return v
+        
         var v : MKAnnotationView! = nil
         let ident = "pin"
         v = mapView.dequeueReusableAnnotationView(withIdentifier: ident)
-        if v == nil {
-            v = MKAnnotationView(annotation: annotation,reuseIdentifier:ident)
-            v.image = UIImage(named: "map-icon")
-            v.bounds.size.height /= 3.0
-            v.bounds.size.width /= 3.0
-            v.centerOffset = CGPoint(x:0,y:-20)
-            v.canShowCallout = true
+        if let t = annotation.title, t != "My Location" {
+            if v == nil {
+                v = MKAnnotationView(annotation: annotation,reuseIdentifier:ident)
+                v.image = UIImage(named: "map-icon")
+                v.bounds.size.height /= 3.0
+                v.bounds.size.width /= 3.0
+                v.centerOffset = CGPoint(x:0,y:-20)
+                v.canShowCallout = true
+            }
+            v.annotation = annotation
         }
-        v.annotation = annotation
+        
         
         return v
         
