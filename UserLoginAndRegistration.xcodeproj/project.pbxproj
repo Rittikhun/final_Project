@@ -28,7 +28,6 @@
 		6A7590201DE70C4B001126BA /* GoogleSymbolUtilities.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6A75901C1DE70C4B001126BA /* GoogleSymbolUtilities.framework */; };
 		6A7590211DE70C4B001126BA /* GoogleToolboxForMac.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6A75901D1DE70C4B001126BA /* GoogleToolboxForMac.framework */; };
 		6A7B130B1E07C26100A3CC09 /* MapCalendarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A7B130A1E07C26100A3CC09 /* MapCalendarViewController.swift */; };
-		6A84F0161DE6BBD100499F82 /* Database.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A84F0151DE6BBD100499F82 /* Database.swift */; };
 		6A84F01C1DE6C50400499F82 /* libsqlite3.0.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 6A84F01B1DE6C50400499F82 /* libsqlite3.0.tbd */; };
 		6A86E6561E01138D00E7073E /* AddFriendViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A86E6551E01138D00E7073E /* AddFriendViewController.swift */; };
 		6A89DC281DCB1E59006D4E3E /* CalendarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A89DC271DCB1E59006D4E3E /* CalendarViewController.swift */; };
@@ -90,8 +89,6 @@
 		6A75901C1DE70C4B001126BA /* GoogleSymbolUtilities.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GoogleSymbolUtilities.framework; sourceTree = "<group>"; };
 		6A75901D1DE70C4B001126BA /* GoogleToolboxForMac.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GoogleToolboxForMac.framework; sourceTree = "<group>"; };
 		6A7B130A1E07C26100A3CC09 /* MapCalendarViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapCalendarViewController.swift; sourceTree = "<group>"; };
-		6A84F0141DE6BB5E00499F82 /* projectios.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; name = projectios.sqlite; path = ../projectios.sqlite; sourceTree = "<group>"; };
-		6A84F0151DE6BBD100499F82 /* Database.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Database.swift; sourceTree = "<group>"; };
 		6A84F0171DE6BC3200499F82 /* UserLoginAndRegistration-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UserLoginAndRegistration-Bridging-Header.h"; sourceTree = "<group>"; };
 		6A84F01B1DE6C50400499F82 /* libsqlite3.0.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.0.tbd; path = usr/lib/libsqlite3.0.tbd; sourceTree = SDKROOT; };
 		6A86E6551E01138D00E7073E /* AddFriendViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddFriendViewController.swift; sourceTree = "<group>"; };
@@ -229,7 +226,6 @@
 				4D9222CF1E4605A400A80EF0 /* DB */,
 				6A3841331DFFAC1C00833349 /* CalendarView */,
 				6AAB71221DF00A4400C4980D /* UserLoginAndRegistration.entitlements */,
-				6A84F0141DE6BB5E00499F82 /* projectios.sqlite */,
 				6A9340C51DF9476700B7CC1A /* Main.storyboard */,
 				94F140B31A5F95B100EC1BC9 /* AppDelegate.swift */,
 				94F140B51A5F95B100EC1BC9 /* ViewController.swift */,
@@ -239,7 +235,6 @@
 				94D7A55B1A6631990027A85F /* RegisterPageViewController.swift */,
 				6A89DC271DCB1E59006D4E3E /* CalendarViewController.swift */,
 				6A89DC291DCB2B2A006D4E3E /* newEventViewController.swift */,
-				6A84F0151DE6BBD100499F82 /* Database.swift */,
 				94D7A55D1A66365A0027A85F /* LoginViewController.swift */,
 				AB25BB6A1DACAEC9005E553C /* MapViewController.swift */,
 				6A4704E01E0B833A002077CF /* DetailViewController.swift */,
@@ -434,7 +429,6 @@
 				6A7B130B1E07C26100A3CC09 /* MapCalendarViewController.swift in Sources */,
 				6A38413A1DFFAC2B00833349 /* CalendarHeaderView.swift in Sources */,
 				6A38413D1DFFD30B00833349 /* EventViewCell.swift in Sources */,
-				6A84F0161DE6BBD100499F82 /* Database.swift in Sources */,
 				6A8AFFC51E39B3570020A960 /* MapCalViewController.swift in Sources */,
 				94D7A55C1A66319A0027A85F /* RegisterPageViewController.swift in Sources */,
 				6A91F1181DCB560900147A18 /* menuViewController.swift in Sources */,
