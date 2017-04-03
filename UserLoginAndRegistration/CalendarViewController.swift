@@ -41,6 +41,8 @@ class CalendarViewController: UIViewController, UIPopoverPresentationControllerD
     @IBOutlet weak var leading: NSLayoutConstraint!
     
     @IBAction func logout(_ sender: Any) {
+//    }
+//    @IBAction func logout(_ sender: Any) {
         do {
             
             try FIRAuth.auth()?.signOut()
@@ -421,9 +423,12 @@ class CalendarViewController: UIViewController, UIPopoverPresentationControllerD
         
         var vc = storyboard.instantiateViewController(withIdentifier: "detailView") as! DetailViewController
         
+        var myStringArr = calendarEventSelect.location.components(separatedBy: "///")
+        
         vc.detailtitle = calendarEventSelect.title
         vc.detaildate = calendarEventSelect.startDate
-        vc.detailLocation = calendarEventSelect.location
+        vc.detailLocation = myStringArr[0]
+        vc.uidevent = myStringArr[1]
         
         
         self.present(vc, animated: true, completion: nil)

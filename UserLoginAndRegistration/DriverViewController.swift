@@ -18,6 +18,10 @@ class DriverViewController: UIViewController, MKMapViewDelegate, CLLocationManag
     private var userLocation : CLLocationCoordinate2D?
     private var passengerLocation : CLLocationCoordinate2D?
     
+    var message = ""
+    var title1 = ""
+    var requestAlive = true
+    
     private var timer = Timer()
     
 //    var pass = PassengerViewController()
@@ -121,6 +125,93 @@ class DriverViewController: UIViewController, MKMapViewDelegate, CLLocationManag
 //        if !acceptedCarpool {
             print("tam mai mun in wa")
             print(whereto)
+        self.message = "You have a reauest for a carpool at this location Lat: \(lat), Long: \(long) number \(no) where to \(whereto)"
+        self.title1 = "Carpool Request"
+        DBProvider.Instance.requestRef.observe(FIRDataEventType.childAdded){ (snapshot: FIRDataSnapshot) in
+            
+            CarpoolDriverHandler.instace.uid_req = snapshot.key
+            
+            //            let value = snapshot.value as! NSDictionary
+            //            let name = value[Constants.NAME] as! String
+            
+            //            CarpoolDriverHandler.instace.setuidReq(uid: snapshot.key)
+            print("aaaaaaaaaa\(CarpoolDriverHandler.instace.uid_test)")
+            print("bbbbbbbbbb\(CarpoolDriverHandler.instace.uid_req)")
+            if(CarpoolDriverHandler.instace.uid_test == CarpoolDriverHandler.instace.uid_req){
+                
+                print("I'm coming")
+//                print(message)
+                //            if(name == CarpoolDriverHandler.instace.user){
+                
+                //                DBProvider.Instance.requestRef.child((CarpoolDriverHandler.instace.uid_req)).observeSingleEvent(of: .value, with: { (snapshot) in
+                //
+                //
+                //                    let value = snapshot.value as! NSDictionary
+                //
+                //                    let status = value[Constants.STATUS_CARPOOL] as! String
+                //                    //                    let status = "busy"
+                //                    print(status)
+                //                    if(status == "wait"){
+                //                        CarpoolDriverHandler.instace.setStatus(s:true)
+                ////                        print(self.status)
+                //                    }else{
+                //                        CarpoolDriverHandler.instace.setStatus(s:false)
+                ////                        print(self.status)
+                //                    }
+                //
+                //                    if (CarpoolDriverHandler.instace.getStatus()){
+                //                        print("eieieieieieieieieieieiei")
+                
+                let alert = UIAlertController(title: self.title1, message:self.message, preferredStyle: .alert)
+//                print(message)
+                if self.requestAlive {
+                    print("GGEZ")
+                    let accept = UIAlertAction(title: "Accept", style: .default, handler: { (alertAction: UIAlertAction) in
+                        self.acceptedCarpool = true
+                        self.acceptCarpoolBtn.isHidden = false
+                        //                CarpoolHandler.instace.observeMessageForPassenger()
+                        //                CarpoolHandler.instace.delegate = self
+                        CarpoolDriverHandler.instace.statusRequest(status: "busy")
+                        
+                        //                                self.timer = Timer.scheduledTimer(timeInterval:TimeInterval(10), target: self, selector: #selector(DriverViewController.updateDriverLocation), userInfo: nil, repeats: true)
+                        
+                        CarpoolDriverHandler.instace.carpoolAccepted(lat: Double(self.userLocation!.latitude), long: self.userLocation!.longitude)
+                        //test
+                        //                                CarpoolDriverHandler.instace.updateSeat()
+                        
+                    })
+                    
+//                    let cancel = UIAlertAction(title: "Cancel", style: .default, handler: nil)
+                    
+                    let cancel = UIAlertAction(title: "Cancel", style: .default, handler: {(alertAction: UIAlertAction) in
+                        
+                        CarpoolDriverHandler.instace.statusRequest(status: "wait")
+                        
+                    })
+                    
+                    //            pass.canCallCarpool(delegateCalled: false)
+                    
+                    alert.addAction(accept)
+                    alert.addAction(cancel)
+                    
+                }
+                    
+                else{
+                    
+                    let ok = UIAlertAction(title: "OK", style: .default, handler: nil)
+                    alert.addAction(ok)
+                }
+                
+                self.present(alert, animated:true, completion: nil)
+            }
+            
+            
+            //                })
+            //            }
+            //             self.checkTest()
+            
+        }
+
             carpoolRequest(title: "Carpool Request", message: "You have a reauest for a carpool at this location Lat: \(lat), Long: \(long) number \(no) where to \(whereto)", requestAlive: true)
 //        }
 
@@ -152,86 +243,90 @@ class DriverViewController: UIViewController, MKMapViewDelegate, CLLocationManag
 //        CarpoolDriverHandler.instace.checkTest()
 //        print("status naja \(CarpoolDriverHandler.instace.status)")
         
-        DBProvider.Instance.requestRef.observe(FIRDataEventType.childAdded){ (snapshot: FIRDataSnapshot) in
-            
-            CarpoolDriverHandler.instace.uid_req = snapshot.key
-            
-//            let value = snapshot.value as! NSDictionary
-//            let name = value[Constants.NAME] as! String
-            
-//            CarpoolDriverHandler.instace.setuidReq(uid: snapshot.key)
-            print("aaaaaaaaaa\(CarpoolDriverHandler.instace.uid_test)")
-            print("bbbbbbbbbb\(CarpoolDriverHandler.instace.uid_req)")
-            if(CarpoolDriverHandler.instace.uid_test == CarpoolDriverHandler.instace.uid_req){
-                
-                print("I'm coming")
-                print(message)
-//            if(name == CarpoolDriverHandler.instace.user){
         
-//                DBProvider.Instance.requestRef.child((CarpoolDriverHandler.instace.uid_req)).observeSingleEvent(of: .value, with: { (snapshot) in
-//                    
-//                    
-//                    let value = snapshot.value as! NSDictionary
-//                    
-//                    let status = value[Constants.STATUS_CARPOOL] as! String
-//                    //                    let status = "busy"
-//                    print(status)
-//                    if(status == "wait"){
-//                        CarpoolDriverHandler.instace.setStatus(s:true)
-////                        print(self.status)
-//                    }else{
-//                        CarpoolDriverHandler.instace.setStatus(s:false)
-////                        print(self.status)
-//                    }
-//                    
-//                    if (CarpoolDriverHandler.instace.getStatus()){
-//                        print("eieieieieieieieieieieiei")
-                
-                        let alert = UIAlertController(title: title, message:message, preferredStyle: .alert)
-                        print(message)
-                        if requestAlive {
-                            print("GGEZ")
-                            let accept = UIAlertAction(title: "Accept", style: .default, handler: { (alertAction: UIAlertAction) in
-                                
-                                self.acceptedCarpool = true
-                                self.acceptCarpoolBtn.isHidden = false
-                                //                CarpoolHandler.instace.observeMessageForPassenger()
-                                //                CarpoolHandler.instace.delegate = self
-//                                CarpoolDriverHandler.instace.statusRequest(status: "busy")
-                                
-                                self.timer = Timer.scheduledTimer(timeInterval:TimeInterval(10), target: self, selector: #selector(DriverViewController.updateDriverLocation), userInfo: nil, repeats: true)
-                                
-                                CarpoolDriverHandler.instace.carpoolAccepted(lat: Double(self.userLocation!.latitude), long: self.userLocation!.longitude)
-                                //test
-//                                CarpoolDriverHandler.instace.updateSeat()
-                                
-                            })
-                            
-                            let cancel = UIAlertAction(title: "Cancel", style: .default, handler: nil)
-                            
-                            //            pass.canCallCarpool(delegateCalled: false)
-                            
-                            alert.addAction(accept)
-                            alert.addAction(cancel)
-                            
-                        }
-                            
-                        else{
-                            
-                            let ok = UIAlertAction(title: "OK", style: .default, handler: nil)
-                            alert.addAction(ok)
-                        }
-                        
-                        self.present(alert, animated:true, completion: nil)
-            }
-            
-                    
-//                })
+        
+//        DBProvider.Instance.requestRef.observe(FIRDataEventType.childAdded){ (snapshot: FIRDataSnapshot) in
+//            
+//            CarpoolDriverHandler.instace.uid_req = snapshot.key
+//            
+////            let value = snapshot.value as! NSDictionary
+////            let name = value[Constants.NAME] as! String
+//            
+////            CarpoolDriverHandler.instace.setuidReq(uid: snapshot.key)
+//            print("aaaaaaaaaa\(CarpoolDriverHandler.instace.uid_test)")
+//            print("bbbbbbbbbb\(CarpoolDriverHandler.instace.uid_req)")
+//            if(CarpoolDriverHandler.instace.uid_test == CarpoolDriverHandler.instace.uid_req){
+//                
+//                print("I'm coming")
+//                print(message)
+////            if(name == CarpoolDriverHandler.instace.user){
+//        
+////                DBProvider.Instance.requestRef.child((CarpoolDriverHandler.instace.uid_req)).observeSingleEvent(of: .value, with: { (snapshot) in
+////                    
+////                    
+////                    let value = snapshot.value as! NSDictionary
+////                    
+////                    let status = value[Constants.STATUS_CARPOOL] as! String
+////                    //                    let status = "busy"
+////                    print(status)
+////                    if(status == "wait"){
+////                        CarpoolDriverHandler.instace.setStatus(s:true)
+//////                        print(self.status)
+////                    }else{
+////                        CarpoolDriverHandler.instace.setStatus(s:false)
+//////                        print(self.status)
+////                    }
+////                    
+////                    if (CarpoolDriverHandler.instace.getStatus()){
+////                        print("eieieieieieieieieieieiei")
+//                
+//                        let alert = UIAlertController(title: title, message:message, preferredStyle: .alert)
+//                        print(message)
+//                        if requestAlive {
+//                            print("GGEZ")
+//                            let accept = UIAlertAction(title: "Accept", style: .default, handler: { (alertAction: UIAlertAction) in
+//                                
+//                                self.acceptedCarpool = true
+//                                self.acceptCarpoolBtn.isHidden = false
+//                                //                CarpoolHandler.instace.observeMessageForPassenger()
+//                                //                CarpoolHandler.instace.delegate = self
+////                                CarpoolDriverHandler.instace.statusRequest(status: "busy")
+//                                
+////                                self.timer = Timer.scheduledTimer(timeInterval:TimeInterval(10), target: self, selector: #selector(DriverViewController.updateDriverLocation), userInfo: nil, repeats: true)
+//                                
+//                                CarpoolDriverHandler.instace.carpoolAccepted(lat: Double(self.userLocation!.latitude), long: self.userLocation!.longitude)
+//                                //test
+////                                CarpoolDriverHandler.instace.updateSeat()
+//                                
+//                            })
+//                            
+//                            let cancel = UIAlertAction(title: "Cancel", style: .default, handler: nil)
+//                            
+//                            //            pass.canCallCarpool(delegateCalled: false)
+//                            
+//                            alert.addAction(accept)
+//                            alert.addAction(cancel)
+//                            
+//                        }
+//                            
+//                        else{
+//                            
+//                            let ok = UIAlertAction(title: "OK", style: .default, handler: nil)
+//                            alert.addAction(ok)
+//                        }
+//                        
+//                        self.present(alert, animated:true, completion: nil)
 //            }
-            //             self.checkTest()
-            
-        }
+//            
+//                    
+////                })
+////            }
+//            //             self.checkTest()
+//            
+//        }
 
+        
+        
 //        if (CarpoolDriverHandler.instace.getStatus()){
 //            print("eieieieieieieieieieieiei")
 //        let alert = UIAlertController(title: title, message:message, preferredStyle: .alert)
