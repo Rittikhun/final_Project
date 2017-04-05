@@ -20,7 +20,7 @@ class RegisterPageViewController: UIViewController {
     @IBOutlet weak var nameTextField: UITextField!
     @IBOutlet weak var usernameTextField: UITextField!
     
-    let db = Database.getSharedInstance()
+//    let db = Database.getSharedInstance()
     var mRootRef:FIRDatabaseReference!
     
     

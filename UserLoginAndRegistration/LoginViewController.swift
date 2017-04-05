@@ -15,7 +15,7 @@ class LoginViewController: UIViewController {
     @IBOutlet weak var userEmailTextField: UITextField!
     @IBOutlet weak var userPasswordTextField: UITextField!
     
-    let db = Database.getSharedInstance()
+//    let db = Database.getSharedInstance()
     var mRootRef:FIRDatabaseReference!
     
     
