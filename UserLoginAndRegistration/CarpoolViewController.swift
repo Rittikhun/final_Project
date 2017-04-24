@@ -68,8 +68,13 @@ class CarpoolViewController: UIViewController, CLLocationManagerDelegate,MKMapVi
         DBProvider.Instance.locationRef.child((DBProvider.Instance.username?.uid)!).updateChildValues([Constants.NAME:self.name,Constants.LATITUDE:userLocation?.latitude,Constants.LONGITUDE:userLocation?.longitude])
     }
     
+    //test
+    func btnConnectTouched(sender: UIButton!) {
+        print("button connect touched");
+    }
+    
     @IBAction func passengerBtn(_ sender: Any) {
-
+        
         DBProvider.Instance.statusCarpool(status: "passenger")
         
     }

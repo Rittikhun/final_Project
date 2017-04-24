@@ -132,6 +132,10 @@ class RegisterPageViewController: UIViewController {
                                     
                                     self.mRootRef.child("event pending").child(userID!).setValue(["title": "","location": "","date": "","uid": "","uidevent": ""])
                                     
+                                    self.mRootRef.child("passenger").child(Name).setValue(["rate": 0.0 , "comment":"","time":0])
+                                    
+                                    self.mRootRef.child("driver").child(Name).setValue(["rate": 0.0 , "comment":"","time":0])
+                                    
                                     print("sdasds")
                                     
                                     var myAlert = UIAlertController(title:"Alert", message:"Registration is successful. Thank you!", preferredStyle: UIAlertControllerStyle.alert);

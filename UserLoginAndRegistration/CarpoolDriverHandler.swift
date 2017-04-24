@@ -10,10 +10,11 @@ import Foundation
 import FirebaseDatabase
 
 protocol CarpoolDriverController: class {
-    func acceptCarpool(lat:Double,long:Double,no:Int,whereto:String)
-    func passengerCanceledCarpool()
+    func acceptCarpool(lat:Double,long:Double,no:Int,whereto:String,name:String)
+    func passengerCanceledCarpool(name:String)
     func carpoolCanceled()
     func updatePassengerLocation(lat:Double,long:Double)
+    func arrived(name:String)
 }
 
 class CarpoolDriverHandler{
@@ -35,13 +36,13 @@ class CarpoolDriverHandler{
         return instance
     }
     
-    
     func observeMessagesForDriver() {
         DBProvider.Instance.requestRef.observe(FIRDataEventType.childAdded){ (snapshot: FIRDataSnapshot) in
 //            self.uid_req = snapshot.key
 //            print("driver uid_req \(self.uid_req)")
             if let data = snapshot.value as? NSDictionary {
                 print(data)
+                let name = data[Constants.NAME] as! String
                 if let latitude = data[Constants.LATITUDE] as? Double {
                     if let longitude = data[Constants.LONGITUDE] as? Double {
                         if let no = data[Constants.NO] as? Int{
@@ -49,7 +50,7 @@ class CarpoolDriverHandler{
                             if let whereto = data[Constants.WHERETO] as? String{
                                 if let status = data[Constants.STATUS_CARPOOL] as? String{
                                     if status == "wait"{
-                                        self.delegate?.acceptCarpool(lat: latitude, long: longitude, no:no,whereto: whereto)
+                                        self.delegate?.acceptCarpool(lat: latitude, long: longitude, no:no,whereto: whereto, name:name)
                                         print("lognaja")
                                         print(whereto)
                                         self.setuidReq(uid: snapshot.key)
@@ -72,12 +73,30 @@ class CarpoolDriverHandler{
             DBProvider.Instance.requestRef.observe(FIRDataEventType.childRemoved, with: {(snapshot: FIRDataSnapshot) in
                 
                 if let data = snapshot.value as? NSDictionary{
-                    if let name = data[Constants.NAME] as? String{
-                        if name == self.passenger{
-                            self.passenger = ""
-                            self.delegate?.passengerCanceledCarpool()
+                    let ar = data[Constants.ARRIVED] as! Bool
+                    let name = data[Constants.NAME] as! String
+                    if ar {
+                        
+                        
+                        self.delegate?.carpoolCanceled()
+                        
+                        self.delegate?.arrived(name: name)
+                        
+                        
+                    } else{
+                        if let name = data[Constants.NAME] as? String{
+                            if name == self.passenger{
+                                self.passenger = ""
+                                self.delegate?.passengerCanceledCarpool(name:name)
+                            }
                         }
                     }
+//                    if let name = data[Constants.NAME] as? String{
+//                        if name == self.passenger{
+//                            self.passenger = ""
+//                            self.delegate?.passengerCanceledCarpool()
+//                        }
+//                    }
                 }
                 
             })
@@ -131,9 +150,23 @@ class CarpoolDriverHandler{
         
     }
     
-    func cancelCarpoolForDriver(){
+    func cancelCarpoolForDriver(name:String){
         
-        DBProvider.Instance.requestAcceptedRef.child(/*uid*/user).removeValue()
+//        DBProvider.Instance.requestAcceptedRef.child(/*uid*/user).removeValue()
+        
+        DBProvider.Instance.requestRef.child((self.uid_test)).observeSingleEvent(of: .value, with: { (snapshot) in
+            
+            let value = snapshot.value as! NSDictionary
+            
+            let seat = value[Constants.NO] as! Int
+            
+            self.updateSeat(seat: seat)
+            
+//            DBProvider.Instance.requestRef.child(name).updateChildValues([Constants.ARRIVED:true])
+//            DBProvider.Instance.requestRef.child(name).removeValue()
+            
+        })
+        
         
     }
     
@@ -157,7 +190,9 @@ class CarpoolDriverHandler{
             
             let usernamef = value["name"] as! String
             
-            CarpoolDriverHandler.instace.user = usernamef
+            self.user = usernamef
+            
+            print(self.user)
             
             DBProvider.Instance.requestAcceptedRef.child(self.user).observeSingleEvent(of: .value, with: { (snapshot) in
                 if snapshot.childrenCount != 0 {
@@ -169,11 +204,13 @@ class CarpoolDriverHandler{
                 if totalseat <= 4 {
                 let data : Dictionary<String, Any> = [Constants.NAME: self.user, Constants.LATITUDE: lat , Constants.LONGITUDE: long,Constants.SEAT: totalseat]
                 DBProvider.Instance.requestAcceptedRef.child(self.user).setValue(data)
-                    
+                print(self.user)
+                DBProvider.Instance.requestRef.child(self.uid_test).updateChildValues([Constants.DRIVER:self.user])
 //                    self.statusRequest(status: "busy")
                     
                 }
-                }else{
+                }
+                else{
                     let data : Dictionary<String, Any> = [Constants.NAME: self.user, Constants.LATITUDE: lat , Constants.LONGITUDE: long,Constants.SEAT: self.no]
                     DBProvider.Instance.requestAcceptedRef.child(self.user).setValue(data)
                 }
@@ -202,12 +239,58 @@ class CarpoolDriverHandler{
         DBProvider.Instance.requestAcceptedRef.child(/*uid*/user).updateChildValues([Constants.LATITUDE:lat , Constants.LONGITUDE:long])
     }
     
-    func updateSeat(){
+    func updateSeat(seat:Int){
         print(uid)
+        DBProvider.Instance.requestAcceptedRef.child(self.user).observeSingleEvent(of: .value, with: { (snapshot) in
+                if snapshot.childrenCount != 0 {
+                    let value = snapshot.value as! NSDictionary
+                    let no = value["seat"] as! Int
+                    
+                    var totalseat = no - seat
+                    
+                    DBProvider.Instance.requestAcceptedRef.child(self.user).updateChildValues([Constants.SEAT:totalseat])
+            }
+        })
+
+        
 //        DBProvider.Instance.requestAcceptedRef.child(uid).updateChildValues([Constants.SEAT:""])
     }
     
-    func statusRequest(status:String){
+    func arrived(name:String){
+//        DBProvider.Instance.requestRef.child(self.uid_test).removeValue()
+        
+//        DBProvider.Instance.requestRef.observe(FIRDataEventType.childAdded){ (snapshot: FIRDataSnapshot) in
+//            
+//            self.uid_req = snapshot.key
+//            
+//            //            print("st c \(self.uid_req)")
+//            
+//            print("driver uid_req test \(self.uid_req)")
+//            print("driver uid_test \(self.uid_test)")
+//            if(self.uid_test == self.uid_req){
+        
+                DBProvider.Instance.requestRef.child((self.uid_test)).observeSingleEvent(of: .value, with: { (snapshot) in
+//                    // Get user value
+//                    print("uid_req test2 \(self.uid_test)")
+//                    
+                    let value = snapshot.value as! NSDictionary
+                    
+                    let seat = value[Constants.NO] as! Int
+                    
+                    self.updateSeat(seat: seat)
+        
+                    DBProvider.Instance.requestRef.child(name).updateChildValues([Constants.ARRIVED:true])
+                    DBProvider.Instance.requestRef.child(name).removeValue()
+                    
+                })
+//            }
+//            
+//            
+//        }
+        
+    }
+    
+    func statusRequest(status:String,arrived:Bool){
         DBProvider.Instance.requestRef.observe(FIRDataEventType.childAdded){ (snapshot: FIRDataSnapshot) in
             
             self.uid_req = snapshot.key
@@ -232,7 +315,9 @@ class CarpoolDriverHandler{
                     
                     let data : Dictionary<String, Any> = [Constants.NAME: usernamef, Constants.LATITUDE: lat , Constants.LONGITUDE: long,Constants.NO: no,Constants.WHERETO:whereto,Constants.STATUS_CARPOOL:status]
                     
-                    DBProvider.Instance.requestRef.child(self.uid_test).setValue(data)
+                    print("test user naja \(self.user)")
+                    
+                    DBProvider.Instance.requestRef.child(self.uid_test).updateChildValues([Constants.STATUS_CARPOOL:status,Constants.ARRIVED:arrived,Constants.DRIVER:self.uid_req])
                     
                     
                 })
@@ -241,6 +326,10 @@ class CarpoolDriverHandler{
             
         }
         
+    }
+    
+    func statusRequest(status:String,arrived:Bool,name:String){
+        DBProvider.Instance.requestRef.child(name).updateChildValues([Constants.STATUS_CARPOOL:status,Constants.ARRIVED:arrived])
     }
     
     func getStatus() -> Bool {

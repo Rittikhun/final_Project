@@ -9,11 +9,12 @@
 import UIKit
 import MapKit
 
-class DriverViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDelegate, CarpoolDriverController {
+class DriverViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDelegate, CarpoolDriverController , UITableViewDelegate , UITableViewDataSource{
 
     @IBOutlet weak var map: MKMapView!
     @IBOutlet weak var acceptCarpoolBtn: UIButton!
     
+    @IBOutlet weak var arrivedBtn: UIButton!
     private var locationManager = CLLocationManager()
     private var userLocation : CLLocationCoordinate2D?
     private var passengerLocation : CLLocationCoordinate2D?
@@ -22,7 +23,11 @@ class DriverViewController: UIViewController, MKMapViewDelegate, CLLocationManag
     var title1 = ""
     var requestAlive = true
     
+    var passenger : [String] = []
+    
     private var timer = Timer()
+    
+    @IBOutlet weak var tableview: UITableView!
     
 //    var pass = PassengerViewController()
     
@@ -41,6 +46,9 @@ class DriverViewController: UIViewController, MKMapViewDelegate, CLLocationManag
     }
     
     private func initializaLocationManager(){
+        
+        
+        
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         locationManager.requestWhenInUseAuthorization()
@@ -86,11 +94,63 @@ class DriverViewController: UIViewController, MKMapViewDelegate, CLLocationManag
         
     }
     
-    func passengerCanceledCarpool(){
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        
+        
+        
+        return self.passenger.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = self.tableview.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! UITableViewCell
+        cell.textLabel?.text = self.passenger[indexPath.row]
+       
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        
+        var cancel = UITableViewRowAction(style: .default, title: "Cancel", handler: {
+            (action,indexPath) in
+            
+//            if self.acceptedCarpool{
+            
+                self.driverCanceledCarpool = true
+                self.acceptCarpoolBtn.isHidden = true
+                //            arrivedBtn.isHidden = true
+            CarpoolDriverHandler.instace.statusRequest(status: "wait",arrived:false,name:self.passenger[indexPath.row])
+                CarpoolDriverHandler.instace.cancelCarpoolForDriver(name: self.passenger[indexPath.row])
+                self.passenger.remove(at: indexPath.row)
+                self.tableview.deleteRows(at: [indexPath], with: .automatic)
+                self.timer.invalidate()
+//            }
+            
+        })
+        
+        var arrived = UITableViewRowAction(style: .default, title: "Arrived", handler: {
+            (action,indexPath) in
+            print(self.passenger[indexPath.row])
+            
+//            if self.acceptedCarpool{
+                CarpoolDriverHandler.instace.arrived(name: self.passenger[indexPath.row])
+                self.passenger.remove(at: indexPath.row)
+                self.tableview.deleteRows(at: [indexPath], with: .automatic)
+//            }
+            
+        })
+        
+        arrived.backgroundColor = UIColor.gray
+
+        return [cancel,arrived]
+        
+    }
+    
+    func passengerCanceledCarpool(name:String){
         if !driverCanceledCarpool{
-            CarpoolDriverHandler.instace.cancelCarpoolForDriver()
+            CarpoolDriverHandler.instace.cancelCarpoolForDriver(name:name)
             self.acceptedCarpool = false
             self.acceptCarpoolBtn.isHidden = true
+            self.arrivedBtn.isHidden = true
             carpoolRequest(title: "Carpool Canceled", message: "The Passenger Has Cenceled The Carpool", requestAlive: false)
             
         }
@@ -99,7 +159,8 @@ class DriverViewController: UIViewController, MKMapViewDelegate, CLLocationManag
     @IBAction func back(_ sender: Any) {
         if acceptedCarpool{
             acceptCarpoolBtn.isHidden = true
-            CarpoolDriverHandler.instace.cancelCarpoolForDriver()
+            arrivedBtn.isHidden = true
+//            CarpoolDriverHandler.instace.cancelCarpoolForDriver()
             timer.invalidate()
         }
         
@@ -112,17 +173,41 @@ class DriverViewController: UIViewController, MKMapViewDelegate, CLLocationManag
             
             driverCanceledCarpool = true
             acceptCarpoolBtn.isHidden = true
-            CarpoolDriverHandler.instace.statusRequest(status: "wait")
-            CarpoolDriverHandler.instace.cancelCarpoolForDriver()
+//            arrivedBtn.isHidden = true
+            CarpoolDriverHandler.instace.statusRequest(status: "wait",arrived:false)
+//            CarpoolDriverHandler.instace.cancelCarpoolForDriver()
             timer.invalidate()
             
         }
         
     }
     
-    func acceptCarpool(lat: Double, long: Double,no:Int,whereto:String) {
+    @IBAction func arrivedCarpool(_ sender: Any) {
+        
+        if acceptedCarpool{
+            
+//            driverCanceledCarpool = true
+//            acceptCarpoolBtn.isHidden = true
+//            arrivedBtn.isHidden = true
+//            CarpoolDriverHandler.instace.statusRequest(status: "wait")
+//            CarpoolDriverHandler.instace.cancelCarpoolForDriver()
+//            FIRDatabase.database().reference().child(Constants.REQUEST).child(CarpoolDriverHandler.instace.uid_test).removeValue()
+//            DBProvider.Instance.requestRef.child(CarpoolDriverHandler.instace.uid_test).removeValue()
+            
+//            CarpoolDriverHandler.instace.arrived()
+//            timer.invalidate()
+            
+        }
+
+        
+    }
+    
+    func acceptCarpool(lat: Double, long: Double,no:Int,whereto:String,name:String) {
         
 //        if !acceptedCarpool {
+        
+        self.passenger.append(name)
+//        self.tableview.reloadData()
             print("tam mai mun in wa")
             print(whereto)
         self.message = "You have a reauest for a carpool at this location Lat: \(lat), Long: \(long) number \(no) where to \(whereto)"
@@ -169,15 +254,20 @@ class DriverViewController: UIViewController, MKMapViewDelegate, CLLocationManag
                     let accept = UIAlertAction(title: "Accept", style: .default, handler: { (alertAction: UIAlertAction) in
                         self.acceptedCarpool = true
                         self.acceptCarpoolBtn.isHidden = false
+                        self.arrivedBtn.isHidden = false
                         //                CarpoolHandler.instace.observeMessageForPassenger()
                         //                CarpoolHandler.instace.delegate = self
-                        CarpoolDriverHandler.instace.statusRequest(status: "busy")
+                        CarpoolDriverHandler.instace.statusRequest(status: "busy",arrived:false)
                         
                         //                                self.timer = Timer.scheduledTimer(timeInterval:TimeInterval(10), target: self, selector: #selector(DriverViewController.updateDriverLocation), userInfo: nil, repeats: true)
-                        
                         CarpoolDriverHandler.instace.carpoolAccepted(lat: Double(self.userLocation!.latitude), long: self.userLocation!.longitude)
                         //test
                         //                                CarpoolDriverHandler.instace.updateSeat()
+                        
+                        
+//                        self.passenger.append(name)
+                        self.tableview.reloadData()
+                        
                         
                     })
                     
@@ -185,7 +275,8 @@ class DriverViewController: UIViewController, MKMapViewDelegate, CLLocationManag
                     
                     let cancel = UIAlertAction(title: "Cancel", style: .default, handler: {(alertAction: UIAlertAction) in
                         
-                        CarpoolDriverHandler.instace.statusRequest(status: "wait")
+                        CarpoolDriverHandler.instace.statusRequest(status: "wait",arrived:false)
+                        self.passenger.removeLast()
                         
                     })
                     
@@ -193,6 +284,7 @@ class DriverViewController: UIViewController, MKMapViewDelegate, CLLocationManag
                     
                     alert.addAction(accept)
                     alert.addAction(cancel)
+
                     
                 }
                     
@@ -220,7 +312,62 @@ class DriverViewController: UIViewController, MKMapViewDelegate, CLLocationManag
     func carpoolCanceled() {
         acceptedCarpool = false
         acceptCarpoolBtn.isHidden = true
+        arrivedBtn.isHidden = true
+        
+        
+        
         timer.invalidate()
+    }
+    
+    func arrived(name:String){
+        let alert = UIAlertController(title: "Arrived", message: "Please rate me", preferredStyle: .alert)
+        
+        func handler(act:UIAlertAction) {
+            print((act.title)!)
+            
+            var ratenaja = Double((act.title)!)
+            
+            let alert = UIAlertController(title: "Arrived", message: "Please rate me", preferredStyle: .alert)
+            alert.addTextField { (textField) in
+                textField.placeholder = "comment"
+            }
+            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (alertAction:UIAlertAction) in
+                let textField = alert.textFields![0] // Force unwrapping because we know it exists.
+                print("Text field: \((textField.text)!)")
+                
+                DBProvider.Instance.passengerRef.child(name).observeSingleEvent(of: .value, with: {
+                    (snapshot) in
+                    let value = snapshot.value as! NSDictionary
+                    
+                    var comment = value[Constants.COMMENT] as! String
+                    if comment != "" {
+                        comment = "\(comment) ,\((textField.text)!)"
+                    } else{
+                        comment = textField.text!
+                    }
+                    
+                    var rate = value[Constants.RATE] as! Double
+                    var time = value[Constants.TIME] as! Double
+                    
+                    time = time + 1
+                    rate = ((rate * (time-1)) + ratenaja!) / time
+                    
+                    print(rate)
+                    print(time)
+                    DBProvider.Instance.passengerRef.child(name).updateChildValues([Constants.COMMENT:comment,Constants.RATE:rate,Constants.TIME:time])
+                })
+                
+            }))
+            self.present(alert, animated: true, completion: nil)
+            
+            
+        }
+        for s in ["1", "2", "3", "4", "5"] {
+            alert.addAction(
+                UIAlertAction(title: s, style: .default, handler: handler))
+        }
+        
+        self.present(alert, animated: true, completion: nil)
     }
     
     func updatePassengerLocation(lat: Double, long: Double) {

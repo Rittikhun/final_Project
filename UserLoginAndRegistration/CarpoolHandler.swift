@@ -25,6 +25,8 @@ class CarpoolHandler{
     var driver = ""
     var uid_test = ""
     
+    var statusArrived = true
+    
     let username = FIRAuth.auth()?.currentUser
     
     static var instace: CarpoolHandler {
@@ -49,7 +51,7 @@ class CarpoolHandler{
             
             CarpoolHandler.instace.user = usernamef
             
-            let data : Dictionary<String, Any> = [Constants.NAME: self.user, Constants.LATITUDE: latitude , Constants.LONGITUDE: longitude,Constants.NO: no,Constants.WHERETO:whereto,Constants.STATUS_CARPOOL:"wait"]
+            let data : Dictionary<String, Any> = [Constants.NAME: self.user, Constants.LATITUDE: latitude , Constants.LONGITUDE: longitude,Constants.NO: no,Constants.WHERETO:whereto,Constants.STATUS_CARPOOL:"wait",Constants.ARRIVED:false,Constants.DRIVER:""]
             
 //            DBProvider.Instance.requestRef.childByAutoId().setValue(data)
             DBProvider.Instance.requestRef.child(self.user).setValue(data)
@@ -74,11 +76,30 @@ class CarpoolHandler{
                         print("The value is \(self.uid_req)!")
                         self.delegate?.canCallCarpool(delegateCalled: true)
                         
+                        self.statusArrived = (data[Constants.ARRIVED] as? Bool)!
+                        print(self.statusArrived)
                     }
                 }
             }
             
         }
+        
+        DBProvider.Instance.requestRef.observe(FIRDataEventType.childRemoved){ (snapshot: FIRDataSnapshot) in
+            
+            if let data = snapshot.value as? NSDictionary {
+                if let name = data[Constants.DRIVER] as? String {
+//                    if name == self.user {
+                        
+                        
+                        self.delegate?.driverAcceptedRequest(requestAccepted: false, drivername: name)
+                        
+                        
+//                    }
+                }
+            }
+            
+        }
+
         
         DBProvider.Instance.requestAcceptedRef.observe(FIRDataEventType.childAdded){ (snapshot: FIRDataSnapshot) in
             
@@ -138,39 +159,39 @@ class CarpoolHandler{
         DBProvider.Instance.requestRef.child(uid_req).updateChildValues([Constants.LATITUDE:lat , Constants.LONGITUDE:long])
     }
     
-    func statusRequest(status:String){
-        DBProvider.Instance.requestRef.observe(FIRDataEventType.childAdded){ (snapshot: FIRDataSnapshot) in
-            
-            self.uid_req = snapshot.key
-            
-            print("uid_req test \(self.uid_req)")
-            print("uid_test \(self.uid_test)")
-            if(self.uid_test == self.uid_req){
-                
-            DBProvider.Instance.requestRef.child((self.uid_req)).observeSingleEvent(of: .value, with: { (snapshot) in
-            // Get user value
-                print("uid_req test2 \(self.uid_req)")
-                
-                let value = snapshot.value as! NSDictionary
-            
-                let usernamef = value[Constants.NAME] as! String
-                let lat = value[Constants.LATITUDE] as! Double
-                let long = value[Constants.LONGITUDE] as! Double
-                let no = value[Constants.NO] as! NSNumber
-                let whereto = value[Constants.WHERETO] as! String
-            
-                let data : Dictionary<String, Any> = [Constants.NAME: usernamef, Constants.LATITUDE: lat , Constants.LONGITUDE: long,Constants.NO: no,Constants.WHERETO:whereto,Constants.STATUS_CARPOOL:status]
-            
-                DBProvider.Instance.requestRef.child(self.uid_req).setValue(data)
-                
-            
-            })
-            }
-            
-            
-        }
-        
-    }
+//    func statusRequest(status:String){
+//        DBProvider.Instance.requestRef.observe(FIRDataEventType.childAdded){ (snapshot: FIRDataSnapshot) in
+//            
+//            self.uid_req = snapshot.key
+//            
+//            print("uid_req test \(self.uid_req)")
+//            print("uid_test \(self.uid_test)")
+//            if(self.uid_test == self.uid_req){
+//                
+//            DBProvider.Instance.requestRef.child((self.uid_req)).observeSingleEvent(of: .value, with: { (snapshot) in
+//            // Get user value
+//                print("uid_req test2 \(self.uid_req)")
+//                
+//                let value = snapshot.value as! NSDictionary
+//            
+//                let usernamef = value[Constants.NAME] as! String
+//                let lat = value[Constants.LATITUDE] as! Double
+//                let long = value[Constants.LONGITUDE] as! Double
+//                let no = value[Constants.NO] as! NSNumber
+//                let whereto = value[Constants.WHERETO] as! String
+//            
+//                let data : Dictionary<String, Any> = [Constants.NAME: usernamef, Constants.LATITUDE: lat , Constants.LONGITUDE: long,Constants.NO: no,Constants.WHERETO:whereto,Constants.STATUS_CARPOOL:status]
+//            
+//                DBProvider.Instance.requestRef.child(self.uid_req).setValue(data)
+//                
+//            
+//            })
+//            }
+//            
+//            
+//        }
+//        
+//    }
     
     func setuidReq(uid:String){
         uid_test = uid

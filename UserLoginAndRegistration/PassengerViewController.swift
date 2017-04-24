@@ -222,11 +222,71 @@ class PassengerViewController: UIViewController, MKMapViewDelegate, CLLocationMa
                 alertTheUser(title: "Carpool Accepted", message: "\(drivername) Accepted Your Carpool Request")
             }
             else {
-                CarpoolHandler.instace.cancelCarpool()
-                //test
-                canCallCarpool(delegateCalled: false)
-                timer.invalidate()
-                alertTheUser(title: "Carpool Canceled", message: "\(drivername) Canceled Carpool Request")
+                //arrived
+                if CarpoolHandler.instace.statusArrived {
+                    canCallCarpool(delegateCalled: false)
+                    timer.invalidate()
+                    let alert = UIAlertController(title: "Arrived", message: "Please rate me", preferredStyle: .alert)
+                    
+                    func handler(act:UIAlertAction) {
+                        print((act.title)!)
+                        
+                        var ratenaja = Double((act.title)!)
+                        
+                        let alert = UIAlertController(title: "Arrived", message: "Please rate me", preferredStyle: .alert)
+                        alert.addTextField { (textField) in
+                            textField.placeholder = "comment"
+                        }
+                        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (alertAction:UIAlertAction) in
+                            let textField = alert.textFields![0] // Force unwrapping because we know it exists.
+                            print("Text field: \((textField.text)!)")
+                            
+                            DBProvider.Instance.driverRef.child(drivername).observeSingleEvent(of: .value, with: {
+                                (snapshot) in
+                                let value = snapshot.value as! NSDictionary
+                                
+                                var comment = value[Constants.COMMENT] as! String
+                                if comment != "" {
+                                    comment = "\(comment) ,\((textField.text)!)"
+                                }
+                                
+                                var rate = value[Constants.RATE] as! Double
+                                var time = value[Constants.TIME] as! Double
+                                
+                                
+                                time = time + 1
+                                rate = ((rate * (time-1)) + ratenaja!) / time
+                                
+                                
+                                DBProvider.Instance.driverRef.child(drivername).updateChildValues([Constants.COMMENT:comment,Constants.RATE:rate,Constants.TIME:time])
+                            })
+                            
+                        }))
+                        self.present(alert, animated: true, completion: nil)
+                        
+                        
+                    }
+                    for s in ["1", "2", "3", "4", "5"] {
+                        alert.addAction(
+                            UIAlertAction(title: s, style: .default, handler: handler))
+                    }
+                    
+                    self.present(alert, animated: true, completion: nil)
+
+                    
+                } else{
+                    CarpoolHandler.instace.cancelCarpool()
+                    //test
+                    canCallCarpool(delegateCalled: false)
+                    timer.invalidate()
+                    alertTheUser(title: "Carpool Canceled", message: "\(drivername) Canceled Carpool Request")
+                }
+                
+//                CarpoolHandler.instace.cancelCarpool()
+//                //test
+//                canCallCarpool(delegateCalled: false)
+//                timer.invalidate()
+//                alertTheUser(title: "Carpool Canceled", message: "\(drivername) Canceled Carpool Request")
             }
         }
         

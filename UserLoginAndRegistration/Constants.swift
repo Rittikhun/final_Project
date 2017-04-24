@@ -20,17 +20,25 @@ class Constants {
     static let STATUS_CARPOOL = "status_carpool"
     static let LOCATION = "location"
     
+    static let PASSENGER = "passenger"
+    static let DRIVER = "driver"
+    
     static let NAME = "name"
     static let LATITUDE = "latitude"
     static let LONGITUDE = "longitude"
     
     static let NO = "number"
     static let WHERETO = "whereto"
+    static let ARRIVED = "arrived"
     static let SEAT = "seat"
     
     static let USER = "users"
     
     static let EVENT = "event"
     static let UID = "uid"
+    
+    static let COMMENT = "comment"
+    static let RATE = "rate"
+    static let TIME = "time"
     
 }

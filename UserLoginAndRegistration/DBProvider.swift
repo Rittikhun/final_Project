@@ -51,6 +51,14 @@ class DBProvider {
         return ref.child(Constants.LOCATION)
     }
     
+    var driverRef: FIRDatabaseReference{
+        return ref.child(Constants.DRIVER)
+    }
+    
+    var passengerRef: FIRDatabaseReference{
+        return ref.child(Constants.PASSENGER)
+    }
+    
     func saveUser(ID:String, email:String, password: String, name:String){
 //        let data: Dictionary<String, Any> = [Constants.EMAIL:email,Constants.PASSWORD:password,Constants.NAME:name, Constants.STATUS : "None"]
         
