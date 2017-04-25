@@ -23,6 +23,8 @@ class DriverViewController: UIViewController, MKMapViewDelegate, CLLocationManag
     var title1 = ""
     var requestAlive = true
     
+    var rateDriver = 0.0
+    
     var passenger : [String] = []
     
     private var timer = Timer()
@@ -38,11 +40,35 @@ class DriverViewController: UIViewController, MKMapViewDelegate, CLLocationManag
         super.viewDidLoad()
         
         initializaLocationManager()
-        
+        getRateAvg()
         CarpoolDriverHandler.instace.delegate = self
         CarpoolDriverHandler.instace.observeMessagesForDriver()
 
         // Do any additional setup after loading the view.
+    }
+    
+    private func getRateAvg(){
+        
+        DBProvider.Instance.userRef.child((DBProvider.Instance.username?.uid)!).observeSingleEvent(of: .value, with: {
+            snapshot in
+            let value = snapshot.value as! NSDictionary
+            let name = value[Constants.NAME] as! String
+            DBProvider.Instance.driverRef.child(name).observeSingleEvent(of: .value, with: { snapshot in
+                
+                let value = snapshot.value as! NSDictionary
+                
+                self.rateDriver = value[Constants.RATEAVG] as! Double
+                
+            })
+        })
+        
+//        DBProvider.Instance.driverRef.child("mark").observeSingleEvent(of: .value, with: { snapshot in
+//            
+//            let value = snapshot.value as! NSDictionary
+//            
+//            self.rateDriver = value[Constants.RATEAVG] as! Double
+//            
+//        })
     }
     
     private func initializaLocationManager(){
@@ -202,15 +228,19 @@ class DriverViewController: UIViewController, MKMapViewDelegate, CLLocationManag
         
     }
     
-    func acceptCarpool(lat: Double, long: Double,no:Int,whereto:String,name:String) {
+    func acceptCarpool(lat: Double, long: Double,no:Int,whereto:String,name:String,rate:Double,ratepass:Double) {
         
 //        if !acceptedCarpool {
+        
+        print(rateDriver)
+        
+        if rateDriver >= rate {
         
         self.passenger.append(name)
 //        self.tableview.reloadData()
             print("tam mai mun in wa")
             print(whereto)
-        self.message = "You have a reauest for a carpool at this location Lat: \(lat), Long: \(long) number \(no) where to \(whereto)"
+        self.message = "You have a reauest for a carpool at this location Lat: \(lat), Long: \(long) number \(no) where to \(whereto) rate average \(ratepass)"
         self.title1 = "Carpool Request"
         DBProvider.Instance.requestRef.observe(FIRDataEventType.childAdded){ (snapshot: FIRDataSnapshot) in
             
@@ -303,6 +333,8 @@ class DriverViewController: UIViewController, MKMapViewDelegate, CLLocationManag
             //             self.checkTest()
             
         }
+            
+        }
 
             carpoolRequest(title: "Carpool Request", message: "You have a reauest for a carpool at this location Lat: \(lat), Long: \(long) number \(no) where to \(whereto)", requestAlive: true)
 //        }
@@ -346,15 +378,22 @@ class DriverViewController: UIViewController, MKMapViewDelegate, CLLocationManag
                         comment = textField.text!
                     }
                     
-                    var rate = value[Constants.RATE] as! Double
+                    var rate = value[Constants.RATE] as! String
                     var time = value[Constants.TIME] as! Double
+                    var rateavg = value[Constants.RATEAVG] as! Double
+                    
+                    if rate != "" {
+                        rate = "\(rate) ,\(ratenaja!)"
+                    } else{
+                        rate = "\(ratenaja!)"
+                    }
                     
                     time = time + 1
-                    rate = ((rate * (time-1)) + ratenaja!) / time
+                    rateavg = ((rateavg * (time-1)) + ratenaja!) / time
                     
                     print(rate)
                     print(time)
-                    DBProvider.Instance.passengerRef.child(name).updateChildValues([Constants.COMMENT:comment,Constants.RATE:rate,Constants.TIME:time])
+                    DBProvider.Instance.passengerRef.child(name).updateChildValues([Constants.COMMENT:comment,Constants.RATE:rate,Constants.TIME:time,Constants.RATEAVG:rateavg])
                 })
                 
             }))

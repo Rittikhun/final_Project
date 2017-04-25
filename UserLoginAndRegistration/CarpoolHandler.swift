@@ -33,7 +33,7 @@ class CarpoolHandler{
         return instance
     }
     
-    func requestCarpool(latitude: Double , longitude: Double,no:Int ,whereto:String){
+    func requestCarpool(latitude: Double , longitude: Double,no:Int ,whereto:String ,rate:Double){
         
         
         
@@ -51,7 +51,7 @@ class CarpoolHandler{
             
             CarpoolHandler.instace.user = usernamef
             
-            let data : Dictionary<String, Any> = [Constants.NAME: self.user, Constants.LATITUDE: latitude , Constants.LONGITUDE: longitude,Constants.NO: no,Constants.WHERETO:whereto,Constants.STATUS_CARPOOL:"wait",Constants.ARRIVED:false,Constants.DRIVER:""]
+            let data : Dictionary<String, Any> = [Constants.NAME: self.user, Constants.LATITUDE: latitude , Constants.LONGITUDE: longitude,Constants.NO: no,Constants.WHERETO:whereto,Constants.STATUS_CARPOOL:"wait",Constants.ARRIVED:false,Constants.DRIVER:"",Constants.RATE:rate]
             
 //            DBProvider.Instance.requestRef.childByAutoId().setValue(data)
             DBProvider.Instance.requestRef.child(self.user).setValue(data)

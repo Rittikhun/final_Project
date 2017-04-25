@@ -39,6 +39,7 @@ class Constants {
     
     static let COMMENT = "comment"
     static let RATE = "rate"
+    static let RATEAVG = "rateavg"
     static let TIME = "time"
     
 }

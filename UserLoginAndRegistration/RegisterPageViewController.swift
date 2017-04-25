@@ -132,9 +132,9 @@ class RegisterPageViewController: UIViewController {
                                     
                                     self.mRootRef.child("event pending").child(userID!).setValue(["title": "","location": "","date": "","uid": "","uidevent": ""])
                                     
-                                    self.mRootRef.child("passenger").child(Name).setValue(["rate": 0.0 , "comment":"","time":0])
+                                    self.mRootRef.child("passenger").child(Name).setValue(["rate": "" , "comment":"","time":0,"rateavg":0])
                                     
-                                    self.mRootRef.child("driver").child(Name).setValue(["rate": 0.0 , "comment":"","time":0])
+                                    self.mRootRef.child("driver").child(Name).setValue(["rate": "" , "comment":"","time":0,"rateavg":0])
                                     
                                     print("sdasds")
                                     

@@ -12,13 +12,15 @@ import MapKit
 //protocol HandleMapSearch {
 //    func dropPinZoomIn(_ placemark:MKPlacemark)
 //}
-class PassengerViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDelegate, CarpoolPassengerController/*,UISearchBarDelegate*/,HandleMapSearch{
+class PassengerViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDelegate, CarpoolPassengerController/*,UISearchBarDelegate*/,HandleMapSearch,UIPickerViewDelegate,UIPickerViewDataSource{
 
     @IBOutlet weak var map: MKMapView!
     @IBOutlet weak var callBtn: UIButton!
     
     @IBOutlet weak var number: UILabel!
     @IBOutlet weak var locationToGo: UITextField!
+    
+    @IBOutlet weak var rateText: UITextField!
     
 //    var searchController:UISearchController!
 //    var localSearchRequest:MKLocalSearchRequest!
@@ -27,7 +29,8 @@ class PassengerViewController: UIViewController, MKMapViewDelegate, CLLocationMa
     
     var resultSearchController:UISearchController? = nil
     var selectedPin:MKPlacemark? = nil
-
+    
+    var rate = ["0","1","2","3","4","5"]
     
     var no = 1 ;
     
@@ -36,6 +39,8 @@ class PassengerViewController: UIViewController, MKMapViewDelegate, CLLocationMa
     private var locationManager = CLLocationManager()
     private var userLocation : CLLocationCoordinate2D?
     private var DriverLocation : CLLocationCoordinate2D?
+    
+    private var picker = UIPickerView()
     
     private var timer = Timer()
     
@@ -48,6 +53,11 @@ class PassengerViewController: UIViewController, MKMapViewDelegate, CLLocationMa
         initializaLocationManager()
         CarpoolHandler.instace.observeMessageForPassenger()
         CarpoolHandler.instace.delegate = self
+        
+        picker.delegate = self
+        picker.dataSource = self
+        
+        rateText.inputView = picker
         
 //        let locationSearchTable = storyboard!.instantiateViewController(withIdentifier: "LocationSearchTable") as! LocationSearchTable
 //        searchController = UISearchController(searchResultsController: locationSearchTable)
@@ -250,15 +260,22 @@ class PassengerViewController: UIViewController, MKMapViewDelegate, CLLocationMa
                                     comment = "\(comment) ,\((textField.text)!)"
                                 }
                                 
-                                var rate = value[Constants.RATE] as! Double
+                                var rate = value[Constants.RATE] as! String
                                 var time = value[Constants.TIME] as! Double
+                                var rateavg = value[Constants.RATEAVG] as! Double
+                                
+                                if rate != "" {
+                                    rate = "\(rate) ,\(ratenaja!)"
+                                } else{
+                                    rate = "\(ratenaja!)"
+                                }
                                 
                                 
                                 time = time + 1
-                                rate = ((rate * (time-1)) + ratenaja!) / time
+                                rateavg = ((rateavg * (time-1)) + ratenaja!) / time
                                 
                                 
-                                DBProvider.Instance.driverRef.child(drivername).updateChildValues([Constants.COMMENT:comment,Constants.RATE:rate,Constants.TIME:time])
+                                DBProvider.Instance.driverRef.child(drivername).updateChildValues([Constants.COMMENT:comment,Constants.RATE:rate,Constants.TIME:time,Constants.RATEAVG:rateavg])
                             })
                             
                         }))
@@ -354,12 +371,12 @@ class PassengerViewController: UIViewController, MKMapViewDelegate, CLLocationMa
     }
 
     @IBAction func callDriver(_ sender: Any) {
-        if locationToGo.text != ""{
-        if userLocation != nil {
-            if canCallCarpool {
+        if (locationToGo.text != "" && rateText.text != "") {
+        if self.userLocation != nil {
+            if self.canCallCarpool {
                 
-                canCallCarpool(delegateCalled: canCallCarpool)
-                CarpoolHandler.instace.requestCarpool(latitude: Double(userLocation!.latitude), longitude: Double(userLocation!.longitude),no: no ,whereto:locationToGo.text!)
+                self.canCallCarpool(delegateCalled: self.canCallCarpool)
+                CarpoolHandler.instace.requestCarpool(latitude: Double(self.userLocation!.latitude), longitude: Double(self.userLocation!.longitude),no: no ,whereto:self.locationToGo.text!,rate:Double(rateText.text!)!)
                 
 //                CarpoolHandler.instace.statusRequest(status: "eiei")
                 
@@ -375,7 +392,7 @@ class PassengerViewController: UIViewController, MKMapViewDelegate, CLLocationMa
         }
         }
         else{
-            alertTheUser(title: "ลืมอะไรอ๊ะเปล่า", message: "โปรดระบุสถานที่ที่จะเดินทาง")
+            alertTheUser(title: "ลืมอะไรอ๊ะเปล่า", message: "ยังไม่ได้ระบุสถานที่เดินทางหรือคะแนนขั้นต่ำ")
         }
         
         
@@ -403,6 +420,23 @@ class PassengerViewController: UIViewController, MKMapViewDelegate, CLLocationMa
         
         return v
         
+    }
+    
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return 1
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        return rate.count
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        return rate[row]
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        rateText.text = rate[row]
+        self.view.endEditing(false)
     }
     
 //    func map(mapView: MKMapView, viewForAnnotation annotation: MKAnnotation) -> MKAnnotationView?

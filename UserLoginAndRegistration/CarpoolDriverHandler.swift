@@ -10,7 +10,7 @@ import Foundation
 import FirebaseDatabase
 
 protocol CarpoolDriverController: class {
-    func acceptCarpool(lat:Double,long:Double,no:Int,whereto:String,name:String)
+    func acceptCarpool(lat:Double,long:Double,no:Int,whereto:String,name:String,rate:Double,ratepass:Double)
     func passengerCanceledCarpool(name:String)
     func carpoolCanceled()
     func updatePassengerLocation(lat:Double,long:Double)
@@ -43,6 +43,7 @@ class CarpoolDriverHandler{
             if let data = snapshot.value as? NSDictionary {
                 print(data)
                 let name = data[Constants.NAME] as! String
+                let rate = data[Constants.RATE] as! Double
                 if let latitude = data[Constants.LATITUDE] as? Double {
                     if let longitude = data[Constants.LONGITUDE] as? Double {
                         if let no = data[Constants.NO] as? Int{
@@ -50,10 +51,22 @@ class CarpoolDriverHandler{
                             if let whereto = data[Constants.WHERETO] as? String{
                                 if let status = data[Constants.STATUS_CARPOOL] as? String{
                                     if status == "wait"{
-                                        self.delegate?.acceptCarpool(lat: latitude, long: longitude, no:no,whereto: whereto, name:name)
-                                        print("lognaja")
-                                        print(whereto)
-                                        self.setuidReq(uid: snapshot.key)
+                                        DBProvider.Instance.passengerRef.child(name).observeSingleEvent(of: .value, with: { snapshot in
+                                            
+                                            let value = snapshot.value as! NSDictionary
+                                            
+                                            var rateavg = value[Constants.RATEAVG] as! Double
+                                            
+                                            self.delegate?.acceptCarpool(lat: latitude, long: longitude, no:no,whereto: whereto, name:name, rate:rate, ratepass:rateavg)
+                                            print("lognaja")
+                                            print(whereto)
+                                            self.setuidReq(uid: snapshot.key)
+                                            
+                                        })
+//                                        self.delegate?.acceptCarpool(lat: latitude, long: longitude, no:no,whereto: whereto, name:name, rate:rate)
+//                                        print("lognaja")
+//                                        print(whereto)
+//                                        self.setuidReq(uid: snapshot.key)
                                     }
                                 }
 //                                self.delegate?.acceptCarpool(lat: latitude, long: longitude, no:no,whereto: whereto)
