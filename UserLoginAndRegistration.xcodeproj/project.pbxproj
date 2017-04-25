@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4D058DB61EAF58420017003C /* DetailCarpoolViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D058DB51EAF58420017003C /* DetailCarpoolViewController.swift */; };
+		4D058DB81EAF599D0017003C /* DetailCarpoolTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D058DB71EAF599D0017003C /* DetailCarpoolTableViewCell.swift */; };
 		4D9222D11E460A1A00A80EF0 /* CarpoolViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D9222D01E460A1A00A80EF0 /* CarpoolViewController.swift */; };
 		4D9222D31E460CE900A80EF0 /* DBProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D9222D21E460CE900A80EF0 /* DBProvider.swift */; };
 		4D9222D51E460DB100A80EF0 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D9222D41E460DB100A80EF0 /* Constants.swift */; };
@@ -68,6 +70,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		4D058DB51EAF58420017003C /* DetailCarpoolViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailCarpoolViewController.swift; sourceTree = "<group>"; };
+		4D058DB71EAF599D0017003C /* DetailCarpoolTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailCarpoolTableViewCell.swift; sourceTree = "<group>"; };
 		4D9222D01E460A1A00A80EF0 /* CarpoolViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CarpoolViewController.swift; sourceTree = "<group>"; };
 		4D9222D21E460CE900A80EF0 /* DBProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DBProvider.swift; sourceTree = "<group>"; };
 		4D9222D41E460DB100A80EF0 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
@@ -260,6 +264,8 @@
 				4D9222D01E460A1A00A80EF0 /* CarpoolViewController.swift */,
 				4D9222D61E461A2000A80EF0 /* DriverViewController.swift */,
 				4D9222D81E461A6000A80EF0 /* PassengerViewController.swift */,
+				4D058DB51EAF58420017003C /* DetailCarpoolViewController.swift */,
+				4D058DB71EAF599D0017003C /* DetailCarpoolTableViewCell.swift */,
 			);
 			path = UserLoginAndRegistration;
 			sourceTree = "<group>";
@@ -418,6 +424,7 @@
 				6A89DC2A1DCB2B2A006D4E3E /* newEventViewController.swift in Sources */,
 				94F140B41A5F95B100EC1BC9 /* AppDelegate.swift in Sources */,
 				C501427F1DFEDE97001EEE0F /* SettingViewController.swift in Sources */,
+				4D058DB81EAF599D0017003C /* DetailCarpoolTableViewCell.swift in Sources */,
 				4D9222D51E460DB100A80EF0 /* Constants.swift in Sources */,
 				C54E4ADD1E0AE6FC00B944BD /* FriendListViewCell.swift in Sources */,
 				6A86E6561E01138D00E7073E /* AddFriendViewController.swift in Sources */,
@@ -429,6 +436,7 @@
 				4D9222D11E460A1A00A80EF0 /* CarpoolViewController.swift in Sources */,
 				AB25BB6B1DACAEC9005E553C /* MapViewController.swift in Sources */,
 				4D9222D71E461A2000A80EF0 /* DriverViewController.swift in Sources */,
+				4D058DB61EAF58420017003C /* DetailCarpoolViewController.swift in Sources */,
 				4D9222D91E461A6000A80EF0 /* PassengerViewController.swift in Sources */,
 				4D9222D31E460CE900A80EF0 /* DBProvider.swift in Sources */,
 				6A7B130B1E07C26100A3CC09 /* MapCalendarViewController.swift in Sources */,

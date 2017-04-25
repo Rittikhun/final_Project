@@ -23,6 +23,8 @@ class DriverViewController: UIViewController, MKMapViewDelegate, CLLocationManag
     var title1 = ""
     var requestAlive = true
     
+    var nameDriver = ""
+    
     var rateDriver = 0.0
     
     var passenger : [String] = []
@@ -132,6 +134,17 @@ class DriverViewController: UIViewController, MKMapViewDelegate, CLLocationManag
         cell.textLabel?.text = self.passenger[indexPath.row]
        
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        var storyboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+        
+        var vc = storyboard.instantiateViewController(withIdentifier: "DetailCarpool") as! DetailCarpoolViewController
+        
+        vc.name = self.passenger[indexPath.row]
+        
+        self.present(vc, animated: true, completion: nil)
     }
     
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
