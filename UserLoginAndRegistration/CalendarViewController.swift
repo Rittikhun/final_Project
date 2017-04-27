@@ -447,13 +447,14 @@ class CalendarViewController: UIViewController, UIPopoverPresentationControllerD
             let eventStore = EKEventStore()
             var date = detailDate[(indexPath.row)]
             var evt = date.title
-            var start = date.startDate
-            var endDate = date.endDate
+            var start = date.startDate.addingTimeInterval(-60*60*24)
+            var endDate = date.endDate.addingTimeInterval(60*60*24*3)
             var predicate2 = eventStore.predicateForEvents(withStart: start, end: endDate, calendars: nil)
             
             var eV = eventStore.events(matching: predicate2) as [EKEvent]!
             
             print(start)
+
             
             if eV != nil {
                 for i in eV! {
@@ -463,6 +464,7 @@ class CalendarViewController: UIViewController, UIPopoverPresentationControllerD
                     if i.title == evt {
                         do{
                             try eventStore.remove(i, span: EKSpan.thisEvent, commit: true)
+                            calendarView.deselectDate(todayis)
                             self.tableview.reloadData()
                             self.calendarView.reloadData()
 
@@ -476,12 +478,8 @@ class CalendarViewController: UIViewController, UIPopoverPresentationControllerD
                 }
             }
             
-            
-            print("eiseis")
-            
             detailDate.remove(at: indexPath.row)
             tableView.deleteRows(at: [indexPath as IndexPath], with: UITableViewRowAnimation.automatic)
-            calendarView.deselectDate(todayis)
             self.tableview.reloadData()
             self.calendarView.reloadData()
         }
