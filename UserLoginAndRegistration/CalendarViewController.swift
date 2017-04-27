@@ -98,8 +98,12 @@ class CalendarViewController: UIViewController, UIPopoverPresentationControllerD
         else{
             
             self.performSegue(withIdentifier: "newEventSegue2", sender: self)
-            
+      
             calendarView.deselectDate(todayis)
+            
+            self.tableview.reloadData()
+            self.calendarView.reloadData()
+            
             
         }
         
@@ -293,6 +297,7 @@ class CalendarViewController: UIViewController, UIPopoverPresentationControllerD
         
         detailDate.removeAll()
         eventlist.removeAll()
+        
         let format = DateFormatter()
         let dateformat = DateFormatter()
         
@@ -441,28 +446,44 @@ class CalendarViewController: UIViewController, UIPopoverPresentationControllerD
         if editingStyle == UITableViewCellEditingStyle.delete {
             let eventStore = EKEventStore()
             var date = detailDate[(indexPath.row)]
+            var evt = date.title
             var start = date.startDate
             var endDate = date.endDate
             var predicate2 = eventStore.predicateForEvents(withStart: start, end: endDate, calendars: nil)
             
             var eV = eventStore.events(matching: predicate2) as [EKEvent]!
             
+            print(start)
+            
             if eV != nil {
                 for i in eV! {
-                    do{
-                        (try eventStore.remove(i, span: EKSpan.thisEvent, commit: true))
+                    print(i.startDate)
+                    print(i.title+"=")
+                    print(evt)
+                    if i.title == evt {
+                        do{
+                            try eventStore.remove(i, span: EKSpan.thisEvent, commit: true)
+                            self.tableview.reloadData()
+                            self.calendarView.reloadData()
+
+
+                        }
+                        catch let error {
+                            print("Error removing events: ", error)
+                        }
                     }
-                    catch let error {
-                    }
-                    
+                   
                 }
             }
             
             
-            
+            print("eiseis")
             
             detailDate.remove(at: indexPath.row)
             tableView.deleteRows(at: [indexPath as IndexPath], with: UITableViewRowAnimation.automatic)
+            calendarView.deselectDate(todayis)
+            self.tableview.reloadData()
+            self.calendarView.reloadData()
         }
     }
     
