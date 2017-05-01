@@ -342,7 +342,7 @@ class CarpoolDriverHandler{
     }
     
     func statusRequest(status:String,arrived:Bool,name:String){
-        DBProvider.Instance.requestRef.child(name).updateChildValues([Constants.STATUS_CARPOOL:status,Constants.ARRIVED:arrived])
+        DBProvider.Instance.requestRef.child(name).updateChildValues([Constants.STATUS_CARPOOL:status,Constants.ARRIVED:arrived,Constants.DRIVER:""])
     }
     
     func getStatus() -> Bool {

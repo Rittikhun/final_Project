@@ -288,6 +288,8 @@ class PassengerViewController: UIViewController, MKMapViewDelegate, CLLocationMa
                             UIAlertAction(title: s, style: .default, handler: handler))
                     }
                     
+                    CarpoolHandler.instace.statusArrived = false
+                    
                     self.present(alert, animated: true, completion: nil)
 
                     

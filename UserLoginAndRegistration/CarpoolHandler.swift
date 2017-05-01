@@ -89,32 +89,53 @@ class CarpoolHandler{
             if let data = snapshot.value as? NSDictionary {
                 if let name = data[Constants.DRIVER] as? String {
 //                    if name == self.user {
-                        
+                    
+                    
+                        self.statusArrived = (data[Constants.ARRIVED] as? Bool)!
                         
                         self.delegate?.driverAcceptedRequest(requestAccepted: false, drivername: name)
-                        
+                    
                         
 //                    }
                 }
             }
             
         }
-
         
-        DBProvider.Instance.requestAcceptedRef.observe(FIRDataEventType.childAdded){ (snapshot: FIRDataSnapshot) in
+        DBProvider.Instance.requestRef.observe(FIRDataEventType.childChanged){ (snapshot: FIRDataSnapshot) in
             
             if let data = snapshot.value as? NSDictionary {
-                if let name = data[Constants.NAME] as? String {
-                    if self.driver == "" {
-                        
-                        self.driver = name
-                        self.delegate?.driverAcceptedRequest(requestAccepted: true, drivername: self.driver)
-                        
+                if let name = data[Constants.DRIVER] as? String {
+                    if let status = data[Constants.STATUS_CARPOOL] as? String{
+                        if status == "wait" {
+                            if name == "" {
+                                self.delegate?.driverAcceptedRequest(requestAccepted: false, drivername: self.driver)
+                            }
+                        }
+                        //test alert accept
+                        else{
+                            self.delegate?.driverAcceptedRequest(requestAccepted: true, drivername: name)
+                        }
                     }
                 }
             }
             
         }
+
+        //test comment bcoz in bug when start passenger
+//        DBProvider.Instance.requestAcceptedRef.observe(FIRDataEventType.childAdded){ (snapshot: FIRDataSnapshot) in
+//            
+//            if let data = snapshot.value as? NSDictionary {
+//                if let name = data[Constants.NAME] as? String {
+//                    if self.driver == "" {
+//                        self.driver = name
+//                        self.delegate?.driverAcceptedRequest(requestAccepted: true, drivername: self.driver)
+//                        
+//                    }
+//                }
+//            }
+//            
+//        }
         
         DBProvider.Instance.requestAcceptedRef.observe(FIRDataEventType.childRemoved){ (snapshot: FIRDataSnapshot) in
             
