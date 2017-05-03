@@ -92,6 +92,7 @@ class CarpoolHandler{
                     
                     
                         self.statusArrived = (data[Constants.ARRIVED] as? Bool)!
+                    
                         
                         self.delegate?.driverAcceptedRequest(requestAccepted: false, drivername: name)
                     
@@ -105,16 +106,19 @@ class CarpoolHandler{
         DBProvider.Instance.requestRef.observe(FIRDataEventType.childChanged){ (snapshot: FIRDataSnapshot) in
             
             if let data = snapshot.value as? NSDictionary {
+                let arrived = data[Constants.ARRIVED] as! Bool
                 if let name = data[Constants.DRIVER] as? String {
                     if let status = data[Constants.STATUS_CARPOOL] as? String{
-                        if status == "wait" {
+                        if status == "wait"{
                             if name == "" {
                                 self.delegate?.driverAcceptedRequest(requestAccepted: false, drivername: self.driver)
                             }
                         }
                         //test alert accept
                         else{
-                            self.delegate?.driverAcceptedRequest(requestAccepted: true, drivername: name)
+                            if !arrived {
+                                self.delegate?.driverAcceptedRequest(requestAccepted: true, drivername: name)
+                            }
                         }
                     }
                 }

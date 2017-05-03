@@ -186,7 +186,7 @@ class DriverViewController: UIViewController, MKMapViewDelegate, CLLocationManag
     
     func passengerCanceledCarpool(name:String){
         if !driverCanceledCarpool{
-            CarpoolDriverHandler.instace.cancelCarpoolForDriver(name:name)
+//            CarpoolDriverHandler.instace.cancelCarpoolForDriver(name:name)
             self.acceptedCarpool = false
             self.acceptCarpoolBtn.isHidden = true
             self.arrivedBtn.isHidden = true

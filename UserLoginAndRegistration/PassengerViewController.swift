@@ -226,7 +226,7 @@ class PassengerViewController: UIViewController, MKMapViewDelegate, CLLocationMa
     }
     
     func driverAcceptedRequest(requestAccepted: Bool, drivername: String) {
-        
+        print("asdfasdfasdfasdfasdf \(CarpoolHandler.instace.statusArrived)")
         if !passengerCancelRequest {
             if requestAccepted {
                 alertTheUser(title: "Carpool Accepted", message: "\(drivername) Accepted Your Carpool Request")
