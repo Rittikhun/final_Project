@@ -128,6 +128,18 @@ class CarpoolDriverHandler{
             
         }
         
+//        DBProvider.Instance.locationRef.observe(FIRDataEventType.childChanged) { (snapshot:FIRDataSnapshot) in
+//            
+//            if let data = snapshot.value as? NSDictionary{
+//                if let lat = data[Constants.LATITUDE] as? Double {
+//                    if let long = data[Constants.LONGITUDE] as? Double {
+//                        self.delegate?.updatePassengerLocation(lat: lat, long: long)
+//                    }
+//                }
+//            }
+//            
+//        }
+        
         DBProvider.Instance.requestAcceptedRef.observe(FIRDataEventType.childAdded){ (snapshot: FIRDataSnapshot) in
             print(snapshot.key)
 //            self.setuidAccept(uid: snapshot.key)

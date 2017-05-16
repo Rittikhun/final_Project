@@ -94,9 +94,10 @@ class DriverViewController: UIViewController, MKMapViewDelegate, CLLocationManag
             
             userLocation = CLLocationCoordinate2D(latitude:location.latitude , longitude:location.longitude )
             
-            let region = MKCoordinateRegion(center: userLocation!,span: MKCoordinateSpan(latitudeDelta:0.01,longitudeDelta:0.01))
-            
-            map.setRegion(region, animated: true)
+            //move on
+//            let region = MKCoordinateRegion(center: userLocation!,span: MKCoordinateSpan(latitudeDelta:0.01,longitudeDelta:0.01))
+//            
+//            map.setRegion(region, animated: true)
             
             map.removeAnnotations(map.annotations)
             

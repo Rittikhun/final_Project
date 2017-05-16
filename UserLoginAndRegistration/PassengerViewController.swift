@@ -176,21 +176,14 @@ class PassengerViewController: UIViewController, MKMapViewDelegate, CLLocationMa
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         
-        guard let mostRecentLocation = locations.last else {
-            return
-        }
-        
         if let location = locationManager.location?.coordinate{
             
             userLocation = CLLocationCoordinate2D(latitude:location.latitude , longitude:location.longitude )
             
-//            print(userLocation)
-            
-            
-            
-            let region = MKCoordinateRegion(center: userLocation!,span: MKCoordinateSpan(latitudeDelta:0.01,longitudeDelta:0.01))
-            
-            map.setRegion(region, animated: true)
+            //move on
+//            let region = MKCoordinateRegion(center: userLocation!,span: MKCoordinateSpan(latitudeDelta:0.01,longitudeDelta:0.01))
+//            
+//            map.setRegion(region, animated: true)
             
             map.removeAnnotations(map.annotations)
             
@@ -202,14 +195,6 @@ class PassengerViewController: UIViewController, MKMapViewDelegate, CLLocationMa
                     map.addAnnotation(driverAnnotation)
                 }
             }
-            
-            if UIApplication.shared.applicationState == .active {
-                //                mapView.showAnnotations(self.locations, animated: true)
-            } else {
-                updatePassengerLocation()
-//                print("App is backgrounded. New location is %@", mostRecentLocation)
-            }
-            
         }
         
     }

@@ -171,6 +171,22 @@ class CarpoolHandler{
             
         }
         
+//        DBProvider.Instance.locationRef.observe(FIRDataEventType.childChanged){ (snapshot:FIRDataSnapshot) in
+//            
+//            if let data = snapshot.value as? NSDictionary {
+//                if let name = data[Constants.NAME] as? String{
+//                    if name == self.driver {
+//                        if let lat = data[Constants.LATITUDE] as? Double {
+//                            if let long = data[Constants.LONGITUDE] as? Double {
+//                                self.delegate?.updateDriverLocation(lat: lat, long: long)
+//                            }
+//                        }
+//                    }
+//                }
+//            }
+//            
+//        }
+        
     }
 
     func cancelCarpool(){
