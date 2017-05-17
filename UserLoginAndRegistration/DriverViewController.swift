@@ -45,6 +45,8 @@ class DriverViewController: UIViewController, MKMapViewDelegate, CLLocationManag
         getRateAvg()
         CarpoolDriverHandler.instace.delegate = self
         CarpoolDriverHandler.instace.observeMessagesForDriver()
+        
+        CarpoolDriverHandler.instace.carpoolAccepted(lat: 0, long: 0)
 
         // Do any additional setup after loading the view.
     }
@@ -156,7 +158,7 @@ class DriverViewController: UIViewController, MKMapViewDelegate, CLLocationManag
 //            if self.acceptedCarpool{
             
                 self.driverCanceledCarpool = true
-                self.acceptCarpoolBtn.isHidden = true
+//                self.acceptCarpoolBtn.isHidden = true
                 //            arrivedBtn.isHidden = true
             CarpoolDriverHandler.instace.statusRequest(status: "wait",arrived:false,name:self.passenger[indexPath.row])
                 CarpoolDriverHandler.instace.cancelCarpoolForDriver(name: self.passenger[indexPath.row])
@@ -200,9 +202,11 @@ class DriverViewController: UIViewController, MKMapViewDelegate, CLLocationManag
         if acceptedCarpool{
             acceptCarpoolBtn.isHidden = true
             arrivedBtn.isHidden = true
-//            CarpoolDriverHandler.instace.cancelCarpoolForDriver()
+            CarpoolDriverHandler.instace.cancelCarpoolForDriver(name: "nil")
             timer.invalidate()
         }
+        
+        CarpoolDriverHandler.instace.cancelCarpoolForDriver(name: "nil")
         
         self.dismiss(animated: true, completion: nil)
 
@@ -297,8 +301,8 @@ class DriverViewController: UIViewController, MKMapViewDelegate, CLLocationManag
                     print("GGEZ")
                     let accept = UIAlertAction(title: "Accept", style: .default, handler: { (alertAction: UIAlertAction) in
                         self.acceptedCarpool = true
-                        self.acceptCarpoolBtn.isHidden = false
-                        self.arrivedBtn.isHidden = false
+//                        self.acceptCarpoolBtn.isHidden = false
+//                        self.arrivedBtn.isHidden = false
                         //                CarpoolHandler.instace.observeMessageForPassenger()
                         //                CarpoolHandler.instace.delegate = self
                         CarpoolDriverHandler.instace.statusRequest(status: "busy",arrived:false)

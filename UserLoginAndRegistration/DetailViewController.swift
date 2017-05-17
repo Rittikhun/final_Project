@@ -294,12 +294,20 @@ class DetailViewController: UIViewController,MKMapViewDelegate,CLLocationManager
         if let t = annotation.title, t != "My Location" {
             if v == nil {
                 v = MKAnnotationView(annotation: annotation,reuseIdentifier:ident)
-                v.image = UIImage(named: "map-icon")
+                v.image = UIImage(named: "Education_24-512")
                 v.bounds.size.height /= 3.0
                 v.bounds.size.width /= 3.0
                 v.centerOffset = CGPoint(x:0,y:-20)
                 v.canShowCallout = true
             }
+            v.annotation = annotation
+        } else{
+            v = MKAnnotationView(annotation: annotation,reuseIdentifier:ident)
+            v.image = UIImage(named: "myki_watch")
+            v.bounds.size.height /= 3.0
+            v.bounds.size.width /= 3.0
+            v.centerOffset = CGPoint(x:0,y:-20)
+            v.canShowCallout = true
             v.annotation = annotation
         }
         

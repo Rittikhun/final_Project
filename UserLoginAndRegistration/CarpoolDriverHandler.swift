@@ -178,19 +178,24 @@ class CarpoolDriverHandler{
     func cancelCarpoolForDriver(name:String){
         
 //        DBProvider.Instance.requestAcceptedRef.child(/*uid*/user).removeValue()
+        if(name != "nil"){
+            DBProvider.Instance.requestRef.child((self.uid_test)).observeSingleEvent(of: .value, with: { (snapshot) in
+                
+                let value = snapshot.value as! NSDictionary
+                
+                let seat = value[Constants.NO] as! Int
+                
+                self.updateSeat(seat: seat)
+                
+                //            DBProvider.Instance.requestRef.child(name).updateChildValues([Constants.ARRIVED:true])
+                //            DBProvider.Instance.requestRef.child(name).removeValue()
+                
+            })
+        } else{
+            DBProvider.Instance.requestAcceptedRef.child(/*uid*/user).removeValue()
+        }
         
-        DBProvider.Instance.requestRef.child((self.uid_test)).observeSingleEvent(of: .value, with: { (snapshot) in
-            
-            let value = snapshot.value as! NSDictionary
-            
-            let seat = value[Constants.NO] as! Int
-            
-            self.updateSeat(seat: seat)
-            
-//            DBProvider.Instance.requestRef.child(name).updateChildValues([Constants.ARRIVED:true])
-//            DBProvider.Instance.requestRef.child(name).removeValue()
-            
-        })
+        
         
         
     }

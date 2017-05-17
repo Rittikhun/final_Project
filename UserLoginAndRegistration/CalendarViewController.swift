@@ -37,6 +37,7 @@ class CalendarViewController: UIViewController, UIPopoverPresentationControllerD
     
     var menushow = false
     
+    @IBOutlet weak var cal_icon: UITabBarItem!
     
     @IBOutlet weak var leading: NSLayoutConstraint!
     
@@ -162,6 +163,11 @@ class CalendarViewController: UIViewController, UIPopoverPresentationControllerD
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        var image : UIImage? = UIImage(named:"calendar-icon.png")?.withRenderingMode(.alwaysOriginal)
+        
+        cal_icon.selectedImage = image
+        
         tableview.delegate = self
         tableview.dataSource = self
         
