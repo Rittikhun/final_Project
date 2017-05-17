@@ -27,7 +27,9 @@ class DetailViewController: UIViewController,MKMapViewDelegate,CLLocationManager
     var detailtitle : String = ""
     var detaildate : Date!
     var detailLocation : String = ""
-    
+    var start : Date!
+    var end : Date!
+ 
     var uidevent = ""
     
 //    var locationManager:CLLocationManager!
@@ -184,6 +186,35 @@ class DetailViewController: UIViewController,MKMapViewDelegate,CLLocationManager
     }
 
     
+    @IBAction func deleteEvent(_ sender: UIButton) {
+        let eventStore = EKEventStore()
+        
+        var predicate2 = eventStore.predicateForEvents(withStart: start, end: end, calendars: nil)
+        
+        var eV = eventStore.events(matching: predicate2) as [EKEvent]!
+        
+        print(start)
+        print(end)
+        print(detailtitle)
+        
+        if eV != nil {
+            for i in eV! {
+                print(i.title+"=")
+                if i.title == detailtitle {
+                    do{
+                        try eventStore.remove(i, span: EKSpan.thisEvent, commit: true)
+ 
+                    }
+                    catch let error {
+                        print("Error removing events: ", error)
+                    }
+                }
+                
+            }
+        }
+
+        self.dismiss(animated: true, completion: nil)
+    }
     
     @IBAction func backBtn(_ sender: UIBarButtonItem) {
         

@@ -201,6 +201,9 @@
                                 <state key="normal" title="Delete event">
                                     <color key="titleColor" red="1" green="0.33667778329999998" blue="0.2421112171" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
+                                <connections>
+                                    <action selector="deleteEvent:" destination="gZB-Xf-sia" eventType="touchUpInside" id="DXJ-j1-jpE"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
