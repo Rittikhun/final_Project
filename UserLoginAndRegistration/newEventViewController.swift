@@ -11,10 +11,7 @@ import EventKit
 
 class newEventViewController: UIViewController {
     
-    @IBOutlet weak var cancelButton: UIButton!
-    
-    
-    
+  
     @IBOutlet weak var eventText: UITextField!
     
     @IBOutlet weak var eventPicker: UIDatePicker!
@@ -82,45 +79,6 @@ class newEventViewController: UIViewController {
         self.dismiss(animated: true, completion:nil);
     }
     @IBAction func Save(_ sender: Any) {
-        
-        
-//        let eventStore = EKEventStore()
-//        
-//        eventStore.requestAccess( to: EKEntityType.event, completion:{(granted, error) in
-//            
-//            if (granted) && (error == nil) {
-//                print("granted \(granted)")
-//                print("error \(error)")
-//                
-//                let event = EKEvent(eventStore: eventStore)
-//                event.title = self.eventText.text!
-//                event.startDate = self.eventPicker.date
-//                event.endDate = self.eventPicker.date
-//                event.location = self.locationText.text!
-//                event.calendar = eventStore.defaultCalendarForNewEvents
-//                
-//                var event_id = ""
-//                do{
-//                    try eventStore.save(event, span: .thisEvent)
-//                    event_id = event.eventIdentifier
-//                }
-//                catch let error as NSError {
-//                    print("json error: \(error.localizedDescription)")
-//                }
-//                
-//                if(event_id != ""){
-//                    print("event added !")
-//                }
-//            }
-//            
-//        
-//            //sent to friend
-//            
-//            
-//            
-//            
-//        })
-      
         
         if self.uidft.isEmpty != true {
             
@@ -259,6 +217,7 @@ class newEventViewController: UIViewController {
                                     if(event_id != ""){
                                         print("event added !")
                                     }
+                                    self.dismiss(animated: true, completion: nil)
                                 }
                                 
                                 
@@ -283,20 +242,8 @@ class newEventViewController: UIViewController {
             }
             
         }
-        
-//        let data : Dictionary<String,Any> = ["asdasd":""]
-        
-//        DBProvider.Instance.eventRef.childByAutoId().observe(.value, with: { (snapshot) in
-//            
-//            uid = snapshot.key
-//            
-//        })
-        
-        var storyboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-        
-        var vc: UIViewController = storyboard.instantiateViewController(withIdentifier: "homeView") as! UIViewController
-        
-        self.present(vc, animated: true, completion: nil)
+
+
         
         
     }

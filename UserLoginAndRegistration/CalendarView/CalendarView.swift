@@ -551,11 +551,7 @@ class CalendarView: UIView, UICollectionViewDataSource, UICollectionViewDelegate
         
     }
     
-    
-    func reloadData() {
-        self.calendarView.reloadData()
-    }
-    
+
     
     func setDisplayDate(_ date : Date, animated: Bool) {
         

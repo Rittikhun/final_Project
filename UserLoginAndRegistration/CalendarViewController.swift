@@ -96,13 +96,13 @@ class CalendarViewController: UIViewController, UIPopoverPresentationControllerD
         }
             
         else{
+            calendarView.deselectDate(todayis)
+            
+            self.dismiss(animated: true, completion: nil)
             
             self.performSegue(withIdentifier: "newEventSegue2", sender: self)
       
-            calendarView.deselectDate(todayis)
             
-            self.tableview.reloadData()
-            self.calendarView.reloadData()
             
             
         }
@@ -151,6 +151,14 @@ class CalendarViewController: UIViewController, UIPopoverPresentationControllerD
         return .none
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        
+        calendarView.setNeedsDisplay()
+        tableview.reloadData()
+        
+        
+        
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -465,8 +473,8 @@ class CalendarViewController: UIViewController, UIPopoverPresentationControllerD
                         do{
                             try eventStore.remove(i, span: EKSpan.thisEvent, commit: true)
                             calendarView.deselectDate(todayis)
-                            self.tableview.reloadData()
-                            self.calendarView.reloadData()
+//                            self.tableview.reloadData()
+//                            self.calendarView.reloadData()
 
 
                         }
@@ -480,20 +488,18 @@ class CalendarViewController: UIViewController, UIPopoverPresentationControllerD
             
             detailDate.remove(at: indexPath.row)
             tableView.deleteRows(at: [indexPath as IndexPath], with: UITableViewRowAnimation.automatic)
-            self.tableview.reloadData()
-            self.calendarView.reloadData()
+            self.view.setNeedsLayout()
+            self.view.setNeedsDisplay()
+
         }
     }
     
     
     
     
-    override func viewWillAppear(_ animated: Bool) {
-        self.tableview.reloadData()
-        self.calendarView.reloadData()
-        
-        
-    }
+   
+    
+    
     
     
     
