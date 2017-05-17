@@ -96,13 +96,13 @@ class CalendarViewController: UIViewController, UIPopoverPresentationControllerD
         }
             
         else{
+            calendarView.deselectDate(todayis)
+            
+            self.dismiss(animated: true, completion: nil)
             
             self.performSegue(withIdentifier: "newEventSegue2", sender: self)
       
-            calendarView.deselectDate(todayis)
             
-            self.tableview.reloadData()
-            self.calendarView.reloadData()
             
             
         }
@@ -151,6 +151,14 @@ class CalendarViewController: UIViewController, UIPopoverPresentationControllerD
         return .none
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        
+        calendarView.setNeedsDisplay()
+        tableview.reloadData()
+        
+        
+        
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -435,6 +443,9 @@ class CalendarViewController: UIViewController, UIPopoverPresentationControllerD
         vc.detailLocation = myStringArr[0]
         vc.uidevent = myStringArr[1]
         
+        vc.start = calendarEventSelect.startDate.addingTimeInterval(-60*60*24)
+        vc.end = calendarEventSelect.startDate.addingTimeInterval(+60*60*24)
+        
         
         self.present(vc, animated: true, completion: nil)
         
@@ -442,58 +453,8 @@ class CalendarViewController: UIViewController, UIPopoverPresentationControllerD
     }
     
     
-    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == UITableViewCellEditingStyle.delete {
-            let eventStore = EKEventStore()
-            var date = detailDate[(indexPath.row)]
-            var evt = date.title
-            var start = date.startDate.addingTimeInterval(-60*60*24)
-            var endDate = date.endDate.addingTimeInterval(60*60*24*3)
-            var predicate2 = eventStore.predicateForEvents(withStart: start, end: endDate, calendars: nil)
-            
-            var eV = eventStore.events(matching: predicate2) as [EKEvent]!
-            
-            print(start)
+    
 
-            
-            if eV != nil {
-                for i in eV! {
-                    print(i.startDate)
-                    print(i.title+"=")
-                    print(evt)
-                    if i.title == evt {
-                        do{
-                            try eventStore.remove(i, span: EKSpan.thisEvent, commit: true)
-                            calendarView.deselectDate(todayis)
-                            self.tableview.reloadData()
-                            self.calendarView.reloadData()
-
-
-                        }
-                        catch let error {
-                            print("Error removing events: ", error)
-                        }
-                    }
-                   
-                }
-            }
-            
-            detailDate.remove(at: indexPath.row)
-            tableView.deleteRows(at: [indexPath as IndexPath], with: UITableViewRowAnimation.automatic)
-            self.tableview.reloadData()
-            self.calendarView.reloadData()
-        }
-    }
-    
-    
-    
-    
-    override func viewWillAppear(_ animated: Bool) {
-        self.tableview.reloadData()
-        self.calendarView.reloadData()
-        
-        
-    }
     
     
     
