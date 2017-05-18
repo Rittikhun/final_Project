@@ -25,6 +25,8 @@ class CarpoolHandler{
     var driver = ""
     var uid_test = ""
     
+    var test = 0
+    
     var statusArrived = true
     
     let username = FIRAuth.auth()?.currentUser
@@ -114,10 +116,14 @@ class CarpoolHandler{
                                 self.delegate?.driverAcceptedRequest(requestAccepted: false, drivername: self.driver)
                             }
                         }
-                        //test alert accept
+                        //test alert accept !!!!!!!!
                         else{
                             if !arrived {
-                                self.delegate?.driverAcceptedRequest(requestAccepted: true, drivername: name)
+//                                if (test == 0){
+                                    self.delegate?.driverAcceptedRequest(requestAccepted: true, drivername: name)
+                                    
+//                                }
+                                
                             }
                         }
                     }

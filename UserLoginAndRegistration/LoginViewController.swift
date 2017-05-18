@@ -152,7 +152,7 @@ class LoginViewController: UIViewController {
                 
             else {
                 
-                var myAlert = UIAlertController(title:"Error", message:"\(error?.localizedDescription)", preferredStyle: UIAlertControllerStyle.alert);
+                var myAlert = UIAlertController(title:"Error", message:"\((error?.localizedDescription)!)", preferredStyle: UIAlertControllerStyle.alert);
                 
                 let okAction = UIAlertAction(title:"Ok", style:UIAlertActionStyle.default){ action in
                 }
