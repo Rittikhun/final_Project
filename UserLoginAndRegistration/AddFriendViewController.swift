@@ -199,9 +199,9 @@ class AddFriendViewController: UIViewController, UITableViewDataSource, UITableV
                     let childUpdates = ["/friendpending/\(self.uid)/": post ]
                     self.ref.updateChildValues(childUpdates)
                     
-                    var myAlert = UIAlertController(title:"Add Friend success", message:"wait for your friend accept", preferredStyle: UIAlertControllerStyle.alert);
+                    var myAlert = UIAlertController(title:"ส่งคำขอเพิ่มเพื่อนสำเร็จ", message:"รอการตอบรับคำขอที่ส่งไปนะจ๊ะ", preferredStyle: UIAlertControllerStyle.alert);
                     
-                    let okAction = UIAlertAction(title:"Ok", style:UIAlertActionStyle.default){ action in
+                    let okAction = UIAlertAction(title:"ตกลง", style:UIAlertActionStyle.default){ action in
                         self.dismiss(animated: true, completion:nil);
                     }
                     

@@ -193,7 +193,7 @@ class DriverViewController: UIViewController, MKMapViewDelegate, CLLocationManag
             self.acceptedCarpool = false
             self.acceptCarpoolBtn.isHidden = true
             self.arrivedBtn.isHidden = true
-            carpoolRequest(title: "Carpool Canceled", message: "The Passenger Has Cenceled The Carpool", requestAlive: false)
+            carpoolRequest(title: "คำขอถูกยกเลิก", message: "ผู้โดยสารได้ยกเลิกคำขอแล้ว", requestAlive: false)
             
         }
     }
@@ -258,8 +258,8 @@ class DriverViewController: UIViewController, MKMapViewDelegate, CLLocationManag
 //        self.tableview.reloadData()
             print("tam mai mun in wa")
             print(whereto)
-        self.message = "You have a reauest for a carpool at this location Lat: \(lat), Long: \(long) number \(no) where to \(whereto) rate average \(ratepass)"
-        self.title1 = "Carpool Request"
+        self.message = "ได้มีคำขอติดรถที่ Lat: \(lat), Long: \(long) จำนวน \(no) ที่นั่ง จุดหมายปลายทาง \(whereto) คะแนนเฉลี่ย \(ratepass)"
+        self.title1 = "คำขอ"
         DBProvider.Instance.requestRef.observe(FIRDataEventType.childAdded){ (snapshot: FIRDataSnapshot) in
             
             CarpoolDriverHandler.instace.uid_req = snapshot.key
@@ -299,7 +299,7 @@ class DriverViewController: UIViewController, MKMapViewDelegate, CLLocationManag
 //                print(message)
                 if self.requestAlive {
                     print("GGEZ")
-                    let accept = UIAlertAction(title: "Accept", style: .default, handler: { (alertAction: UIAlertAction) in
+                    let accept = UIAlertAction(title: "รับ", style: .default, handler: { (alertAction: UIAlertAction) in
                         self.acceptedCarpool = true
 //                        self.acceptCarpoolBtn.isHidden = false
 //                        self.arrivedBtn.isHidden = false
@@ -321,7 +321,7 @@ class DriverViewController: UIViewController, MKMapViewDelegate, CLLocationManag
                     
 //                    let cancel = UIAlertAction(title: "Cancel", style: .default, handler: nil)
                     
-                    let cancel = UIAlertAction(title: "Cancel", style: .default, handler: {(alertAction: UIAlertAction) in
+                    let cancel = UIAlertAction(title: "ไม่รับ", style: .default, handler: {(alertAction: UIAlertAction) in
                         
                         CarpoolDriverHandler.instace.statusRequest(status: "wait",arrived:false)
                         self.passenger.removeLast()
@@ -338,7 +338,7 @@ class DriverViewController: UIViewController, MKMapViewDelegate, CLLocationManag
                     
                 else{
                     
-                    let ok = UIAlertAction(title: "OK", style: .default, handler: nil)
+                    let ok = UIAlertAction(title: "ตกลง", style: .default, handler: nil)
                     alert.addAction(ok)
                 }
                 
@@ -354,7 +354,7 @@ class DriverViewController: UIViewController, MKMapViewDelegate, CLLocationManag
             
         }
 
-            carpoolRequest(title: "Carpool Request", message: "You have a reauest for a carpool at this location Lat: \(lat), Long: \(long) number \(no) where to \(whereto)", requestAlive: true)
+            carpoolRequest(title: "คำขอ", message: "ได้มีคำขอติดรถที่ Lat: \(lat), Long: \(long) จำนวน \(no) ที่นั่ง จุดหมายปลายทาง \(whereto)", requestAlive: true)
 //        }
 
     }
@@ -370,18 +370,18 @@ class DriverViewController: UIViewController, MKMapViewDelegate, CLLocationManag
     }
     
     func arrived(name:String){
-        let alert = UIAlertController(title: "Arrived", message: "Please rate me", preferredStyle: .alert)
+        let alert = UIAlertController(title: "ถึงที่หมายแล้ว", message: "โปรดให้คะแนนการใช้งาน", preferredStyle: .alert)
         
         func handler(act:UIAlertAction) {
             print((act.title)!)
             
             var ratenaja = Double((act.title)!)
             
-            let alert = UIAlertController(title: "Arrived", message: "Please rate me", preferredStyle: .alert)
+            let alert = UIAlertController(title: "ถึงที่หมายแล้ว", message: "โปรดให้คะแนนการใช้งาน", preferredStyle: .alert)
             alert.addTextField { (textField) in
                 textField.placeholder = "comment"
             }
-            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (alertAction:UIAlertAction) in
+            alert.addAction(UIAlertAction(title: "ตกลง", style: .default, handler: { (alertAction:UIAlertAction) in
                 let textField = alert.textFields![0] // Force unwrapping because we know it exists.
                 print("Text field: \((textField.text)!)")
                 

@@ -86,10 +86,10 @@ class CalendarViewController: UIViewController, UIPopoverPresentationControllerD
         
         if(todayis == nil){
             
-            let alert = UIAlertController(title: "Pick date", message: "Please, Pick a date", preferredStyle: UIAlertControllerStyle.alert)
+            let alert = UIAlertController(title: "ยังไม่ได้เลือกวันนะจ๊ะ", message: "โปรดระบุวันที่จะทำการนัดหมาย", preferredStyle: UIAlertControllerStyle.alert)
             
             // add an action (button)
-            alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
+            alert.addAction(UIAlertAction(title: "ตกลง", style: UIAlertActionStyle.default, handler: nil))
             
             // show the alert
             self.present(alert, animated: true, completion: nil)

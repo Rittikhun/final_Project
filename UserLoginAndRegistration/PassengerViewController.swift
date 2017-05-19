@@ -214,25 +214,25 @@ class PassengerViewController: UIViewController, MKMapViewDelegate, CLLocationMa
         print("asdfasdfasdfasdfasdf \(CarpoolHandler.instace.statusArrived)")
         if !passengerCancelRequest {
             if requestAccepted {
-                alertTheUser(title: "Carpool Accepted", message: "\(drivername) Accepted Your Carpool Request")
+                alertTheUser(title: "แจ้งเตือน", message: "\(drivername) ตอบรับคำขอของคุณ")
             }
             else {
                 //arrived
                 if CarpoolHandler.instace.statusArrived {
                     canCallCarpool(delegateCalled: false)
                     timer.invalidate()
-                    let alert = UIAlertController(title: "Arrived", message: "Please rate me", preferredStyle: .alert)
+                    let alert = UIAlertController(title: "ถึงที่หมายแล้ว", message: "โปรดให้คะแนนการใช้งาน", preferredStyle: .alert)
                     
                     func handler(act:UIAlertAction) {
                         print((act.title)!)
                         
                         var ratenaja = Double((act.title)!)
                         
-                        let alert = UIAlertController(title: "Arrived", message: "Please rate me", preferredStyle: .alert)
+                        let alert = UIAlertController(title: "ถึงที่หมายแล้ว", message: "โปรดให้คะแนนการใช้งาน", preferredStyle: .alert)
                         alert.addTextField { (textField) in
                             textField.placeholder = "comment"
                         }
-                        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (alertAction:UIAlertAction) in
+                        alert.addAction(UIAlertAction(title: "ตกลง", style: .default, handler: { (alertAction:UIAlertAction) in
                             let textField = alert.textFields![0] // Force unwrapping because we know it exists.
                             print("Text field: \((textField.text)!)")
                             
@@ -283,7 +283,7 @@ class PassengerViewController: UIViewController, MKMapViewDelegate, CLLocationMa
                     //test
                     canCallCarpool(delegateCalled: false)
                     timer.invalidate()
-                    alertTheUser(title: "Carpool Canceled", message: "\(drivername) Canceled Carpool Request")
+                    alertTheUser(title: "แจ้งเตือน", message: "\(drivername) ได้ยกเลิกคำขอของคุณ")
                 }
                 
 //                CarpoolHandler.instace.cancelCarpool()
@@ -309,7 +309,7 @@ class PassengerViewController: UIViewController, MKMapViewDelegate, CLLocationMa
     
     private func alertTheUser(title:String ,message:String){
         let alert = UIAlertController(title:title ,message:message ,preferredStyle: .alert)
-        let ok = UIAlertAction(title:"OK", style: .default, handler: nil)
+        let ok = UIAlertAction(title:"ตกลง", style: .default, handler: nil)
         alert.addAction(ok)
         present(alert, animated: true, completion: nil)
     }

@@ -48,7 +48,7 @@ class RegisterPageViewController: UIViewController {
             
             // Display alert message
             
-            displayMyAlertMessage("All fields are required");
+            displayMyAlertMessage("โปรดระบุอีเมลล์");
             
             return;
         }
@@ -57,7 +57,7 @@ class RegisterPageViewController: UIViewController {
         if(userPassword != userRepeatPassword)
         {
             // Display an alert message
-            displayMyAlertMessage("Passwords do not match");
+            displayMyAlertMessage("รหัสผ่านไม่ตรงกัน");
             
             
             return;
@@ -101,7 +101,7 @@ class RegisterPageViewController: UIViewController {
                     if snapshot.hasChild(userName){
                         
                         print("username Exist!!")
-                        var myAlert = UIAlertController(title:"username can't be used!", message:"username Exist!!", preferredStyle: UIAlertControllerStyle.alert);
+                        var myAlert = UIAlertController(title:"ใช้ชื่อนี้ไม่ได้", message:"มีผู้ใช้ชื่อนี้แล้ว", preferredStyle: UIAlertControllerStyle.alert);
                         
                         let okAction = UIAlertAction(title:"Ok", style:UIAlertActionStyle.default){ action in
                             self.dismiss(animated: true, completion:nil);
@@ -138,9 +138,9 @@ class RegisterPageViewController: UIViewController {
                                     
                                     print("sdasds")
                                     
-                                    var myAlert = UIAlertController(title:"Alert", message:"Registration is successful. Thank you!", preferredStyle: UIAlertControllerStyle.alert);
+                                    var myAlert = UIAlertController(title:"แจ้งเตือน", message:"สมัครสำเร็จแล้ว", preferredStyle: UIAlertControllerStyle.alert);
                                     
-                                    let okAction = UIAlertAction(title:"Ok", style:UIAlertActionStyle.default){ action in
+                                    let okAction = UIAlertAction(title:"ตกลง", style:UIAlertActionStyle.default){ action in
                                         self.dismiss(animated: true, completion:nil);
                                     }
                                     
@@ -167,9 +167,9 @@ class RegisterPageViewController: UIViewController {
             else {
                 
                 print("username can't use bacause have special character")
-                var myAlert = UIAlertController(title:"username can't be used!", message:"username can't use bacause have special character!", preferredStyle: UIAlertControllerStyle.alert);
+                var myAlert = UIAlertController(title:"ใช้ชื่อนี้ไม่ได้", message:"ห้ามมีอักขระพิเศษ", preferredStyle: UIAlertControllerStyle.alert);
                 
-                let okAction = UIAlertAction(title:"Ok", style:UIAlertActionStyle.default){ action in
+                let okAction = UIAlertAction(title:"ตกลง", style:UIAlertActionStyle.default){ action in
                     self.dismiss(animated: true, completion:nil);
                 }
                 
@@ -202,9 +202,9 @@ class RegisterPageViewController: UIViewController {
     func displayMyAlertMessage(_ userMessage:String)
     {
         
-        let myAlert = UIAlertController(title:"Alert", message:userMessage, preferredStyle: UIAlertControllerStyle.alert);
+        let myAlert = UIAlertController(title:"แจ้งเตือน", message:userMessage, preferredStyle: UIAlertControllerStyle.alert);
         
-        let okAction = UIAlertAction(title:"Ok", style:UIAlertActionStyle.default, handler:nil);
+        let okAction = UIAlertAction(title:"ตกลง", style:UIAlertActionStyle.default, handler:nil);
         
         myAlert.addAction(okAction);
         

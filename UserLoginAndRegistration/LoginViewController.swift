@@ -104,9 +104,9 @@ class LoginViewController: UIViewController {
                     
                     print("3.2")
                     
-                    var myAlert = UIAlertController(title:"Error while Login", message:"username is incorrect , or not register", preferredStyle: UIAlertControllerStyle.alert);
+                    var myAlert = UIAlertController(title:"มีข้อผิดพลาด", message:"ชื่อผู้ใช้ไม่ถูกต้อง หรือ ยังไม่ได้สมัครใช้งาน", preferredStyle: UIAlertControllerStyle.alert);
                     
-                    let okAction = UIAlertAction(title:"Ok", style:UIAlertActionStyle.default){ action in
+                    let okAction = UIAlertAction(title:"ตกลง", style:UIAlertActionStyle.default){ action in
                     }
                     
                     myAlert.addAction(okAction);
@@ -152,9 +152,9 @@ class LoginViewController: UIViewController {
                 
             else {
                 
-                var myAlert = UIAlertController(title:"Error", message:"\((error?.localizedDescription)!)", preferredStyle: UIAlertControllerStyle.alert);
+                var myAlert = UIAlertController(title:"มีข้อผิดพลาด", message:/*"\((error?.localizedDescription)!)"*/"รหัสผ่านไม่ถูกต้อง", preferredStyle: UIAlertControllerStyle.alert);
                 
-                let okAction = UIAlertAction(title:"Ok", style:UIAlertActionStyle.default){ action in
+                let okAction = UIAlertAction(title:"ตกลง", style:UIAlertActionStyle.default){ action in
                 }
                 
                 myAlert.addAction(okAction);
