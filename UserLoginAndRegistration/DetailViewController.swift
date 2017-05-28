@@ -119,10 +119,10 @@ class DetailViewController: UIViewController,MKMapViewDelegate,CLLocationManager
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         locationManager.requestWhenInUseAuthorization()
         locationManager.startUpdatingLocation()
-//        
-//        mapView.showsUserLocation = true
-//        
-//        mapView.setUserTrackingMode(.follow, animated: true)
+        
+        mapView.showsUserLocation = true
+        
+        mapView.setUserTrackingMode(.follow, animated: true)
 
     }
     
@@ -130,18 +130,18 @@ class DetailViewController: UIViewController,MKMapViewDelegate,CLLocationManager
         
         if let location = locationManager.location?.coordinate {
             userLocation = CLLocationCoordinate2D(latitude:location.latitude, longitude:location.longitude)
-            let region = MKCoordinateRegion(center: userLocation!, span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01))
-            
-            mapView.setRegion(region,animated:true)
+//            let region = MKCoordinateRegion(center: userLocation!, span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01))
+//            
+//            mapView.setRegion(region,animated:true)
             
             mapView.removeAnnotations(mapView.annotations)
 
             location_friends()
-            let annotation = MKPointAnnotation()
-            annotation.coordinate = userLocation!
-            annotation.title = "My Location"
+//            let annotation = MKPointAnnotation()
+//            annotation.coordinate = userLocation!
+//            annotation.title = "My Location"
 //            pinAnnotationView = MKPinAnnotationView(annotation: pointAnnotation, reuseIdentifier: "pin")
-            mapView.addAnnotation(annotation)
+//            mapView.addAnnotation(annotation)
         }
     }
     
@@ -294,23 +294,24 @@ class DetailViewController: UIViewController,MKMapViewDelegate,CLLocationManager
         if let t = annotation.title, t != "My Location" {
             if v == nil {
                 v = MKAnnotationView(annotation: annotation,reuseIdentifier:ident)
-                v.image = UIImage(named: "Education_24-512")
+                v.image = UIImage(named: "myki_watch")
                 v.bounds.size.height /= 3.0
                 v.bounds.size.width /= 3.0
                 v.centerOffset = CGPoint(x:0,y:-20)
                 v.canShowCallout = true
+                v.annotation = annotation
             }
-            v.annotation = annotation
-        } else{
-            v = MKAnnotationView(annotation: annotation,reuseIdentifier:ident)
-            v.image = UIImage(named: "myki_watch")
-            v.bounds.size.height /= 3.0
-            v.bounds.size.width /= 3.0
-            v.centerOffset = CGPoint(x:0,y:-20)
-            v.canShowCallout = true
-            v.annotation = annotation
         }
-        
+//        else{
+//            v = MKAnnotationView(annotation: annotation,reuseIdentifier:ident)
+//            v.image = UIImage(named: "myki_watch")
+//            v.bounds.size.height /= 3.0
+//            v.bounds.size.width /= 3.0
+//            v.centerOffset = CGPoint(x:0,y:-20)
+//            v.canShowCallout = true
+//            v.annotation = annotation
+//        }
+    
         
         return v
         

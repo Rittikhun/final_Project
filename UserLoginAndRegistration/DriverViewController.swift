@@ -147,6 +147,8 @@ class DriverViewController: UIViewController, MKMapViewDelegate, CLLocationManag
         
         vc.name = self.passenger[indexPath.row]
         
+        print("test test test \(indexPath)")
+        
         self.present(vc, animated: true, completion: nil)
     }
     
@@ -157,7 +159,7 @@ class DriverViewController: UIViewController, MKMapViewDelegate, CLLocationManag
             
 //            if self.acceptedCarpool{
             
-                self.driverCanceledCarpool = true
+//                self.driverCanceledCarpool = true
 //                self.acceptCarpoolBtn.isHidden = true
                 //            arrivedBtn.isHidden = true
             CarpoolDriverHandler.instace.statusRequest(status: "wait",arrived:false,name:self.passenger[indexPath.row])
@@ -194,10 +196,22 @@ class DriverViewController: UIViewController, MKMapViewDelegate, CLLocationManag
             self.acceptCarpoolBtn.isHidden = true
             self.arrivedBtn.isHidden = true
             carpoolRequest(title: "คำขอถูกยกเลิก", message: "ผู้โดยสารได้ยกเลิกคำขอแล้ว", requestAlive: false)
-            
+            let alert = UIAlertController(title: "คำขอถูกยกเลิก", message:"ผู้โดยสารได้ยกเลิกคำขอแล้ว", preferredStyle: .alert)
+            let ok = UIAlertAction(title: "ตกลง", style: .default, handler: nil)
+            alert.addAction(ok)
+            self.present(alert, animated:true, completion: nil)
+            var i = 0
+            for a in passenger {
+                if a == name {
+                    self.passenger.remove(at: i)
+                    self.tableview.deleteRows(at: [[0,i]], with: .automatic)
+                }
+                i = i+1
+            }
+        
         }
     }
-    
+
     @IBAction func back(_ sender: Any) {
         if acceptedCarpool{
             acceptCarpoolBtn.isHidden = true
@@ -354,7 +368,7 @@ class DriverViewController: UIViewController, MKMapViewDelegate, CLLocationManag
             
         }
 
-            carpoolRequest(title: "คำขอ", message: "ได้มีคำขอติดรถที่ Lat: \(lat), Long: \(long) จำนวน \(no) ที่นั่ง จุดหมายปลายทาง \(whereto)", requestAlive: true)
+//            carpoolRequest(title: "คำขอ", message: "ได้มีคำขอติดรถที่ Lat: \(lat), Long: \(long) จำนวน \(no) ที่นั่ง จุดหมายปลายทาง \(whereto)", requestAlive: true)
 //        }
 
     }

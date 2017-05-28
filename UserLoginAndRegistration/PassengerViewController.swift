@@ -75,7 +75,7 @@ class PassengerViewController: UIViewController, MKMapViewDelegate, CLLocationMa
         resultSearchController?.searchResultsUpdater = locationSearchTable
         let searchBar = resultSearchController!.searchBar
         searchBar.sizeToFit()
-        searchBar.placeholder = "Search for places"
+        searchBar.placeholder = "ค้นหาสถานที่"
         navigationItem.titleView = resultSearchController?.searchBar
         resultSearchController?.hidesNavigationBarDuringPresentation = false
         resultSearchController?.dimsBackgroundDuringPresentation = true
@@ -201,11 +201,11 @@ class PassengerViewController: UIViewController, MKMapViewDelegate, CLLocationMa
     
     func canCallCarpool(delegateCalled: Bool) {
         if delegateCalled {
-            callBtn.setTitle("Cancel Carpool", for: UIControlState.normal)
+            callBtn.setTitle("ยกเลิกคำขอติดรถ", for: UIControlState.normal)
             canCallCarpool = false
         }
         else{
-            callBtn.setTitle("Call Carpool", for: UIControlState.normal)
+            callBtn.setTitle("ยื่นคำขอติดรถ", for: UIControlState.normal)
             canCallCarpool = true
         }
     }
