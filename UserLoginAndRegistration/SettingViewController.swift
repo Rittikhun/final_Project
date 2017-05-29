@@ -49,7 +49,7 @@ class SettingViewController: UIViewController {
             }) { (error) in
                 var myAlert = UIAlertController(title:"Error", message:"\(error.localizedDescription)", preferredStyle: UIAlertControllerStyle.alert);
                 
-                let okAction = UIAlertAction(title:"Ok", style:UIAlertActionStyle.default){ action in
+                let okAction = UIAlertAction(title:"ตกลง", style:UIAlertActionStyle.default){ action in
                     self.dismiss(animated: true, completion:nil);
                 }
                 
@@ -81,7 +81,7 @@ class SettingViewController: UIViewController {
                     
                     let myAlert = UIAlertController(title:"Error", message:"\(error?.localizedDescription)", preferredStyle: UIAlertControllerStyle.alert);
                     
-                    let okAction = UIAlertAction(title:"Ok", style:UIAlertActionStyle.default){ action in
+                    let okAction = UIAlertAction(title:"ตกลง", style:UIAlertActionStyle.default){ action in
                         
                     }
                     
@@ -99,7 +99,7 @@ class SettingViewController: UIViewController {
                         if error != nil {
                             var myAlert = UIAlertController(title:"Error", message:"\(error?.localizedDescription)", preferredStyle: UIAlertControllerStyle.alert);
                             
-                            let okAction = UIAlertAction(title:"Ok", style:UIAlertActionStyle.default){ action in
+                            let okAction = UIAlertAction(title:"ตกลง", style:UIAlertActionStyle.default){ action in
                                 
                             }
                             

@@ -57,6 +57,7 @@ class DriverViewController: UIViewController, MKMapViewDelegate, CLLocationManag
             snapshot in
             let value = snapshot.value as! NSDictionary
             let name = value[Constants.NAME] as! String
+            self.nameDriver = name
             DBProvider.Instance.driverRef.child(name).observeSingleEvent(of: .value, with: { snapshot in
                 
                 let value = snapshot.value as! NSDictionary
@@ -154,7 +155,7 @@ class DriverViewController: UIViewController, MKMapViewDelegate, CLLocationManag
     
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         
-        var cancel = UITableViewRowAction(style: .default, title: "Cancel", handler: {
+        var cancel = UITableViewRowAction(style: .default, title: "ยกเลิก", handler: {
             (action,indexPath) in
             
 //            if self.acceptedCarpool{
@@ -162,16 +163,40 @@ class DriverViewController: UIViewController, MKMapViewDelegate, CLLocationManag
 //                self.driverCanceledCarpool = true
 //                self.acceptCarpoolBtn.isHidden = true
                 //            arrivedBtn.isHidden = true
-            CarpoolDriverHandler.instace.statusRequest(status: "wait",arrived:false,name:self.passenger[indexPath.row])
+//            CarpoolDriverHandler.instace.statusRequest(status: "wait",arrived:false,name:self.passenger[indexPath.row])
+//                CarpoolDriverHandler.instace.cancelCarpoolForDriver(name: self.passenger[indexPath.row])
+//                self.passenger.remove(at: indexPath.row)
+//                self.tableview.deleteRows(at: [indexPath], with: .automatic)
+//                self.timer.invalidate()
+//            }
+            let alert = UIAlertController(title: "ระวัง", message: "ทำการยกเลิกคำขอจะโดนหักคะแนนการใช้งาน5คะแนน", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "ตกลง", style: .default, handler: { (alertAction:UIAlertAction) in
+                
+                DBProvider.Instance.driverRef.child(self.nameDriver).observeSingleEvent(of: .value, with: {
+                    (snapshot) in
+                    let value = snapshot.value as! NSDictionary
+                    
+                    var rate = value[Constants.RATE] as! String
+                    var time = value[Constants.TIME] as! Double
+                    var rateavg = value[Constants.RATEAVG] as! Double
+                    
+                    rateavg = ((rateavg * (time)) - 5) / time
+                    
+                    DBProvider.Instance.driverRef.child(self.nameDriver).updateChildValues([Constants.RATEAVG:rateavg])
+                })
+                CarpoolDriverHandler.instace.statusRequest(status: "wait",arrived:false,name:self.passenger[indexPath.row])
                 CarpoolDriverHandler.instace.cancelCarpoolForDriver(name: self.passenger[indexPath.row])
                 self.passenger.remove(at: indexPath.row)
                 self.tableview.deleteRows(at: [indexPath], with: .automatic)
                 self.timer.invalidate()
-//            }
+                
+            }))
+            alert.addAction(UIAlertAction(title: "ยกเลิก",style: .default, handler:nil))
+            self.present(alert, animated: true, completion: nil)
             
         })
         
-        var arrived = UITableViewRowAction(style: .default, title: "Arrived", handler: {
+        var arrived = UITableViewRowAction(style: .default, title: "ถึงที่หมาย", handler: {
             (action,indexPath) in
             print(self.passenger[indexPath.row])
             
@@ -381,6 +406,28 @@ class DriverViewController: UIViewController, MKMapViewDelegate, CLLocationManag
         
         
         timer.invalidate()
+    }
+    
+    func cancel(){
+        let alert = UIAlertController(title: "ระวัง", message: "ทำการยกเลิกคำขอจะโดนหักคะแนนการใช้งาน5คะแนน", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "ตกลง", style: .default, handler: { (alertAction:UIAlertAction) in
+            
+            DBProvider.Instance.driverRef.child(self.nameDriver).observeSingleEvent(of: .value, with: {
+                (snapshot) in
+                let value = snapshot.value as! NSDictionary
+                
+                var rate = value[Constants.RATE] as! String
+                var time = value[Constants.TIME] as! Double
+                var rateavg = value[Constants.RATEAVG] as! Double
+                
+                rateavg = ((rateavg * (time)) - 5) / time
+
+                DBProvider.Instance.driverRef.child(self.nameDriver).updateChildValues([Constants.RATEAVG:rateavg])
+            })
+            
+        }))
+        alert.addAction(UIAlertAction(title: "ยกเลิก",style: .default, handler:nil))
+        self.present(alert, animated: true, completion: nil)
     }
     
     func arrived(name:String){

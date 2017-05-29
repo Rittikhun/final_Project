@@ -44,6 +44,8 @@ class PassengerViewController: UIViewController, MKMapViewDelegate, CLLocationMa
     
     private var timer = Timer()
     
+    private var name = ""
+    
     private var canCallCarpool = true
     private var passengerCancelRequest = false
     
@@ -53,6 +55,8 @@ class PassengerViewController: UIViewController, MKMapViewDelegate, CLLocationMa
         initializaLocationManager()
         CarpoolHandler.instace.observeMessageForPassenger()
         CarpoolHandler.instace.delegate = self
+        
+        getMyName()
         
         picker.delegate = self
         picker.dataSource = self
@@ -100,6 +104,16 @@ class PassengerViewController: UIViewController, MKMapViewDelegate, CLLocationMa
         map.setUserTrackingMode(.follow, animated: true)
         
     }
+    
+    private func getMyName(){
+        DBProvider.Instance.userRef.child((DBProvider.Instance.username?.uid)!).observeSingleEvent(of: .value, with: {
+            snapshot in
+            let value = snapshot.value as! NSDictionary
+            let name = value[Constants.NAME] as! String
+            self.name = name
+        })
+    }
+
     
     func dropPinZoomIn(_ placemark:MKPlacemark){
         // cache the pin
@@ -298,6 +312,34 @@ class PassengerViewController: UIViewController, MKMapViewDelegate, CLLocationMa
         
     }
     
+    func cancel(){
+        let alert = UIAlertController(title: "ระวัง", message: "ทำการยกเลิกคำขอจะโดนหักคะแนนการใช้งาน5คะแนน", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "ตกลง", style: .default, handler: { (alertAction:UIAlertAction) in
+            
+            DBProvider.Instance.passengerRef.child(self.name).observeSingleEvent(of: .value, with: {
+                (snapshot) in
+                let value = snapshot.value as! NSDictionary
+                
+                var rate = value[Constants.RATE] as! String
+                var time = value[Constants.TIME] as! Double
+                var rateavg = value[Constants.RATEAVG] as! Double
+                
+                rateavg = ((rateavg * (time)) - 5) / time
+                
+                DBProvider.Instance.passengerRef.child(self.name).updateChildValues([Constants.RATEAVG:rateavg])
+            })
+            
+            self.canCallCarpool(delegateCalled: self.canCallCarpool)
+            self.passengerCancelRequest = true
+            CarpoolHandler.instace.cancelCarpool()
+            self.timer.invalidate()
+
+            
+        }))
+        alert.addAction(UIAlertAction(title: "ยกเลิก",style: .default, handler:nil))
+        self.present(alert, animated: true, completion: nil)
+    }
+    
     func updateDriverLocation(lat: Double, long: Double) {
         DriverLocation = CLLocationCoordinate2D(latitude: lat, longitude: long)
 //        print(DriverLocation)
@@ -370,11 +412,13 @@ class PassengerViewController: UIViewController, MKMapViewDelegate, CLLocationMa
                 timer = Timer.scheduledTimer(timeInterval: TimeInterval(10), target: self, selector: #selector(PassengerViewController.updatePassengerLocation), userInfo: nil, repeats: true)
             }
             else {
-                canCallCarpool(delegateCalled: canCallCarpool)
-//                d.carpoolCanceled()
-                passengerCancelRequest = true
-                CarpoolHandler.instace.cancelCarpool()
-                timer.invalidate()
+                
+                cancel()
+                
+//                canCallCarpool(delegateCalled: canCallCarpool)
+//                passengerCancelRequest = true
+//                CarpoolHandler.instace.cancelCarpool()
+//                timer.invalidate()
             }
         }
         }
