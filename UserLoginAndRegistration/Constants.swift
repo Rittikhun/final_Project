@@ -35,6 +35,7 @@ class Constants {
     static let USER = "users"
     
     static let EVENT = "event"
+    static let CANCEL_EVENT = "cancelevent"
     static let UID = "uid"
     
     static let COMMENT = "comment"

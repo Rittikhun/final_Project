@@ -59,6 +59,10 @@ class DBProvider {
         return ref.child(Constants.PASSENGER)
     }
     
+    var cancelEventRef: FIRDatabaseReference{
+        return ref.child(Constants.CANCEL_EVENT)
+    }
+    
     func saveUser(ID:String, email:String, password: String, name:String){
 //        let data: Dictionary<String, Any> = [Constants.EMAIL:email,Constants.PASSWORD:password,Constants.NAME:name, Constants.STATUS : "None"]
         

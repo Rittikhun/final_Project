@@ -29,6 +29,10 @@ class DetailViewController: UIViewController,MKMapViewDelegate,CLLocationManager
     var detailLocation : String = ""
     var start : Date!
     var end : Date!
+    
+    var name = ""
+    
+    var uidlist : [String] = []
  
     var uidevent = ""
     
@@ -151,13 +155,13 @@ class DetailViewController: UIViewController,MKMapViewDelegate,CLLocationManager
             
             let value = snapshot.value as! NSDictionary
             
-            var uidlist : [String] = []
+//            var uidlist : [String] = []
             
             let uid = value["uid"] as! String
             
-            uidlist = uid.components(separatedBy: ", ")
+            self.uidlist = uid.components(separatedBy: ", ")
             
-            for u in uidlist {
+            for u in self.uidlist {
                 
                 if u != FIRAuth.auth()?.currentUser?.uid {
                 DBProvider.Instance.locationRef.child(u).observeSingleEvent(of: .value, with: { (snapshot) in
@@ -212,6 +216,10 @@ class DetailViewController: UIViewController,MKMapViewDelegate,CLLocationManager
                 
             }
         }
+        
+        for u in self.uidlist {
+            DBProvider.Instance.cancelEventRef.child(u).setValue([Constants.NAME:self.name,Constants.EVENT:namelabel.text])
+        }
 
         self.dismiss(animated: true, completion: nil)
     }
@@ -240,8 +248,19 @@ class DetailViewController: UIViewController,MKMapViewDelegate,CLLocationManager
         placelabel.text = detailLocation
         
         initializeLocationManager()
+        
+        getMyName()
 
         // Do any additional setup after loading the view.
+    }
+    
+    private func getMyName(){
+        DBProvider.Instance.userRef.child((DBProvider.Instance.username?.uid)!).observeSingleEvent(of: .value, with: {
+            snapshot in
+            let value = snapshot.value as! NSDictionary
+            let name = value[Constants.NAME] as! String
+            self.name = name
+        })
     }
 
     override func didReceiveMemoryWarning() {
