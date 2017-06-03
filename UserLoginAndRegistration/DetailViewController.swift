@@ -220,6 +220,21 @@ class DetailViewController: UIViewController,MKMapViewDelegate,CLLocationManager
         for u in self.uidlist {
             DBProvider.Instance.cancelEventRef.child(u).setValue([Constants.NAME:self.name,Constants.EVENT:namelabel.text])
         }
+        //delete myuid
+        DBProvider.Instance.eventRef.child(self.uidevent).observeSingleEvent(of: .value, with: { (snapshot) in
+            let value = snapshot.value as! NSDictionary
+            let uid = value["uid"] as! String
+            var uid_event = uid.components(separatedBy: ", ")
+            var j = 0
+            for i in uid_event {
+                if (i == DBProvider.Instance.username?.uid) {
+                    uid_event.remove(at: j)
+                }
+                j = j+1
+            }
+            let update = uid_event.joined(separator: ", ")
+            DBProvider.Instance.eventRef.child(self.uidevent).updateChildValues(["uid":update])
+        })
 
         self.dismiss(animated: true, completion: nil)
     }
